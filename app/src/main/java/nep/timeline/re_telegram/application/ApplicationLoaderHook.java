@@ -1,9 +1,6 @@
 package nep.timeline.re_telegram.application;
 
 import android.app.Application;
-import android.os.Build;
-
-import org.lsposed.hiddenapibypass.HiddenApiBypass;
 
 import java.io.File;
 

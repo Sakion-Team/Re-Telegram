@@ -196,8 +196,8 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                 if (!onlyNeedAR(lpparam))
                 {
                     //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
-                    if (ClientChecker.isNekogram())
-                        NekogramRoundAvatar.init(); // Make Nekogram Notification Avatar Rounded Again!
+                    // if (ClientChecker.isNekogram())
+                        // NekogramRoundAvatar.init(); // Bug!
 
                     // No Sponsored Messages
                     if (!ClientChecker.isCherrygram())
