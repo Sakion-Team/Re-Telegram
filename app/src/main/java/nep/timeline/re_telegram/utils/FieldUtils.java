@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import de.robv.android.xposed.XposedBridge;
+import nep.timeline.re_telegram.Utils;
 
 public class FieldUtils {
     public static Field getFieldOfClass(Object clazz, String fieldName) {
@@ -18,7 +19,7 @@ public class FieldUtils {
         }
         catch (NoSuchFieldException e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return null;
         }
@@ -36,7 +37,7 @@ public class FieldUtils {
         }
         catch (Exception e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return Double.MIN_VALUE;
         }
@@ -54,7 +55,7 @@ public class FieldUtils {
         }
         catch (Exception e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return Double.MIN_VALUE;
         }
@@ -72,7 +73,7 @@ public class FieldUtils {
         }
         catch (Exception e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return Float.MIN_VALUE;
         }
@@ -90,7 +91,7 @@ public class FieldUtils {
         }
         catch (Exception e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return Float.MIN_VALUE;
         }
@@ -108,7 +109,7 @@ public class FieldUtils {
         }
         catch (Exception e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return Integer.MIN_VALUE;
         }
@@ -126,7 +127,7 @@ public class FieldUtils {
         }
         catch (Exception e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return Integer.MIN_VALUE;
         }
@@ -144,7 +145,7 @@ public class FieldUtils {
         }
         catch (Exception e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return Long.MIN_VALUE;
         }
@@ -162,7 +163,7 @@ public class FieldUtils {
         }
         catch (Exception e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return Long.MIN_VALUE;
         }
@@ -180,7 +181,7 @@ public class FieldUtils {
         }
         catch (Exception e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return null;
         }
@@ -198,7 +199,7 @@ public class FieldUtils {
         }
         catch (Exception e)
         {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
             return null;
         }

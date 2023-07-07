@@ -36,7 +36,7 @@ public class MessageObject {
                 if (messageOwnerField != null)
                     return new TLRPC.Message(messageOwnerField.get(this.instance));
                 else
-                    XposedBridge.log("[TGAR Error] Not found messageOwner field in MessageObject's fields, " + Utils.issue);
+                    Utils.log("Not found messageOwner field in MessageObject's fields, " + Utils.issue);
             }
             catch (IllegalAccessException  e)
             {
@@ -44,7 +44,7 @@ public class MessageObject {
             }
         }
         else
-            XposedBridge.log("[TGAR Error] Not found messageOwner field in MessageObject, " + Utils.issue);
+            Utils.log("Not found messageOwner field in MessageObject, " + Utils.issue);
 
         return null;
     }

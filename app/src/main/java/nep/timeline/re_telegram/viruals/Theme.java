@@ -40,7 +40,7 @@ public class Theme {
                 if (textPaintField != null)
                     return (TextPaint) textPaintField.get(null);
                 else
-                    XposedBridge.log("[TGAR Error] Not found chat_timePaint field in Theme, " + Utils.issue);
+                    Utils.log("Not found chat_timePaint field in Theme, " + Utils.issue);
             }
             catch (IllegalAccessException e)
             {
@@ -48,7 +48,7 @@ public class Theme {
             }
         }
         else
-            XposedBridge.log("[TGAR Error] Not found chat_timePaint field in Theme, " + Utils.issue);
+            Utils.log("Not found chat_timePaint field in Theme, " + Utils.issue);
 
         return null;
     }

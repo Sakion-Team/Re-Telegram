@@ -71,7 +71,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (getHookPackages().contains(lpparam.packageName)) {
             if (DEBUG_MODE)
-                XposedBridge.log("[TGAR] Trying to hook app: " + lpparam.packageName);
+                Utils.log("Trying to hook app: " + lpparam.packageName);
             Utils.globalLoadPackageParam = lpparam;
             StartupHook.INSTANCE.doInit(lpparam.classLoader);
 
@@ -139,7 +139,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
             }
             else
             {
-                XposedBridge.log("[TGAR Error] Not found ChatMessageCell, " + Utils.issue);
+                Utils.log("Not found ChatMessageCell, " + Utils.issue);
             }
 
             Class<?> messagesController = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessagesController"), lpparam.classLoader);
@@ -158,7 +158,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                             methodNames.add(method.getName());
 
                     if (methodNames.size() != 1)
-                        XposedBridge.log("[TGAR Error] Failed to hook processUpdateArray! Reason: " + (methodNames.isEmpty() ? "No method found" : "Multiple methods found") + ", " + Utils.issue);
+                        Utils.log("Failed to hook processUpdateArray! Reason: " + (methodNames.isEmpty() ? "No method found" : "Multiple methods found") + ", " + Utils.issue);
                     else
                     {
                         String methodName = methodNames.get(0);
@@ -185,7 +185,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                                                 AntiDeleteMsg.insertDeletedMessage(new TLRPC.TL_updateDeleteMessages(item).getMessages());
 
                                             if (DEBUG_MODE)
-                                                XposedBridge.log("[TGAR] Protected message! event: " + item.getClass());
+                                                Utils.log("Protected message! event: " + item.getClass());
                                         }
 
                                     param.args[0] = newUpdates;
@@ -217,14 +217,14 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                         }
                         else
                         {
-                            XposedBridge.log("[TGAR Error] Not found MessageObject, " + Utils.issue);
+                            Utils.log("Not found MessageObject, " + Utils.issue);
                         }
                     }
                 }
             }
             else
             {
-                XposedBridge.log("[TGAR Error] Not found MessagesController, " + Utils.issue);
+                Utils.log("Not found MessagesController, " + Utils.issue);
             }
 
             // Fake Premium

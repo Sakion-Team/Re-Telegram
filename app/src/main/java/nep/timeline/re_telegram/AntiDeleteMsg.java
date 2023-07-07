@@ -99,7 +99,7 @@ public class AntiDeleteMsg {
         }
 
         if (markMessagesAsDeletedMethods.isEmpty()) {
-            XposedBridge.log("[TGAR Error] Failed to hook markMessagesAsDeleted! Reason: No method found, " + Utils.issue);
+            Utils.log("Failed to hook markMessagesAsDeleted! Reason: No method found, " + Utils.issue);
             return;
         }
 
@@ -124,7 +124,7 @@ public class AntiDeleteMsg {
         }
 
         if (updateDialogsWithDeletedMessagesMethods.isEmpty()) {
-            XposedBridge.log("[TGAR Error] Failed to hook updateDialogsWithDeletedMessages! Reason: No method found, " + Utils.issue);
+            Utils.log("Failed to hook updateDialogsWithDeletedMessages! Reason: No method found, " + Utils.issue);
             return;
         }
 
@@ -156,7 +156,7 @@ public class AntiDeleteMsg {
         });
 
         if (removeDeletedMessagesFromNotifications == null) {
-            XposedBridge.log("[TGAR Error] Failed to hook removeDeletedMessagesFromNotifications! Reason: No method found, " + Utils.issue);
+            Utils.log("Failed to hook removeDeletedMessagesFromNotifications! Reason: No method found, " + Utils.issue);
             return;
         }
 

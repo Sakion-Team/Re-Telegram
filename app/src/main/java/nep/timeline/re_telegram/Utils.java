@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import nep.timeline.re_telegram.structs.DeletedMessageInfo;
 import nep.timeline.re_telegram.utils.FileUtils;
@@ -22,6 +23,16 @@ public class Utils {
     public static final String issue = "Your telegram may have been modified! You can submit issue to let developer to try support to the telegram client you are using.";
     private static final Gson BUILDER_GSON = new GsonBuilder().setPrettyPrinting().create();
     public static File deletedMessagesSavePath = null;
+
+    public static void log(String text)
+    {
+        XposedBridge.log("[Re:Telegram] " + text);
+    }
+
+    public static void log(Throwable throwable)
+    {
+        XposedBridge.log("[Re:Telegram] " + throwable.getLocalizedMessage());
+    }
 
     public static <T> ArrayList<T> castList(Object obj, Class<T> clazz)
     {

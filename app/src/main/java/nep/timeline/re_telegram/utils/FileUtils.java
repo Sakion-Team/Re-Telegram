@@ -3,6 +3,7 @@ package nep.timeline.re_telegram.utils;
 import java.io.*;
 
 import de.robv.android.xposed.XposedBridge;
+import nep.timeline.re_telegram.Utils;
 
 public class FileUtils {
     public static String read(File file)
@@ -19,7 +20,7 @@ public class FileUtils {
             fileReader.close();
             return stringBuffer.toString();
         } catch (IOException e) {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
         }
 
@@ -31,7 +32,7 @@ public class FileUtils {
         try {
             if (!file.exists() && !file.createNewFile())
             {
-                XposedBridge.log("[TGAR] Cannot create file " + file.getAbsoluteFile());
+                Utils.log("Cannot create file " + file.getAbsoluteFile());
                 return false;
             }
 
@@ -41,7 +42,7 @@ public class FileUtils {
 
             return true;
         } catch (IOException e) {
-            XposedBridge.log(e);
+            Utils.log(e);
             e.printStackTrace();
         }
 
