@@ -17,7 +17,7 @@ public class HookUtils {
                 resultMethod = method;
 
         if (resultMethod == null)
-            throw new NullPointerException("cannot find method " + methodName + " from " + clazz.getName());
+            throw new NullPointerException("Not found method " + methodName + " from " + clazz.getName());
 
         return XposedBridge.hookMethod(resultMethod, callback);
     }
@@ -31,7 +31,7 @@ public class HookUtils {
                 unhooks.add(XposedBridge.hookMethod(method, callback));
 
         if (unhooks.isEmpty())
-            throw new NullPointerException("cannot find method " + methodName + " from " + clazz.getName());
+            throw new NullPointerException("Not found method " + methodName + " from " + clazz.getName());
 
         return unhooks;
     }

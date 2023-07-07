@@ -2,7 +2,6 @@ package nep.timeline.re_telegram.utils;
 
 import java.io.*;
 
-import de.robv.android.xposed.XposedBridge;
 import nep.timeline.re_telegram.Utils;
 
 public class FileUtils {

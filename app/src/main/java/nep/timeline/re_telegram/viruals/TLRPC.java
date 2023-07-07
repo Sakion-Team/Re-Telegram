@@ -1,9 +1,7 @@
 package nep.timeline.re_telegram.viruals;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import de.robv.android.xposed.XposedBridge;
 import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 import nep.timeline.re_telegram.utils.FieldUtils;

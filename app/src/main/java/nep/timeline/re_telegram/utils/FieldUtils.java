@@ -3,7 +3,6 @@ package nep.timeline.re_telegram.utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import de.robv.android.xposed.XposedBridge;
 import nep.timeline.re_telegram.Utils;
 
 public class FieldUtils {

@@ -42,6 +42,8 @@ public class Nekogram {
         methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "W4"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "g"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "D"));
+        methodList.add(new MethodInfo("NotificationsController", "loadRoundAvatar", "w"));
+        methodList.add(new MethodInfo("IconCompat", "createWithAdaptiveBitmap", "b"));
     }
 
     public static class ClassResolver

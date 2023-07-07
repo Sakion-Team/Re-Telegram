@@ -31,7 +31,7 @@ public class Utils {
 
     public static void log(Throwable throwable)
     {
-        XposedBridge.log("[Re:Telegram] " + throwable.getLocalizedMessage());
+        XposedBridge.log(throwable);
     }
 
     public static <T> ArrayList<T> castList(Object obj, Class<T> clazz)

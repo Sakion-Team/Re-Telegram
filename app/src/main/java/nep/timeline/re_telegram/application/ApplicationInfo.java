@@ -1,15 +1,13 @@
-package nep.timeline.re_telegram.TMoe;
+package nep.timeline.re_telegram.application;
 
 import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-import androidx.annotation.NonNull;
-
 import java.util.Objects;
 
-public class HostInfo {
+public class ApplicationInfo {
 
     private static Application sHostApplication = null;
     private static PackageInfo sHostPackageInfo = null;
@@ -19,7 +17,7 @@ public class HostInfo {
     private static String sHostAppVersionName = null;
     private static String sHostAppName = null;
 
-    public static void setHostApplication(@NonNull Application app) {
+    public static void setApplication(Application app) {
         Objects.requireNonNull(app, "app");
         sHostApplication = app;
         try {
@@ -39,27 +37,22 @@ public class HostInfo {
         sHostAppName = sHostPackageInfo.applicationInfo.loadLabel(app.getPackageManager()).toString();
     }
 
-    @NonNull
     public static Application getApplication() {
         return sHostApplication;
     }
 
-    @NonNull
     public static String getPackageName() {
         return sHostAppPackageName;
     }
 
-    @NonNull
     public static String getAppName() {
         return sHostAppName;
     }
 
-    @NonNull
     public static String getVersionName() {
         return sHostAppVersionName;
     }
 
-    @NonNull
     public static PackageInfo getPackageInfo() {
         return sHostPackageInfo;
     }

@@ -19,4 +19,21 @@ public class MethodUtils {
             return null;
         }
     }
+
+    public static Object invokeMethodOfClass(Object instance, Class<?> clazz, String methodName, Object... args) {
+        try
+        {
+            Method method = clazz.getDeclaredMethod(methodName);
+
+            if (!method.isAccessible())
+                method.setAccessible(true);
+
+            return method.invoke(instance, args);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

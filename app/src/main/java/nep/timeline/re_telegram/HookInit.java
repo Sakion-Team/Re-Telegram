@@ -14,12 +14,11 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
-import nep.timeline.re_telegram.TMoe.HostInfo;
-import nep.timeline.re_telegram.TMoe.StartupHook;
+import nep.timeline.re_telegram.application.ApplicationInfo;
+import nep.timeline.re_telegram.application.ApplicationLoaderHook;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 import nep.timeline.re_telegram.viruals.MessageObject;
 import nep.timeline.re_telegram.viruals.OfficialChatMessageCell;
@@ -39,7 +38,6 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
             "nekox.messenger");
     private static String MODULE_PATH = null;
     private static final boolean DEBUG_MODE = true;
-    private static final boolean ONLY_ANTIRECALL = false;
 
     public final List<String> getHookPackages()
     {
@@ -73,7 +71,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
             if (DEBUG_MODE)
                 Utils.log("Trying to hook app: " + lpparam.packageName);
             Utils.globalLoadPackageParam = lpparam;
-            StartupHook.INSTANCE.doInit(lpparam.classLoader);
+            ApplicationLoaderHook.init(lpparam.classLoader);
 
             Class<?> chatMessageCell = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.Cells.ChatMessageCell"), lpparam.classLoader);
 
@@ -82,7 +80,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         String recalled = "recalled";
-                        switch (HostInfo.getApplication().getResources().getConfiguration().locale.getDisplayLanguage())
+                        switch (ApplicationInfo.getApplication().getResources().getConfiguration().locale.getDisplayLanguage())
                         {
                             case "\u65e5\u672c\u8a9e":
                             case "\u4e2d\u6587":
@@ -195,8 +193,12 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                     }
                 }
 
-                if (!onlyNeedAR(lpparam) && !ONLY_ANTIRECALL)
+                if (!onlyNeedAR(lpparam))
                 {
+                    //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
+                    if (ClientChecker.isNekogram())
+                        NekogramRoundAvatar.init(); // Make Nekogram Notification Avatar Rounded Again!
+
                     // No Sponsored Messages
                     if (!ClientChecker.isCherrygram())
                     {
