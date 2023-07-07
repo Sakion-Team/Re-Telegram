@@ -1,10 +1,13 @@
-# RE:Telegram
+# Re:Telegram
 An Xposed module to enhance the Telegram
 
 [![Release](https://img.shields.io/github/release/Sakion-Team/Re-Telegram.svg)](https://github.com/Sakion-Team/Re-Telegram/releases/latest)
 [![CI_Build](https://github.com/Sakion-Team/Re-Telegram/actions/workflows/android.yml/badge.svg)](https://github.com/Sakion-Team/Re-Telegram/actions/workflows/android.yml)
 
 ## FAQ
+
+### What is the difference between this and Telegram Anti-Recall
+Re:Telegram has more features than Telegram Anti-Recall
 
 ### What features does Re:Telegram have?
 Currently, Re:Telegram has the following features: AntiAntiForward, AntiRecall, NoSponsoredMessages
