@@ -184,7 +184,7 @@ public class AntiRecall {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     Class<?> TL_updateDeleteMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages"));
                     Class<?> TL_updateDeleteChannelMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages"));
-                   // Class<?> TL_updateDeleteScheduledMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages"));
+                    // Class<?> TL_updateDeleteScheduledMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages"));
                     ArrayList<Object> updates = Utils.castList(param.args[0], Object.class);
                     if (updates != null && !updates.isEmpty())
                     {
@@ -196,13 +196,13 @@ public class AntiRecall {
                             else
                             {
                                 //if (item.getClass().equals(TL_updateDeleteScheduledMessages))
-                                 //   AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteScheduledMessages(item).getMessages());
+                                //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteScheduledMessages(item).getMessages());
 
-                                if (item.getClass().equals(TL_updateDeleteChannelMessages))
-                                    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteChannelMessages(item).getMessages());
+                                //if (item.getClass().equals(TL_updateDeleteChannelMessages))
+                                //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteChannelMessages(item).getMessages());
 
-                                if (item.getClass().equals(TL_updateDeleteMessages))
-                                    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteMessages(item).getMessages());
+                                //if (item.getClass().equals(TL_updateDeleteMessages))
+                                //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteMessages(item).getMessages());
 
                                 if (HookInit.DEBUG_MODE)
                                     Utils.log("Protected message! event: " + item.getClass());
