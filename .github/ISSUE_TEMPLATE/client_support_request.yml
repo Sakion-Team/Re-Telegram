@@ -1,0 +1,12 @@
+name: Client support request
+description: Request support for a third-party Telegram client
+title: "[Support Request] "
+labels: ["request"]
+body:
+  - type: textarea
+    attributes:
+      label: Telegram client
+      description: In order for us to support your third-party Telegram client, please provide us with the client
+      placeholder: Upload the telegram client attachment to this issue
+    validations:
+      required: true
