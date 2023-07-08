@@ -25,6 +25,7 @@ public class Nekogram {
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages", "Ia1"));
         classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.r"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "gh1"));
+        classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.b3"));
         fieldList.add(new FieldInfo("MessageObject", "messageOwner", "a"));
         fieldList.add(new FieldInfo("UserConfig", "selectedAccount", "o"));
         fieldList.add(new FieldInfo("Theme", "chat_timePaint", "J"));
@@ -43,7 +44,10 @@ public class Nekogram {
         methodList.add(new MethodInfo("UserConfig", "getInstance", "g"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "D"));
         methodList.add(new MethodInfo("NotificationsController", "loadRoundAvatar", "w"));
-        methodList.add(new MethodInfo("IconCompat", "createWithAdaptiveBitmap", "b"));
+        methodList.add(new MethodInfo("ChatPullingDownDrawable", "getNextUnreadDialog", "g"));
+        methodList.add(new MethodInfo("ChatPullingDownDrawable", "drawBottomPanel", "f"));
+        methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));
+        methodList.add(new MethodInfo("ChatPullingDownDrawable", "showBottomPanel", "l"));
     }
 
     public static class ClassResolver
