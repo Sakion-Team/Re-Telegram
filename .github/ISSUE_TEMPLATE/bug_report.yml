@@ -1,0 +1,40 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+        In order to help us find the problem faster, please fill in the following information.
+  - type: textarea
+    attributes:
+      label: What is the problem?
+      placeholder: What are the problems that have occurred?
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Module version
+      placeholder: What version of our module are you using?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Telegram client
+      placeholder: What telegram client are you using?
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Android version
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Xposed(LSPosed) Logs
+      description: In order to help us better locate the problem, please provide your Xposed module logs for us to locate the problem
+      placeholder: Save the log and upload the log attachment to this issue
+    validations:
+      required: true
