@@ -10,7 +10,14 @@ public class DeletedMessageInfo {
     public DeletedMessageInfo(int selectedAccount, List<Integer> messageIds)
     {
         this.selectedAccount = selectedAccount;
-        this.messageIds =  messageIds;
+        this.messageIds = messageIds;
+    }
+
+    public DeletedMessageInfo(int selectedAccount, int messageId)
+    {
+        this.selectedAccount = selectedAccount;
+        this.messageIds = new ArrayList<>();
+        this.messageIds.add(messageId);
     }
 
     public int getSelectedAccount() {

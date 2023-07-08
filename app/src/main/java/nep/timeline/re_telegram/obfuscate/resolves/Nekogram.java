@@ -23,6 +23,7 @@ public class Nekogram {
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Peer", "oM0"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages", "Ja1"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages", "Ia1"));
+        classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages", "Ka1"));
         classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.r"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "gh1"));
         classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.b3"));
@@ -35,8 +36,11 @@ public class Nekogram {
         methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "i"));
         methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "z0"));
         methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "B1"));
+        methodList.add(new MethodInfo("MessagesStorage", "getChat", "L"));
         methodList.add(new MethodInfo("MessageObject", "updateMessageText", "y3"));
         methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "i1"));
+        methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "N1"));
+        methodList.add(new MethodInfo("MessagesController", "deleteMessages", "P"));
         methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "n"));
         methodList.add(new MethodInfo("MessagesController", "getChat", "j0"));
         methodList.add(new MethodInfo("MessagesController", "getInstance", "I0"));

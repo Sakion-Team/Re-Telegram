@@ -24,6 +24,11 @@ public class TLRPC {
         {
             return (String) FieldUtils.getFieldClassOfClass(this.instance, "title");
         }
+
+        public String getUsername()
+        {
+            return (String) FieldUtils.getFieldClassOfClass(this.instance, "username");
+        }
     }
 
     public static class Peer {
@@ -92,6 +97,20 @@ public class TLRPC {
         public Peer getPeerID()
         {
             return new Peer(FieldUtils.getFieldClassOfClass(this.instance, this.clazz, "peer_id"));
+        }
+    }
+
+    public static class TL_updateDeleteScheduledMessages {
+        private final Object instance;
+
+        public TL_updateDeleteScheduledMessages(Object instance)
+        {
+            this.instance = instance;
+        }
+
+        public ArrayList<Integer> getMessages()
+        {
+            return Utils.castList(FieldUtils.getFieldClassOfClass(this.instance, "messages"), Integer.class);
         }
     }
 

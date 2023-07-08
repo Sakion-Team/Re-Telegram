@@ -9,7 +9,6 @@ import java.util.List;
 import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
-import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -67,11 +66,14 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
             Utils.globalLoadPackageParam = lpparam;
             ApplicationLoaderHook.init(lpparam.classLoader);
 
+            AntiRecall.initUI(lpparam);
+
+            AntiRecall.initNotification(lpparam);
+
             Class<?> messagesController = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessagesController"), lpparam.classLoader);
 
             if (messagesController != null)
             {
-                // Anti Recall
                 AntiRecall.init(lpparam, messagesController);
 
                 if (!onlyNeedAR(lpparam))
@@ -82,11 +84,9 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
                     ProhibitChannelSwitching.init(lpparam);
 
-                    // No Sponsored Messages
                     if (!ClientChecker.isCherrygram())
                         NoSponsoredMessages.init(messagesController);
 
-                    // Anti AntiForward
                     AntiAntiForward.init(lpparam, messagesController);
                 }
             }
