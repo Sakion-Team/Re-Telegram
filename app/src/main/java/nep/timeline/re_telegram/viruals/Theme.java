@@ -38,8 +38,18 @@ public class Theme {
                 }
                 if (textPaintField != null)
                     return (TextPaint) textPaintField.get(null);
-                else
-                    Utils.log("Not found default chat_timePaint field in Theme, " + Utils.issue);
+                else {
+                    for (Field field : fields) {
+                        if (field.getType().getName().contains("TextPaint"))
+                        {
+                            textPaintField = field;
+                        }
+                    }
+                    if (textPaintField != null)
+                        return (TextPaint) textPaintField.get(null);
+                    else
+                        Utils.log("Not found default chat_timePaint field in Theme, " + Utils.issue);
+                }
             }
             catch (IllegalAccessException e)
             {
