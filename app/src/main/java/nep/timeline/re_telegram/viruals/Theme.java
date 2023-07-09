@@ -39,7 +39,7 @@ public class Theme {
                 if (textPaintField != null)
                     return (TextPaint) textPaintField.get(null);
                 else
-                    Utils.log("Not found chat_timePaint field in Theme, " + Utils.issue);
+                    Utils.log("Not found default chat_timePaint field in Theme, " + Utils.issue);
             }
             catch (IllegalAccessException e)
             {
