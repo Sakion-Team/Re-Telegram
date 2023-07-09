@@ -213,36 +213,36 @@ public class AntiRecall {
         }
     }
 
-    public static void initNotification(XC_LoadPackage.LoadPackageParam lpparam) throws ClassNotFoundException, NoSuchMethodException {
+    public static void initNotification(XC_LoadPackage.LoadPackageParam lpparam, boolean liteMode) throws ClassNotFoundException, NoSuchMethodException {
         Class<?> messagesStorage = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.messenger.MessagesStorage"));
         Class<?> notificationCenter = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.messenger.NotificationCenter"));
         Class<?> notificationsController = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.messenger.NotificationsController"));
 
         ArrayList<Method> markMessagesAsDeletedMethods = new ArrayList<>();
-        for (Method method : messagesStorage.getDeclaredMethods()) {
-            if (method.getName().equals(AutomationResolver.resolve("MessagesStorage", "markMessagesAsDeleted", AutomationResolver.ResolverType.Method))) {
-                markMessagesAsDeletedMethods.add(method);
+        if (!liteMode)
+            for (Method method : messagesStorage.getDeclaredMethods()) {
+                if (method.getName().equals(AutomationResolver.resolve("MessagesStorage", "markMessagesAsDeleted", AutomationResolver.ResolverType.Method))) {
+                    markMessagesAsDeletedMethods.add(method);
+                }
+            }
+
+        if (!markMessagesAsDeletedMethods.isEmpty()) {
+            for (Method markMessagesAsDeletedMethod : markMessagesAsDeletedMethods) {
+                XposedBridge.hookMethod(markMessagesAsDeletedMethod, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        param.setResult(null);
+                        if (param.args[1] instanceof ArrayList)
+                        {
+                            ArrayList<Integer> list = Utils.castList(param.args[1], Integer.class);
+                            insertDeletedMessage(list);
+                        }
+                    }
+                });
             }
         }
-
-        if (markMessagesAsDeletedMethods.isEmpty()) {
+        else if (!liteMode)
             Utils.log("Failed to hook markMessagesAsDeleted! Reason: No method found, " + Utils.issue);
-            return;
-        }
-
-        for (Method markMessagesAsDeletedMethod : markMessagesAsDeletedMethods) {
-            XposedBridge.hookMethod(markMessagesAsDeletedMethod, new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    param.setResult(null);
-                    if (param.args[1] instanceof ArrayList)
-                    {
-                        ArrayList<Integer> list = Utils.castList(param.args[1], Integer.class);
-                        insertDeletedMessage(list);
-                    }
-                }
-            });
-        }
 
         /*
         ArrayList<Method> updateDialogsWithDeletedMessagesMethods = new ArrayList<>();
