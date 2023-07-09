@@ -13,6 +13,11 @@ public class ClientChecker {
         return lpparam.packageName.equals("uz.unnarsx.cherrygram");
     }
 
+    public static boolean isYukigram(final XC_LoadPackage.LoadPackageParam lpparam)
+    {
+        return lpparam.packageName.equals("me.onlyfire.yukigram.beta");
+    }
+
     public static boolean isNekogram()
     {
         return isNekogram(Utils.globalLoadPackageParam);
@@ -21,5 +26,10 @@ public class ClientChecker {
     public static boolean isCherrygram()
     {
         return isCherrygram(Utils.globalLoadPackageParam);
+    }
+
+    public static boolean isYukigram()
+    {
+        return isYukigram(Utils.globalLoadPackageParam);
     }
 }

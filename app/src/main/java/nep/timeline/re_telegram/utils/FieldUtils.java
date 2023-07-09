@@ -2,10 +2,38 @@ package nep.timeline.re_telegram.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 import nep.timeline.re_telegram.Utils;
 
 public class FieldUtils {
+    public static Field getFieldFromMultiName(Class<?> clazz, String fieldName, Object Type)
+    {
+        List<Field> fields = new ArrayList<>();
+        for (Field declaredField : clazz.getDeclaredFields())
+            if (declaredField.getName().equals(fieldName))
+                fields.add(declaredField);
+
+        if (!fields.isEmpty()) {
+            Field target = null;
+            for (Field field : fields) {
+                if (field.getType().equals(Type))
+                {
+                    target = field;
+                }
+            }
+            if (target != null)
+                return target;
+            else
+                Utils.log("Not found " + fieldName + " field in " + clazz.getName() + ", " + Utils.issue);
+        }
+        else
+            Utils.log("Not found " + fieldName + " field in " + clazz.getName() + ", " + Utils.issue);
+
+        return null;
+    }
+
     public static Field getFieldOfClass(Object clazz, String fieldName) {
         try
         {

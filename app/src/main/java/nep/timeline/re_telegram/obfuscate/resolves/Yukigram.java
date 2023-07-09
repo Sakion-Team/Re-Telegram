@@ -7,47 +7,48 @@ import nep.timeline.re_telegram.obfuscate.struct.ClassInfo;
 import nep.timeline.re_telegram.obfuscate.struct.FieldInfo;
 import nep.timeline.re_telegram.obfuscate.struct.MethodInfo;
 
-public class Nekogram {
+public class Yukigram {
     private static final List<ClassInfo> classList = new ArrayList<>();
     private static final List<FieldInfo> fieldList = new ArrayList<>();
     private static final List<MethodInfo> methodList = new ArrayList<>();
 
     static {
         classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "org.telegram.messenger.ApplicationLoaderImpl"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "Uj0"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "ui0"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "yf0"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "bc0"));
-        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "sm1"));
-        classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Message", "YL0"));
-        //classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Peer", "oM0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "iz0"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "bD0"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "sC0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "pA0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "Mw0"));
+        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "Zs1"));
+        classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Message", "Ng1"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages", "Ja1"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages", "Ia1"));
-        //classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages", "Ka1"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.r"));
-        classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "gh1"));
-        classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.b3"));
+        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.m"));
+        classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "Wk1"));
+        classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.T2"));
 
         fieldList.add(new FieldInfo("MessageObject", "messageOwner", "a"));
         fieldList.add(new FieldInfo("UserConfig", "selectedAccount", "o"));
         fieldList.add(new FieldInfo("Theme", "chat_timePaint", "J"));
         fieldList.add(new FieldInfo("NotificationCenter", "messagesDeleted", "i"));
+        fieldList.add(new FieldInfo("TLRPC$Message", "id", "a"));
+        fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteMessages", "messages", "a"));
+        fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteChannelMessages", "messages", "a"));
 
         methodList.add(new MethodInfo("ApplicationLoader", "onCreate", "n"));
-        methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "E"));
+        methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "p1"));
         methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "i"));
-        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "z0"));
-        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "B1"));
-        methodList.add(new MethodInfo("MessageObject", "updateMessageText", "y3"));
-        methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "i1"));
-        methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "N1"));
+        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "A0"));
+        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "C1"));
+        methodList.add(new MethodInfo("MessageObject", "updateMessageText", "A3"));
+        methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "j1"));
+        methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "O1"));
         methodList.add(new MethodInfo("MessagesController", "deleteMessages", "P"));
-        methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "n"));
+        methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "o"));
         methodList.add(new MethodInfo("MessagesController", "getInstance", "I0"));
-        methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "W4"));
+        methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "Z4"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "g"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "D"));
-        methodList.add(new MethodInfo("NotificationsController", "loadRoundAvatar", "w"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "getNextUnreadDialog", "g"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "drawBottomPanel", "f"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));

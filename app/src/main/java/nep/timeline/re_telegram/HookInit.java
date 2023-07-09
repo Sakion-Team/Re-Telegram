@@ -20,13 +20,14 @@ import nep.timeline.re_telegram.features.ProhibitChannelSwitching;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 
 public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitPackageResources {
-    private static final List<String> hookPackages = Arrays.asList("org.telegram.messenger", "org.telegram.messenger.web", "org.telegram.messenger.beta", "org.telegram.plus",
+    private static final List<String> hookPackages = Arrays.asList("org.telegram.messenger", "org.telegram.messenger.web", "org.telegram.messenger.beta", "org.telegram.plus", "org.telegram.mdgram",
             "tw.nekomimi.nekogram",
             "com.cool2645.nekolite",
             "com.exteragram.messenger",
             "org.forkclient.messenger",
             "org.forkclient.messenger.beta",
-            "uz.unnarsx.cherrygram");
+            "uz.unnarsx.cherrygram",
+            "me.onlyfire.yukigram.beta");
     private static final List<String> hookPackagesCustomization = Arrays.asList("xyz.nextalone.nagram", "xyz.nextalone.nnngram",
             "nekox.messenger");
     private static String MODULE_PATH = null;
@@ -84,7 +85,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
                     ProhibitChannelSwitching.init(lpparam);
 
-                    if (!ClientChecker.isCherrygram())
+                    if (!ClientChecker.isCherrygram() && !ClientChecker.isYukigram())
                         NoSponsoredMessages.init(messagesController);
 
                     AntiAntiForward.init(lpparam, messagesController);

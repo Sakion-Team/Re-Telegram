@@ -5,6 +5,7 @@
         <item>org.telegram.messenger.web</item>
         <item>org.telegram.messenger.beta</item>
         <item>org.telegram.plus</item>
+        <item>org.telegram.mdgram</item>
         <item>xyz.nextalone.nagram</item>
         <item>xyz.nextalone.nnngram</item>
         <item>nekox.messenger</item>
@@ -14,5 +15,6 @@
         <item>org.forkclient.messenger</item>
         <item>org.forkclient.messenger.beta</item>
         <item>uz.unnarsx.cherrygram</item>
+        <item>me.onlyfire.yukigram.beta</item>
     </string-array>
 </resources>

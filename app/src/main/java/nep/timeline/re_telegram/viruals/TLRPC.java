@@ -2,6 +2,7 @@ package nep.timeline.re_telegram.viruals;
 
 import java.util.ArrayList;
 
+import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 import nep.timeline.re_telegram.utils.FieldUtils;
@@ -31,6 +32,7 @@ public class TLRPC {
         }
     }
 
+    /*
     public static class Peer {
         private final Object instance;
         private final Class<?> clazz;
@@ -67,6 +69,7 @@ public class TLRPC {
             return FieldUtils.getFieldLongOfClass(this.instance, this.clazz, "channel_id");
         }
     }
+    */
 
     public static class Message {
         private final Object instance;
@@ -91,15 +94,28 @@ public class TLRPC {
 
         public int getID()
         {
-            return FieldUtils.getFieldIntOfClass(this.instance, this.clazz, "id");
+            try
+            {
+                if (ClientChecker.isYukigram())
+                    return FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Message", "id", AutomationResolver.ResolverType.Field), int.class).getInt(this.instance);
+                else
+                    return FieldUtils.getFieldIntOfClass(this.instance, this.clazz, "id");
+            }
+            catch (IllegalAccessException e)
+            {
+                Utils.log(e);
+                e.printStackTrace();
+            }
+            return -1;
         }
 
-        public Peer getPeerID()
-        {
-            return new Peer(FieldUtils.getFieldClassOfClass(this.instance, this.clazz, "peer_id"));
-        }
+        //public Peer getPeerID()
+        //{
+        //    return new Peer(FieldUtils.getFieldClassOfClass(this.instance, this.clazz, "peer_id"));
+        //}
     }
 
+    /*
     public static class TL_updateDeleteScheduledMessages {
         private final Object instance;
 
@@ -113,7 +129,7 @@ public class TLRPC {
             return Utils.castList(FieldUtils.getFieldClassOfClass(this.instance, "messages"), Integer.class);
         }
     }
-
+*/
     public static class TL_updateDeleteChannelMessages {
         private final Object instance;
 
@@ -129,7 +145,18 @@ public class TLRPC {
 
         public ArrayList<Integer> getMessages()
         {
-            return Utils.castList(FieldUtils.getFieldClassOfClass(this.instance, "messages"), Integer.class);
+            try
+            {
+                if (ClientChecker.isYukigram())
+                    return Utils.castList(FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteChannelMessages", "id", AutomationResolver.ResolverType.Field), ArrayList.class).get(this.instance), Integer.class);
+                else
+                    return Utils.castList(FieldUtils.getFieldClassOfClass(this.instance, "messages"), Integer.class);
+            }
+            catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 
@@ -143,7 +170,18 @@ public class TLRPC {
 
         public ArrayList<Integer> getMessages()
         {
-            return Utils.castList(FieldUtils.getFieldClassOfClass(this.instance, "messages"), Integer.class);
+            try
+            {
+                if (ClientChecker.isYukigram())
+                    return Utils.castList(FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteMessages", "id", AutomationResolver.ResolverType.Field), ArrayList.class).get(this.instance), Integer.class);
+                else
+                    return Utils.castList(FieldUtils.getFieldClassOfClass(this.instance, "messages"), Integer.class);
+            }
+            catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 }
