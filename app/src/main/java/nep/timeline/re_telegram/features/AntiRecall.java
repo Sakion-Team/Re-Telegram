@@ -112,20 +112,20 @@ public class AntiRecall {
                         MessageObject messageObject = new MessageObject(param.args[0]);
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
-                        String deleted = "";
                         if (AntiRecall.messageIsDeleted(id))
-                            deleted = "(" + recalled + ") ";
-                        String delta = deleted + " ";
-                        SpannableStringBuilder newDelta = new SpannableStringBuilder();
-                        newDelta.append(delta).append(time);
-                        time = newDelta;
-                        cell.setCurrentTimeString(time);
-                        TextPaint paint = Theme.getTextPaint();
-                        if (paint != null)
                         {
-                            int deltaWidth = (int) Math.ceil(paint.measureText(delta));
-                            cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
-                            cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                            String delta = "(" + recalled + ") ";
+                            SpannableStringBuilder newDelta = new SpannableStringBuilder();
+                            newDelta.append(delta).append(time);
+                            time = newDelta;
+                            cell.setCurrentTimeString(time);
+                            TextPaint paint = Theme.getTextPaint();
+                            if (paint != null)
+                            {
+                                int deltaWidth = (int) Math.ceil(paint.measureText(delta));
+                                cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
+                                cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                            }
                         }
                     }
                     else
@@ -135,18 +135,18 @@ public class AntiRecall {
                         MessageObject messageObject = new MessageObject(param.args[0]);
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
-                        String deleted = "";
                         if (AntiRecall.messageIsDeleted(id))
-                            deleted = "(" + recalled + ") ";
-                        String delta = deleted + " ";
-                        time = delta + time;
-                        cell.setCurrentTimeString(time);
-                        TextPaint paint = Theme.getTextPaint();
-                        if (paint != null)
                         {
-                            int deltaWidth = (int) Math.ceil(paint.measureText(delta));
-                            cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
-                            cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                            String delta = "(" + recalled + ") ";
+                            time = delta + time;
+                            cell.setCurrentTimeString(time);
+                            TextPaint paint = Theme.getTextPaint();
+                            if (paint != null)
+                            {
+                                int deltaWidth = (int) Math.ceil(paint.measureText(delta));
+                                cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
+                                cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                            }
                         }
                     }
                 }
