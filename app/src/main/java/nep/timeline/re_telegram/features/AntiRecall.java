@@ -219,7 +219,7 @@ public class AntiRecall {
         Class<?> notificationsController = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.messenger.NotificationsController"));
 
         ArrayList<Method> markMessagesAsDeletedMethods = new ArrayList<>();
-        if (!HookInit.LITE_MODE)
+        // if (!HookInit.LITE_MODE)
             for (Method method : messagesStorage.getDeclaredMethods()) {
                 if (method.getName().equals(AutomationResolver.resolve("MessagesStorage", "markMessagesAsDeleted", AutomationResolver.ResolverType.Method))) {
                     markMessagesAsDeletedMethods.add(method);
@@ -241,7 +241,7 @@ public class AntiRecall {
                 });
             }
         }
-        else if (!HookInit.LITE_MODE)
+        else// if (!HookInit.LITE_MODE)
             Utils.log("Failed to hook markMessagesAsDeleted! Reason: No method found, " + Utils.issue);
 
         /*
