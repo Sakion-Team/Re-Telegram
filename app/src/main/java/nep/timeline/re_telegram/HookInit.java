@@ -32,7 +32,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
             "nekox.messenger");
     private static String MODULE_PATH = null;
     public static final boolean DEBUG_MODE = true;
-    public static final boolean LITE_MODE = false;
+    public static final boolean LITE_MODE = true;
 
     public final List<String> getHookPackages()
     {
@@ -78,8 +78,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
             if (messagesController != null)
             {
-                if (!LITE_MODE)
-                    AntiRecall.init(lpparam, messagesController);
+                AntiRecall.init(lpparam, messagesController);
 
                 if (!onlyNeedAR(lpparam))
                 {
