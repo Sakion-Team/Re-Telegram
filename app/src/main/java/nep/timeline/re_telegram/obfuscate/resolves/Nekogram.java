@@ -13,7 +13,6 @@ public class Nekogram {
     private static final List<MethodInfo> methodList = new ArrayList<>();
 
     static {
-        classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "org.telegram.messenger.ApplicationLoaderImpl"));
         classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "Uj0"));
         classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "ui0"));
         classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "yf0"));

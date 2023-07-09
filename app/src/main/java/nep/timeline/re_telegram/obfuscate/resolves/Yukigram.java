@@ -13,7 +13,6 @@ public class Yukigram {
     private static final List<MethodInfo> methodList = new ArrayList<>();
 
     static {
-        classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "org.telegram.messenger.ApplicationLoaderImpl"));
         classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "iz0"));
         classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "bD0"));
         classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "sC0"));
