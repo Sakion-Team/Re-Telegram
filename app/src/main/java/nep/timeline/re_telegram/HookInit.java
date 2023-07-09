@@ -65,6 +65,8 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
         if (getHookPackages().contains(lpparam.packageName)) {
             if (DEBUG_MODE)
                 Utils.log("Trying to hook app: " + lpparam.packageName);
+            if (LITE_MODE)
+                Utils.log("Running with Lite Mode");
             Utils.globalLoadPackageParam = lpparam;
             ApplicationLoaderHook.init(lpparam.classLoader);
 
@@ -76,7 +78,8 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
             if (messagesController != null)
             {
-                AntiRecall.init(lpparam, messagesController);
+                if (!LITE_MODE)
+                    AntiRecall.init(lpparam, messagesController);
 
                 if (!onlyNeedAR(lpparam))
                 {
