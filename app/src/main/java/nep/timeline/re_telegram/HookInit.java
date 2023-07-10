@@ -32,6 +32,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
             "nekox.messenger");
     private static String MODULE_PATH = null;
     public static final boolean DEBUG_MODE = true;
+    public static final boolean LITE_MODE = true;
 
     public final List<String> getHookPackages()
     {

@@ -36,4 +36,34 @@ public class MethodUtils {
             return null;
         }
     }
+
+    public static Object invokeMethodOfClass(Object clazz, Method method, Object... args) {
+        try
+        {
+            if (!method.isAccessible())
+                method.setAccessible(true);
+
+            return method.invoke(clazz, args);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Object invokeMethodOfClass(Object instance, Class<?> clazz, Method method, Object... args) {
+        try
+        {
+            if (!method.isAccessible())
+                method.setAccessible(true);
+
+            return method.invoke(instance, args);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -1,13 +1,12 @@
 package nep.timeline.re_telegram.structs;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DeletedMessageInfo {
     private final int selectedAccount;
-    private final List<Integer> messageIds;
+    private final ArrayList<Integer> messageIds;
 
-    public DeletedMessageInfo(int selectedAccount, List<Integer> messageIds)
+    public DeletedMessageInfo(int selectedAccount, ArrayList<Integer> messageIds)
     {
         this.selectedAccount = selectedAccount;
         this.messageIds = messageIds;
@@ -24,7 +23,7 @@ public class DeletedMessageInfo {
         return this.selectedAccount;
     }
 
-    public List<Integer> getMessageIds() {
+    public ArrayList<Integer> getMessageIds() {
         return this.messageIds;
     }
 
