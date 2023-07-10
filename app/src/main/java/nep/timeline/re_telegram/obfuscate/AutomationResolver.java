@@ -3,8 +3,7 @@ package nep.timeline.re_telegram.obfuscate;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.Utils;
-import nep.timeline.re_telegram.obfuscate.resolves.Nekogram;
-import nep.timeline.re_telegram.obfuscate.resolves.Yukigram;
+import nep.timeline.re_telegram.obfuscate.resolves.*;
 
 public class AutomationResolver {
     public static String resolve(String className, final XC_LoadPackage.LoadPackageParam lpparam)
