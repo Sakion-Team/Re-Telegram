@@ -11,13 +11,6 @@ import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 
 public class Theme {
-    private final Object instance;
-
-    public Theme(Object instance)
-    {
-        this.instance = instance;
-    }
-
     public static TextPaint getTextPaint()
     {
         Class<?> theme = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.ActionBar.Theme"), Utils.globalLoadPackageParam.classLoader);

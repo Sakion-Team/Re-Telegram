@@ -158,58 +158,62 @@ public class AntiRecall {
         }
     }
 
-    public static void init(XC_LoadPackage.LoadPackageParam lpparam, Class<?> messagesController)
+    public static void init(XC_LoadPackage.LoadPackageParam lpparam)
     {
-        //HookUtils.findAndHookMethod(messagesController, AutomationResolver.resolve("MessagesController", "markDialogMessageAsDeleted", AutomationResolver.ResolverType.Method), XC_MethodReplacement.returnConstant(null));
+        Class<?> messagesController = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessagesController"), lpparam.classLoader);
+        if (messagesController != null) {
+            //HookUtils.findAndHookMethod(messagesController, AutomationResolver.resolve("MessagesController", "markDialogMessageAsDeleted", AutomationResolver.ResolverType.Method), XC_MethodReplacement.returnConstant(null));
 
-        //HookUtils.findAndHookMethod(messagesController, AutomationResolver.resolve("MessagesController", "deleteMessages", AutomationResolver.ResolverType.Method), XC_MethodReplacement.returnConstant(null));
+            //HookUtils.findAndHookMethod(messagesController, AutomationResolver.resolve("MessagesController", "deleteMessages", AutomationResolver.ResolverType.Method), XC_MethodReplacement.returnConstant(null));
 
-        Method[] messagesControllerMethods = messagesController.getDeclaredMethods();
-        List<String> methodNames = new ArrayList<>();
+            Method[] messagesControllerMethods = messagesController.getDeclaredMethods();
+            List<String> methodNames = new ArrayList<>();
 
-        for (Method method : messagesControllerMethods)
-            if (method.getParameterCount() == 5 && method.getParameterTypes()[0] == ArrayList.class && method.getParameterTypes()[1] == ArrayList.class && method.getParameterTypes()[2] == ArrayList.class && method.getParameterTypes()[3] == boolean.class && method.getParameterTypes()[4] == int.class)
-                methodNames.add(method.getName());
+            for (Method method : messagesControllerMethods)
+                if (method.getParameterCount() == 5 && method.getParameterTypes()[0] == ArrayList.class && method.getParameterTypes()[1] == ArrayList.class && method.getParameterTypes()[2] == ArrayList.class && method.getParameterTypes()[3] == boolean.class && method.getParameterTypes()[4] == int.class)
+                    methodNames.add(method.getName());
 
-        if (methodNames.size() != 1)
-            Utils.log("Failed to hook processUpdateArray! Reason: " + (methodNames.isEmpty() ? "No method found" : "Multiple methods found") + ", " + Utils.issue);
+            if (methodNames.size() != 1)
+                Utils.log("Failed to hook processUpdateArray! Reason: " + (methodNames.isEmpty() ? "No method found" : "Multiple methods found") + ", " + Utils.issue);
+            else {
+                String methodName = methodNames.get(0);
+
+                XposedHelpers.findAndHookMethod(messagesController, methodName, ArrayList.class, ArrayList.class, ArrayList.class, boolean.class, int.class, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        Class<?> TL_updateDeleteMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages"));
+                        Class<?> TL_updateDeleteChannelMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages"));
+                        //Class<?> TL_updateDeleteScheduledMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages"));
+                        ArrayList<Object> updates = Utils.castList(param.args[0], Object.class);
+                        if (updates != null && !updates.isEmpty()) {
+                            ArrayList<Object> newUpdates = new ArrayList<>();
+
+                            for (Object item : updates)
+                                if (!item.getClass().equals(TL_updateDeleteChannelMessages) && !item.getClass().equals(TL_updateDeleteMessages))// && !item.getClass().equals(TL_updateDeleteScheduledMessages))
+                                    newUpdates.add(item);
+                                else {
+                                    //if (item.getClass().equals(TL_updateDeleteScheduledMessages))
+                                    //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteScheduledMessages(item).getMessages());
+
+                                    //if (item.getClass().equals(TL_updateDeleteChannelMessages))
+                                    //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteChannelMessages(item).getMessages());
+
+                                    //if (item.getClass().equals(TL_updateDeleteMessages))
+                                    //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteMessages(item).getMessages());
+
+                                    if (HookInit.DEBUG_MODE)
+                                        Utils.log("Protected message! event: " + item.getClass());
+                                }
+
+                            param.args[0] = newUpdates;
+                        }
+                    }
+                });
+            }
+        }
         else
         {
-            String methodName = methodNames.get(0);
-
-            XposedHelpers.findAndHookMethod(messagesController, methodName, ArrayList.class, ArrayList.class, ArrayList.class, boolean.class, int.class, new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    Class<?> TL_updateDeleteMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages"));
-                    Class<?> TL_updateDeleteChannelMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages"));
-                    //Class<?> TL_updateDeleteScheduledMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages"));
-                    ArrayList<Object> updates = Utils.castList(param.args[0], Object.class);
-                    if (updates != null && !updates.isEmpty())
-                    {
-                        ArrayList<Object> newUpdates = new ArrayList<>();
-
-                        for (Object item : updates)
-                            if (!item.getClass().equals(TL_updateDeleteChannelMessages) && !item.getClass().equals(TL_updateDeleteMessages))// && !item.getClass().equals(TL_updateDeleteScheduledMessages))
-                                newUpdates.add(item);
-                            else
-                            {
-                                //if (item.getClass().equals(TL_updateDeleteScheduledMessages))
-                                //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteScheduledMessages(item).getMessages());
-
-                                //if (item.getClass().equals(TL_updateDeleteChannelMessages))
-                                //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteChannelMessages(item).getMessages());
-
-                                //if (item.getClass().equals(TL_updateDeleteMessages))
-                                //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteMessages(item).getMessages());
-
-                                if (HookInit.DEBUG_MODE)
-                                    Utils.log("Protected message! event: " + item.getClass());
-                            }
-
-                        param.args[0] = newUpdates;
-                    }
-                }
-            });
+            Utils.log("Not found MessagesController, " + Utils.issue);
         }
     }
 

@@ -71,28 +71,19 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
             AntiRecall.initNotification(lpparam);
 
-            Class<?> messagesController = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessagesController"), lpparam.classLoader);
+            AntiRecall.init(lpparam);
 
-            if (messagesController != null)
+            if (!onlyNeedAR(lpparam))
             {
-                AntiRecall.init(lpparam, messagesController);
+                //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
+                // if (ClientChecker.isNekogram())
+                // NekogramRoundAvatar.init(); // Bug!
 
-                if (!onlyNeedAR(lpparam))
-                {
-                    //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
-                    // if (ClientChecker.isNekogram())
-                    // NekogramRoundAvatar.init(); // Bug!
+                ProhibitChannelSwitching.init(lpparam);
 
-                    ProhibitChannelSwitching.init(lpparam);
+                NoSponsoredMessages.init(lpparam);
 
-                    NoSponsoredMessages.init(lpparam);
-
-                    AntiAntiForward.init(lpparam, messagesController);
-                }
-            }
-            else
-            {
-                Utils.log("Not found MessagesController, " + Utils.issue);
+                AntiAntiForward.init(lpparam);
             }
 
             // Fake Premium
