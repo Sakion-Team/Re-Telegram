@@ -152,12 +152,12 @@ public class AntiRecall {
             HookUtils.findAndHookMethod(chatMessageCell, AutomationResolver.resolve("ChatMessageCell", "measureTime", AutomationResolver.ResolverType.Method), new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    String recalled = "recalled";
+                    String text = "deleted";
                     switch (ApplicationInfo.getApplication().getResources().getConfiguration().locale.getDisplayLanguage())
                     {
                         case "\u65e5\u672c\u8a9e":
                         case "\u4e2d\u6587":
-                            recalled = "\u5df2\u64a4\u56de";
+                            text = "\u5df2\u64a4\u56de";
                             break;
                     }
 
@@ -170,7 +170,7 @@ public class AntiRecall {
                         int id = owner.getID();
                         if (AntiRecall.messageIsDeleted(id))
                         {
-                            String delta = "(" + recalled + ") ";
+                            String delta = "(" + text + ") ";
                             SpannableStringBuilder newDelta = new SpannableStringBuilder();
                             newDelta.append(delta).append(time);
                             time = newDelta;
@@ -193,7 +193,7 @@ public class AntiRecall {
                         int id = owner.getID();
                         if (AntiRecall.messageIsDeleted(id))
                         {
-                            String delta = "(" + recalled + ") ";
+                            String delta = "(" + text + ") ";
                             time = delta + time;
                             cell.setCurrentTimeString(time);
                             TextPaint paint = Theme.getTextPaint();
