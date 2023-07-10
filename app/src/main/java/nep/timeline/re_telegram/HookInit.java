@@ -85,8 +85,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
                     ProhibitChannelSwitching.init(lpparam);
 
-                    if (!ClientChecker.isYukigram())
-                        NoSponsoredMessages.init(lpparam);
+                    NoSponsoredMessages.init(lpparam);
 
                     AntiAntiForward.init(lpparam, messagesController);
                 }

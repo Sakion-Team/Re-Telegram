@@ -25,6 +25,7 @@ public class Yukigram {
         classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.m"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "Wk1"));
         classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.T2"));
+        classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "G2"));
 
         fieldList.add(new FieldInfo("MessageObject", "messageOwner", "a"));
         fieldList.add(new FieldInfo("UserConfig", "selectedAccount", "o"));
@@ -48,6 +49,7 @@ public class Yukigram {
         methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "Z4"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "g"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "D"));
+        methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "Kf"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "getNextUnreadDialog", "g"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "drawBottomPanel", "f"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));

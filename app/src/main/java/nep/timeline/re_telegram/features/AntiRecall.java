@@ -19,12 +19,12 @@ import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.application.ApplicationInfo;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 import nep.timeline.re_telegram.structs.DeletedMessageInfo;
-import nep.timeline.re_telegram.viruals.MessageObject;
-import nep.timeline.re_telegram.viruals.OfficialChatMessageCell;
-import nep.timeline.re_telegram.viruals.TLRPC;
-import nep.timeline.re_telegram.viruals.Theme;
-import nep.timeline.re_telegram.viruals.UserConfig;
-import nep.timeline.re_telegram.viruals.nekogram.NekoChatMessageCell;
+import nep.timeline.re_telegram.virtuals.MessageObject;
+import nep.timeline.re_telegram.virtuals.OfficialChatMessageCell;
+import nep.timeline.re_telegram.virtuals.TLRPC;
+import nep.timeline.re_telegram.virtuals.Theme;
+import nep.timeline.re_telegram.virtuals.UserConfig;
+import nep.timeline.re_telegram.virtuals.nekogram.NekoChatMessageCell;
 
 public class AntiRecall {
     private static final List<DeletedMessageInfo> deletedMessagesIds = new ArrayList<>();
@@ -112,20 +112,20 @@ public class AntiRecall {
                         MessageObject messageObject = new MessageObject(param.args[0]);
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
-                        String deleted = "";
                         if (AntiRecall.messageIsDeleted(id))
-                            deleted = "(" + recalled + ") ";
-                        String delta = deleted + " ";
-                        SpannableStringBuilder newDelta = new SpannableStringBuilder();
-                        newDelta.append(delta).append(time);
-                        time = newDelta;
-                        cell.setCurrentTimeString(time);
-                        TextPaint paint = Theme.getTextPaint();
-                        if (paint != null)
                         {
-                            int deltaWidth = (int) Math.ceil(paint.measureText(delta));
-                            cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
-                            cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                            String delta = "(" + recalled + ") ";
+                            SpannableStringBuilder newDelta = new SpannableStringBuilder();
+                            newDelta.append(delta).append(time);
+                            time = newDelta;
+                            cell.setCurrentTimeString(time);
+                            TextPaint paint = Theme.getTextPaint();
+                            if (paint != null)
+                            {
+                                int deltaWidth = (int) Math.ceil(paint.measureText(delta));
+                                cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
+                                cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                            }
                         }
                     }
                     else
@@ -135,18 +135,18 @@ public class AntiRecall {
                         MessageObject messageObject = new MessageObject(param.args[0]);
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
-                        String deleted = "";
                         if (AntiRecall.messageIsDeleted(id))
-                            deleted = "(" + recalled + ") ";
-                        String delta = deleted + " ";
-                        time = delta + time;
-                        cell.setCurrentTimeString(time);
-                        TextPaint paint = Theme.getTextPaint();
-                        if (paint != null)
                         {
-                            int deltaWidth = (int) Math.ceil(paint.measureText(delta));
-                            cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
-                            cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                            String delta = "(" + recalled + ") ";
+                            time = delta + time;
+                            cell.setCurrentTimeString(time);
+                            TextPaint paint = Theme.getTextPaint();
+                            if (paint != null)
+                            {
+                                int deltaWidth = (int) Math.ceil(paint.measureText(delta));
+                                cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
+                                cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                            }
                         }
                     }
                 }

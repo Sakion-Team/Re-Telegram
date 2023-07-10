@@ -26,7 +26,7 @@ public class NoSponsoredMessages {
             XposedHelpers.findAndHookMethod(messagesController, getSponsoredMessagesMethod, long.class, XC_MethodReplacement.returnConstant(null));
         else
         {
-            Class<?> chatActivity = XposedHelpers.findClassIfExists("org.telegram.ui.ChatActivity", loadPackageParam.classLoader);
+            Class<?> chatActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.ChatActivity"), loadPackageParam.classLoader);
             HookUtils.findAndHookMethod(chatActivity, AutomationResolver.resolve("ChatActivity", "addSponsoredMessages", AutomationResolver.ResolverType.Method), XC_MethodReplacement.returnConstant(null));
         }
     }

@@ -1,20 +1,23 @@
-package nep.timeline.re_telegram.viruals;
+package nep.timeline.re_telegram.virtuals.nekogram;
+
+import android.text.SpannableStringBuilder;
 
 import java.lang.reflect.Field;
 
 import nep.timeline.re_telegram.utils.FieldUtils;
+import nep.timeline.re_telegram.virtuals.ChatMessageCellDefault;
 
-public class OfficialChatMessageCell extends ChatMessageCellDefault {
-    public OfficialChatMessageCell(Object instance) {
+public class NekoChatMessageCell extends ChatMessageCellDefault {
+    public NekoChatMessageCell(Object instance) {
         super(instance);
     }
 
-    public CharSequence getCurrentTimeString()
+    public SpannableStringBuilder getCurrentTimeString()
     {
-        return (CharSequence) FieldUtils.getFieldClassOfClass(this.instance, "currentTimeString");
+        return (SpannableStringBuilder) FieldUtils.getFieldClassOfClass(this.instance, "currentTimeString");
     }
 
-    public void setCurrentTimeString(CharSequence currentTimeString)
+    public void setCurrentTimeString(SpannableStringBuilder currentTimeString)
     {
         try
         {

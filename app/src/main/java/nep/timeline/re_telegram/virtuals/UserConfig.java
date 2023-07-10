@@ -1,4 +1,4 @@
-package nep.timeline.re_telegram.viruals;
+package nep.timeline.re_telegram.virtuals;
 
 import de.robv.android.xposed.XposedHelpers;
 import nep.timeline.re_telegram.Utils;

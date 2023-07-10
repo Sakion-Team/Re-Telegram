@@ -1,4 +1,4 @@
-package nep.timeline.re_telegram.viruals;
+package nep.timeline.re_telegram.virtuals;
 
 import android.text.TextPaint;
 
@@ -38,8 +38,18 @@ public class Theme {
                 }
                 if (textPaintField != null)
                     return (TextPaint) textPaintField.get(null);
-                else
-                    Utils.log("Not found chat_timePaint field in Theme, " + Utils.issue);
+                else {
+                    for (Field field : fields) {
+                        if (field.getType().getName().contains("TextPaint"))
+                        {
+                            textPaintField = field;
+                        }
+                    }
+                    if (textPaintField != null)
+                        return (TextPaint) textPaintField.get(null);
+                    else
+                        Utils.log("Not found chat_timePaint field in Theme, " + Utils.issue);
+                }
             }
             catch (IllegalAccessException e)
             {

@@ -1,4 +1,4 @@
-package nep.timeline.re_telegram.viruals;
+package nep.timeline.re_telegram.virtuals;
 
 import java.lang.reflect.Field;
 
