@@ -3,10 +3,12 @@ package nep.timeline.re_telegram.application;
 import android.app.Application;
 
 import java.io.File;
+import java.io.IOException;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import nep.timeline.re_telegram.Utils;
+import nep.timeline.re_telegram.configs.ConfigManager;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 
 public class ApplicationLoaderHook {
@@ -36,11 +38,26 @@ public class ApplicationLoaderHook {
                     return;
                 }
 
-                new File(app.getFilesDir().getAbsolutePath() + "/DeletedMessages").mkdirs();
-                Utils.deletedMessagesSavePath = new File(app.getFilesDir().getAbsolutePath() + "/DeletedMessages/messages.tgar");
+                new File(app.getFilesDir().getAbsolutePath() + "/ReTelegram").mkdirs();
+                Utils.deletedMessagesSavePath = new File(app.getFilesDir().getAbsolutePath() + "/ReTelegram/deletedMessages.list");
+                ConfigManager.cfgPath = new File(app.getFilesDir().getAbsolutePath() + "/ReTelegram/configs.cfg");
+                try
+                {
+                    if (!ConfigManager.cfgPath.exists())
+                    {
+                        ConfigManager.cfgPath.createNewFile();
+                        ConfigManager.save();
+                    }
+                }
+                catch (IOException e)
+                {
+                    Utils.log(e);
+                }
                 Utils.readDeletedMessages();
+                ConfigManager.read();
+                ConfigManager.save();
 
-                ApplicationInfo.setApplication(app);
+                HostApplicationInfo.setApplication(app);
             }
         });
         initialized = true;

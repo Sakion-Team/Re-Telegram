@@ -9,7 +9,6 @@ import java.util.List;
 import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
-import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import nep.timeline.re_telegram.application.ApplicationLoaderHook;
@@ -17,7 +16,6 @@ import nep.timeline.re_telegram.features.AntiAntiForward;
 import nep.timeline.re_telegram.features.AntiRecall;
 import nep.timeline.re_telegram.features.NoSponsoredMessages;
 import nep.timeline.re_telegram.features.ProhibitChannelSwitching;
-import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 
 public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitPackageResources {
     private static final List<String> hookPackages = Arrays.asList("org.telegram.messenger", "org.telegram.messenger.web", "org.telegram.messenger.beta", "org.telegram.plus", "org.telegram.mdgram",
@@ -62,9 +60,11 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        if (getHookPackages().contains(lpparam.packageName)) {
+        if (getHookPackages().contains(lpparam.packageName))
+        {
             if (DEBUG_MODE)
                 Utils.log("Trying to hook app: " + lpparam.packageName);
+
             Utils.globalLoadPackageParam = lpparam;
             ApplicationLoaderHook.init(lpparam.classLoader);
 
@@ -77,8 +77,8 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
             if (!onlyNeedAR(lpparam))
             {
                 //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
-                // if (ClientChecker.isNekogram())
-                // NekogramRoundAvatar.init(); // Bug!
+                //    if (ClientChecker.isNekogram())
+                //        NekogramRoundAvatar.init(); // Bug!
 
                 ProhibitChannelSwitching.init(lpparam);
 

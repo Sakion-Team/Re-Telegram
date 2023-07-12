@@ -1,10 +1,11 @@
 package nep.timeline.re_telegram.features;
 
-import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import nep.timeline.re_telegram.HookUtils;
 import nep.timeline.re_telegram.Utils;
+import nep.timeline.re_telegram.configs.Configs;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 
 public class AntiAntiForward {
@@ -14,13 +15,25 @@ public class AntiAntiForward {
         if (messagesController != null)
         {
             String isChatNoForwardsMethod = AutomationResolver.resolve("MessagesController", "isChatNoForwards", AutomationResolver.ResolverType.Method);
-            HookUtils.findAndHookAllMethod(messagesController, isChatNoForwardsMethod, XC_MethodReplacement.returnConstant(false));
+            HookUtils.findAndHookAllMethod(messagesController, isChatNoForwardsMethod, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    if (Configs.isAntiAntiForward())
+                        param.setResult(false);
+                }
+            });
 
             Class<?> messageObject = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessageObject"), lpparam.classLoader);
             if (messageObject != null)
             {
                 String canForwardMessageMethod = AutomationResolver.resolve("MessageObject", "canForwardMessage", AutomationResolver.ResolverType.Method);
-                XposedHelpers.findAndHookMethod(messageObject, canForwardMessageMethod, XC_MethodReplacement.returnConstant(false));
+                XposedHelpers.findAndHookMethod(messageObject, canForwardMessageMethod, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        if (Configs.isAntiAntiForward())
+                            param.setResult(false);
+                    }
+                });
             }
             else
             {

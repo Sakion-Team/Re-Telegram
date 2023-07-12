@@ -45,14 +45,23 @@ public class NekogramRoundAvatar {
                             canvas.drawPath(path, paint);
                             return PixelFormat.TRANSLUCENT;
                         }));
-                        Class<?> y90 = XposedHelpers.findClassIfExists("Y90", Utils.globalLoadPackageParam.classLoader);
-                        Bitmap bitmap2 = (Bitmap) MethodUtils.invokeMethodOfClass(y90, "H", bitmap);
-                        Class<?> iconCompatClass = XposedHelpers.findClassIfExists(AutomationResolver.resolve("androidx.core.graphics.drawable.IconCompat"), Utils.globalLoadPackageParam.classLoader);
-                        Object result = MethodUtils.invokeMethodOfClass(null, iconCompatClass, AutomationResolver.resolve("IconCompat", "b", AutomationResolver.ResolverType.Method), bitmap2);
 
-                        for (Field declaredField : param.args[1].getClass().getDeclaredFields())
-                            if (declaredField.getName().equals("b") && declaredField.getType().equals(Object.class))
-                                declaredField.set(param.args[1], result);
+                        Class<?> iconCompatClass = XposedHelpers.findClassIfExists(AutomationResolver.resolve("androidx.core.graphics.drawable.IconCompat"), Utils.globalLoadPackageParam.classLoader);
+                        Object result = MethodUtils.invokeMethodOfClass(null, iconCompatClass, AutomationResolver.resolve("IconCompat", "b", AutomationResolver.ResolverType.Method), bitmap);
+
+                        //Person.Builder builder = (Person.Builder) param.args[1];
+
+                        //builder.setIcon((Icon) result);
+
+                        Object builder = param.args[1];
+
+                        for (Field declaredField : builder.getClass().getDeclaredFields())
+                            if (declaredField.getName().equals("b") && declaredField.getType().equals(Class.class))
+                            {
+                                declaredField.set(builder, result);
+                            }
+                            else
+                                Utils.log("Not found mIcon from Person.Builder, " + Utils.issue);
                     } catch (Throwable t) {
                         Utils.log(t);
                     }

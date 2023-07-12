@@ -7,7 +7,7 @@ import android.os.Build;
 
 import java.util.Objects;
 
-public class ApplicationInfo {
+public class HostApplicationInfo {
 
     private static Application sHostApplication = null;
     private static PackageInfo sHostPackageInfo = null;

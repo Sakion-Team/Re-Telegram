@@ -90,4 +90,8 @@ public class Utils {
 
         FileUtils.save(deletedMessagesSavePath, BUILDER_GSON.toJson(valueJsonObject), false);
     }
+
+    public static Gson getBuilderGson() {
+        return BUILDER_GSON;
+    }
 }

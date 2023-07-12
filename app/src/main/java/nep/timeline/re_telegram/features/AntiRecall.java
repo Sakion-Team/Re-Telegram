@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -16,7 +15,8 @@ import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.HookInit;
 import nep.timeline.re_telegram.HookUtils;
 import nep.timeline.re_telegram.Utils;
-import nep.timeline.re_telegram.application.ApplicationInfo;
+import nep.timeline.re_telegram.application.HostApplicationInfo;
+import nep.timeline.re_telegram.configs.Configs;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 import nep.timeline.re_telegram.structs.DeletedMessageInfo;
 import nep.timeline.re_telegram.virtuals.MessageObject;
@@ -152,56 +152,53 @@ public class AntiRecall {
             HookUtils.findAndHookMethod(chatMessageCell, AutomationResolver.resolve("ChatMessageCell", "measureTime", AutomationResolver.ResolverType.Method), new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    String recalled = "recalled";
-                    switch (ApplicationInfo.getApplication().getResources().getConfiguration().locale.getDisplayLanguage())
+                    if (Configs.isAntiRecall())
                     {
-                        case "\u65e5\u672c\u8a9e":
-                        case "\u4e2d\u6587":
-                            recalled = "\u5df2\u64a4\u56de";
-                            break;
-                    }
-
-                    if (ClientChecker.isNekogram() || ClientChecker.isYukigram())
-                    {
-                        NekoChatMessageCell cell = new NekoChatMessageCell(param.thisObject);
-                        SpannableStringBuilder time = cell.getCurrentTimeString();
-                        MessageObject messageObject = new MessageObject(param.args[0]);
-                        TLRPC.Message owner = messageObject.getMessageOwner();
-                        int id = owner.getID();
-                        if (AntiRecall.messageIsDeleted(id))
+                        String text = "deleted";
+                        switch (HostApplicationInfo.getApplication().getResources().getConfiguration().locale.getDisplayLanguage())
                         {
-                            String delta = "(" + recalled + ") ";
-                            SpannableStringBuilder newDelta = new SpannableStringBuilder();
-                            newDelta.append(delta).append(time);
-                            time = newDelta;
-                            cell.setCurrentTimeString(time);
-                            TextPaint paint = Theme.getTextPaint();
-                            if (paint != null)
-                            {
-                                int deltaWidth = (int) Math.ceil(paint.measureText(delta));
-                                cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
-                                cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
-                            }
+                            case "\u65e5\u672c\u8a9e":
+                            case "\u4e2d\u6587":
+                                text = "\u5df2\u64a4\u56de";
+                                break;
                         }
-                    }
-                    else
-                    {
-                        OfficialChatMessageCell cell = new OfficialChatMessageCell(param.thisObject);
-                        String time = (String) cell.getCurrentTimeString();
+
                         MessageObject messageObject = new MessageObject(param.args[0]);
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
                         if (AntiRecall.messageIsDeleted(id))
                         {
-                            String delta = "(" + recalled + ") ";
-                            time = delta + time;
-                            cell.setCurrentTimeString(time);
-                            TextPaint paint = Theme.getTextPaint();
-                            if (paint != null)
+                            if (ClientChecker.isNekogram() || ClientChecker.isYukigram())
                             {
-                                int deltaWidth = (int) Math.ceil(paint.measureText(delta));
-                                cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
-                                cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                                NekoChatMessageCell cell = new NekoChatMessageCell(param.thisObject);
+                                SpannableStringBuilder time = cell.getCurrentTimeString();
+                                String delta = "(" + text + ") ";
+                                SpannableStringBuilder newDelta = new SpannableStringBuilder();
+                                newDelta.append(delta).append(time);
+                                time = newDelta;
+                                cell.setCurrentTimeString(time);
+                                TextPaint paint = Theme.getTextPaint();
+                                if (paint != null)
+                                {
+                                    int deltaWidth = (int) Math.ceil(paint.measureText(delta));
+                                    cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
+                                    cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                                }
+                            }
+                            else
+                            {
+                                OfficialChatMessageCell cell = new OfficialChatMessageCell(param.thisObject);
+                                String time = (String) cell.getCurrentTimeString();
+                                String delta = "(" + text + ") ";
+                                time = delta + time;
+                                cell.setCurrentTimeString(time);
+                                TextPaint paint = Theme.getTextPaint();
+                                if (paint != null)
+                                {
+                                    int deltaWidth = (int) Math.ceil(paint.measureText(delta));
+                                    cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
+                                    cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
+                                }
                             }
                         }
                     }
@@ -237,36 +234,39 @@ public class AntiRecall {
                 XposedHelpers.findAndHookMethod(messagesController, methodName, ArrayList.class, ArrayList.class, ArrayList.class, boolean.class, int.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        Class<?> TL_updateDeleteMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages"));
-                        Class<?> TL_updateDeleteChannelMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages"));
-                        //Class<?> TL_updateDeleteScheduledMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages"));
-                        ArrayList<Object> updates = Utils.castList(param.args[0], Object.class);
-                        if (updates != null && !updates.isEmpty()) {
-                            ArrayList<Object> newUpdates = new ArrayList<>();
+                        if (Configs.isAntiRecall())
+                        {
+                            Class<?> TL_updateDeleteMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages"));
+                            Class<?> TL_updateDeleteChannelMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages"));
+                            //Class<?> TL_updateDeleteScheduledMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages"));
+                            ArrayList<Object> updates = Utils.castList(param.args[0], Object.class);
+                            if (updates != null && !updates.isEmpty()) {
+                                ArrayList<Object> newUpdates = new ArrayList<>();
 
-                            for (Object item : updates) {
-                                if (!HookInit.LITE_MODE)
-                                {
-                                    if (!item.getClass().equals(TL_updateDeleteChannelMessages) && !item.getClass().equals(TL_updateDeleteMessages))// && !item.getClass().equals(TL_updateDeleteScheduledMessages))
+                                for (Object item : updates) {
+                                    if (!HookInit.LITE_MODE)
+                                    {
+                                        if (!item.getClass().equals(TL_updateDeleteChannelMessages) && !item.getClass().equals(TL_updateDeleteMessages))// && !item.getClass().equals(TL_updateDeleteScheduledMessages))
+                                            newUpdates.add(item);
+                                    }
+                                    else
                                         newUpdates.add(item);
+
+                                    //if (item.getClass().equals(TL_updateDeleteScheduledMessages))
+                                    //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteScheduledMessages(item).getMessages());
+
+                                    if (item.getClass().equals(TL_updateDeleteChannelMessages))
+                                        AntiRecall.insertNeedProcessDeletedMessage(new TLRPC.TL_updateDeleteChannelMessages(item).getMessages());
+
+                                    if (item.getClass().equals(TL_updateDeleteMessages))
+                                        AntiRecall.insertNeedProcessDeletedMessage(new TLRPC.TL_updateDeleteMessages(item).getMessages());
+
+                                    if (HookInit.DEBUG_MODE && (item.getClass().equals(TL_updateDeleteMessages) || item.getClass().equals(TL_updateDeleteChannelMessages)))
+                                        Utils.log("Protected message! event: " + item.getClass());
                                 }
-                                else
-                                    newUpdates.add(item);
 
-                                //if (item.getClass().equals(TL_updateDeleteScheduledMessages))
-                                //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteScheduledMessages(item).getMessages());
-
-                                if (item.getClass().equals(TL_updateDeleteChannelMessages))
-                                    AntiRecall.insertNeedProcessDeletedMessage(new TLRPC.TL_updateDeleteChannelMessages(item).getMessages());
-
-                                if (item.getClass().equals(TL_updateDeleteMessages))
-                                    AntiRecall.insertNeedProcessDeletedMessage(new TLRPC.TL_updateDeleteMessages(item).getMessages());
-
-                                if (HookInit.DEBUG_MODE && (item.getClass().equals(TL_updateDeleteMessages) || item.getClass().equals(TL_updateDeleteChannelMessages)))
-                                    Utils.log("Protected message! event: " + item.getClass());
+                                param.args[0] = newUpdates;
                             }
-
-                            param.args[0] = newUpdates;
                         }
                     }
                 });
@@ -299,7 +299,7 @@ public class AntiRecall {
             XposedBridge.hookMethod(markMessagesAsDeletedMethod, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    if (param.args[1] instanceof ArrayList)
+                    if (Configs.isAntiRecall() && param.args[1] instanceof ArrayList)
                     {
                         ArrayList<Integer> list = Utils.castList(param.args[1], Integer.class);
                         list.removeIf(AntiRecall::findInNeedProcess);
@@ -346,7 +346,7 @@ public class AntiRecall {
         XposedBridge.hookMethod(postNotificationName, new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                if (((int) param.args[0]) == messagesDeletedValue) {
+                if (Configs.isAntiRecall() && ((int) param.args[0]) == messagesDeletedValue) {
                     Object[] args = (Object[]) param.args[1];
                     //long dialogID = (long) args[1];
                     param.setResult(null);
@@ -366,6 +366,12 @@ public class AntiRecall {
         if (removeDeletedMessagesFromNotifications == null)
             Utils.log("Failed to hook removeDeletedMessagesFromNotifications! Reason: No method found, " + Utils.issue);
         else
-            XposedBridge.hookMethod(removeDeletedMessagesFromNotifications, XC_MethodReplacement.returnConstant(null));
+            XposedBridge.hookMethod(removeDeletedMessagesFromNotifications, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    if (Configs.isAntiRecall())
+                        param.setResult(null);
+                }
+            });
     }
 }
