@@ -3,6 +3,7 @@ package nep.timeline.re_telegram.features;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.HookUtils;
 import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.configs.Configs;
@@ -22,7 +23,14 @@ public class AntiAntiForward {
                         param.setResult(false);
                 }
             });
+        }
+        else
+        {
+            Utils.log("Not found MessagesController, " + Utils.issue);
+        }
 
+        if (!ClientChecker.isYukigram())
+        {
             Class<?> messageObject = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessageObject"), lpparam.classLoader);
             if (messageObject != null)
             {
@@ -39,10 +47,6 @@ public class AntiAntiForward {
             {
                 Utils.log("Not found MessageObject, " + Utils.issue);
             }
-        }
-        else
-        {
-            Utils.log("Not found MessagesController, " + Utils.issue);
         }
     }
 }
