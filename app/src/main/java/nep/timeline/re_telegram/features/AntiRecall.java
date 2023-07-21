@@ -75,7 +75,7 @@ public class AntiRecall {
         {
             for (Integer messageId : messageIds)
                 if (!info.getMessageIds().contains(messageId)) // No duplication
-                    info.insertMessageIds(messageIds);
+                    info.insertMessageId(messageId);
         }
         Utils.saveDeletedMessages();
     }
@@ -97,7 +97,27 @@ public class AntiRecall {
         {
             for (Integer messageId : messageInfo.getMessageIds())
                 if (!info.getMessageIds().contains(messageId)) // No duplication
-                    info.insertMessageIds(messageInfo.getMessageIds());
+                    info.insertMessageId(messageId);
+        }
+        Utils.saveDeletedMessages();
+    }
+
+    public static void removeDeletedMessage(long channelID, DeletedMessageInfo messageInfo) {
+        boolean needInit = true;
+        DeletedMessageInfo info = null;
+        for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
+            if (deletedMessagesId.getSelectedAccount() == messageInfo.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
+            {
+                info = deletedMessagesId;
+                needInit = false;
+                break;
+            }
+        }
+        if (!needInit)
+        {
+            for (Integer messageId : messageInfo.getMessageIds())
+                if (info.getMessageIds().contains(messageId)) // No duplication
+                    info.removeMessageId(messageId);
         }
         Utils.saveDeletedMessages();
     }
@@ -167,7 +187,7 @@ public class AntiRecall {
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
                         long channel_id = -owner.getPeerID().getChannelID();
-                        if (AntiRecall.messageIsDeleted(channel_id, id))
+                        if (messageIsDeleted(channel_id, id))
                         {
                             if (ClientChecker.isNekogram() || ClientChecker.isYukigram())
                             {
@@ -254,11 +274,11 @@ public class AntiRecall {
                                     if (item.getClass().equals(TL_updateDeleteChannelMessages))
                                     {
                                         TLRPC.TL_updateDeleteChannelMessages channelMessages = new TLRPC.TL_updateDeleteChannelMessages(item);
-                                        AntiRecall.insertNeedProcessDeletedMessage(-channelMessages.getChannelID(), channelMessages.getMessages());
+                                        insertNeedProcessDeletedMessage(-channelMessages.getChannelID(), channelMessages.getMessages());
                                     }
 
                                     if (item.getClass().equals(TL_updateDeleteMessages))
-                                        AntiRecall.insertNeedProcessDeletedMessage(DeletedMessageInfo.NOT_CHANNEL, new TLRPC.TL_updateDeleteMessages(item).getMessages());
+                                        insertNeedProcessDeletedMessage(DeletedMessageInfo.NOT_CHANNEL, new TLRPC.TL_updateDeleteMessages(item).getMessages());
 
                                     if (HookInit.DEBUG_MODE && (item.getClass().equals(TL_updateDeleteMessages) || item.getClass().equals(TL_updateDeleteChannelMessages)))
                                         Utils.log("Protected message! event: " + item.getClass());
@@ -305,10 +325,14 @@ public class AntiRecall {
                         //list.clear();
                         ArrayList<Integer> deletedMessages = new ArrayList<>();
                         for (Integer integer : list) {
-                            if (!AntiRecall.messageIsDeleted(channel_id, integer) || AntiRecall.findInNeedProcess(channel_id, integer))
+                            if (!messageIsDeleted(channel_id, integer) || AntiRecall.findInNeedProcess(channel_id, integer))
                             {
                                 list.remove(integer);
                                 deletedMessages.add(integer);
+                            }
+                            else if (messageIsDeleted(channel_id, integer))
+                            {
+                                removeDeletedMessage(channel_id, deletedMessages);
                             }
                         }
                         //list.removeIf(i -> (AntiRecall.findInNeedProcess(channel_id, i) || AntiRecall.messageIsDeleted(channel_id, i)));
