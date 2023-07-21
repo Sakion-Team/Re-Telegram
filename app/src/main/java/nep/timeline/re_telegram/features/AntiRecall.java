@@ -55,7 +55,7 @@ public class AntiRecall {
                 break;
             }
         }
-        return deleted; // deletedMessagesIds.contains(messageId);
+        return deleted;
     }
 
     public static void insertDeletedMessage(long channelID, ArrayList<Integer> messageIds) {
@@ -242,16 +242,11 @@ public class AntiRecall {
                             //Class<?> TL_updateDeleteScheduledMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages"));
                             ArrayList<Object> updates = Utils.castList(param.args[0], Object.class);
                             if (updates != null && !updates.isEmpty()) {
-                                ArrayList<Object> newUpdates = new ArrayList<>();
+                                //ArrayList<Object> newUpdates = new ArrayList<>();
 
                                 for (Object item : updates) {
-                                    if (!HookInit.LITE_MODE)
-                                    {
-                                        if (!item.getClass().equals(TL_updateDeleteChannelMessages) && !item.getClass().equals(TL_updateDeleteMessages))// && !item.getClass().equals(TL_updateDeleteScheduledMessages))
-                                            newUpdates.add(item);
-                                    }
-                                    else
-                                        newUpdates.add(item);
+                                    //if (!item.getClass().equals(TL_updateDeleteChannelMessages) && !item.getClass().equals(TL_updateDeleteMessages))// && !item.getClass().equals(TL_updateDeleteScheduledMessages))
+                                        //newUpdates.add(item);
 
                                     //if (item.getClass().equals(TL_updateDeleteScheduledMessages))
                                     //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteScheduledMessages(item).getMessages());
@@ -269,7 +264,7 @@ public class AntiRecall {
                                         Utils.log("Protected message! event: " + item.getClass());
                                 }
 
-                                param.args[0] = newUpdates;
+                                //param.args[0] = newUpdates;
                             }
                         }
                     }
@@ -307,17 +302,25 @@ public class AntiRecall {
                     {
                         ArrayList<Integer> list = Utils.castList(param.args[1], Integer.class);
                         long channel_id = (long) param.args[0];
-                        list.removeIf(i -> AntiRecall.findInNeedProcess(channel_id, i));
+                        //list.clear();
+                        ArrayList<Integer> deletedMessages = new ArrayList<>();
+                        for (Integer integer : list) {
+                            if (!AntiRecall.messageIsDeleted(channel_id, integer) || AntiRecall.findInNeedProcess(channel_id, integer))
+                            {
+                                list.remove(integer);
+                                deletedMessages.add(integer);
+                            }
+                        }
+                        //list.removeIf(i -> (AntiRecall.findInNeedProcess(channel_id, i) || AntiRecall.messageIsDeleted(channel_id, i)));
                         param.args[1] = list;
-                        insertDeletedMessage(channel_id, list);
-                        needProcessing.forEach(i -> AntiRecall.insertDeletedMessage(channel_id, i));
+                        insertDeletedMessage(channel_id, deletedMessages);
+                        //needProcessing.forEach(i -> AntiRecall.insertDeletedMessage(channel_id, i));
                         needProcessing.clear();
                     }
                 }
             });
         }
 
-        /*
         ArrayList<Method> updateDialogsWithDeletedMessagesMethods = new ArrayList<>();
         for (Method method : messagesStorage.getDeclaredMethods()) {
             if (method.getName().equals(AutomationResolver.resolve("MessagesStorage", "updateDialogsWithDeletedMessages", AutomationResolver.ResolverType.Method))) {
@@ -334,15 +337,14 @@ public class AntiRecall {
             XposedBridge.hookMethod(updateDialogsWithDeletedMessagesMethod, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    param.setResult(null);
-                    //if (param.args[2] instanceof ArrayList)
-                   // {
-                     //   insertDeletedMessage(Utils.castList(param.args[2], Integer.class));
-                   // }
+                    //param.setResult(null);
+                    if (param.args[2] instanceof ArrayList)
+                    {
+                        insertNeedProcessDeletedMessage((long) param.args[1], Utils.castList(param.args[2], Integer.class));
+                    }
                 }
             });
         }
-        */
 
         int messagesDeletedValue = (int) XposedHelpers.getStaticObjectField(notificationCenter, AutomationResolver.resolve("NotificationCenter", "messagesDeleted", AutomationResolver.ResolverType.Field));
 
@@ -357,7 +359,7 @@ public class AntiRecall {
                     param.setResult(null);
                     if (args[0] instanceof ArrayList<?>)
                     {
-                        insertDeletedMessage(dialogID, Utils.castList(args[0], Integer.class));
+                        insertNeedProcessDeletedMessage(dialogID, Utils.castList(args[0], Integer.class));
                     }
                 }
             }
