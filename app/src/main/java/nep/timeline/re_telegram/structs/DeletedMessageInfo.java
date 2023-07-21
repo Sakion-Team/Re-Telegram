@@ -49,4 +49,8 @@ public class DeletedMessageInfo {
     public void insertMessageId(Integer messageId) {
         this.messageIds.add(messageId);
     }
+
+    public void removeMessageId(Integer messageId) {
+        this.messageIds.remove(messageId);
+    }
 }
