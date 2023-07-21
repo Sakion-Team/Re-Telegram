@@ -332,7 +332,7 @@ public class AntiRecall {
                             }
                             else if (messageIsDeleted(channel_id, integer))
                             {
-                                removeDeletedMessage(channel_id, deletedMessages);
+                                removeDeletedMessage(channel_id, integer);
                             }
                         }
                         //list.removeIf(i -> (AntiRecall.findInNeedProcess(channel_id, i) || AntiRecall.messageIsDeleted(channel_id, i)));
