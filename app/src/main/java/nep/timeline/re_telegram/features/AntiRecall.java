@@ -102,7 +102,7 @@ public class AntiRecall {
         Utils.saveDeletedMessages();
     }
 
-    public static void removeDeletedMessage(long channelID, Integer messageInfo) {
+    public static void removeDeletedMessage(long channelID, Integer messageId) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
         for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
