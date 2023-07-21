@@ -106,7 +106,7 @@ public class AntiRecall {
         boolean needInit = true;
         DeletedMessageInfo info = null;
         for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
-            if (deletedMessagesId.getSelectedAccount() == messageInfo.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
+            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
             {
                 info = deletedMessagesId;
                 needInit = false;
@@ -118,8 +118,8 @@ public class AntiRecall {
             for (Integer messageId : messageInfo.getMessageIds())
                 if (info.getMessageIds().contains(messageId))
                     info.removeMessageId(messageId);
+            Utils.saveDeletedMessages();
         }
-        Utils.saveDeletedMessages();
     }
 
     public static void insertNeedProcessDeletedMessage(long channelID, ArrayList<Integer> messageIds) {
