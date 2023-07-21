@@ -115,9 +115,8 @@ public class AntiRecall {
         }
         if (!needInit)
         {
-            for (Integer messageId : messageInfo.getMessageIds())
-                if (info.getMessageIds().contains(messageId))
-                    info.removeMessageId(messageId);
+            if (info.getMessageIds().contains(messageId))
+                info.removeMessageId(messageId);
             Utils.saveDeletedMessages();
         }
     }
