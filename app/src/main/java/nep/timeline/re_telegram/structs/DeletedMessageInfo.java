@@ -3,24 +3,39 @@ package nep.timeline.re_telegram.structs;
 import java.util.ArrayList;
 
 public class DeletedMessageInfo {
+    public static final long NOT_CHANNEL = 0;
+
     private final int selectedAccount;
+    private final long channelID;
     private final ArrayList<Integer> messageIds;
 
-    public DeletedMessageInfo(int selectedAccount, ArrayList<Integer> messageIds)
+    public DeletedMessageInfo(int selectedAccount, long channelID, ArrayList<Integer> messageIds)
     {
         this.selectedAccount = selectedAccount;
+        this.channelID = channelID;
         this.messageIds = messageIds;
     }
 
-    public DeletedMessageInfo(int selectedAccount, int messageId)
+    public DeletedMessageInfo(int selectedAccount, long channelID, int messageId)
     {
         this.selectedAccount = selectedAccount;
+        this.channelID = channelID;
         this.messageIds = new ArrayList<>();
         this.messageIds.add(messageId);
     }
 
     public int getSelectedAccount() {
         return this.selectedAccount;
+    }
+
+    public long getChannelID()
+    {
+        return this.channelID;
+    }
+
+    public boolean isNotChannel()
+    {
+        return this.channelID == NOT_CHANNEL;
     }
 
     public ArrayList<Integer> getMessageIds() {

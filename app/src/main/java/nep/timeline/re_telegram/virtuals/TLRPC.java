@@ -8,31 +8,6 @@ import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 import nep.timeline.re_telegram.utils.FieldUtils;
 
 public class TLRPC {
-    public static class Chat { // Nekogram is eL0
-        private final Object instance;
-
-        public Chat(Object instance)
-        {
-            this.instance = instance;
-        }
-
-        public long getId()
-        {
-            return FieldUtils.getFieldLongOfClass(this.instance, "id");
-        }
-
-        public String getTitle()
-        {
-            return (String) FieldUtils.getFieldClassOfClass(this.instance, "title");
-        }
-
-        public String getUsername()
-        {
-            return (String) FieldUtils.getFieldClassOfClass(this.instance, "username");
-        }
-    }
-
-    /*
     public static class Peer {
         private final Object instance;
         private final Class<?> clazz;
@@ -54,22 +29,11 @@ public class TLRPC {
             }
         }
 
-        public long getUserID()
-        {
-            return FieldUtils.getFieldLongOfClass(this.instance, this.clazz, "user_id");
-        }
-
-        public long getChatID()
-        {
-            return FieldUtils.getFieldLongOfClass(this.instance, this.clazz, "chat_id");
-        }
-
         public long getChannelID()
         {
-            return FieldUtils.getFieldLongOfClass(this.instance, this.clazz, "channel_id");
+            return FieldUtils.getFieldLongOfClass(this.instance, this.clazz, AutomationResolver.resolve("TLRPC$Peer", "channel_id", AutomationResolver.ResolverType.Field));
         }
     }
-    */
 
     public static class Message {
         private final Object instance;
@@ -109,10 +73,22 @@ public class TLRPC {
             return -1;
         }
 
-        //public Peer getPeerID()
-        //{
-        //    return new Peer(FieldUtils.getFieldClassOfClass(this.instance, this.clazz, "peer_id"));
-        //}
+        public Peer getPeerID()
+        {
+            try
+            {
+                if (ClientChecker.isYukigram())
+                    return new Peer(FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Message", "peer_id", AutomationResolver.ResolverType.Field), AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Peer")).get(this.instance));
+                else
+                    return new Peer(FieldUtils.getFieldClassOfClass(this.instance, this.clazz, "peer_id"));
+            }
+            catch (IllegalAccessException e)
+            {
+                Utils.log(e);
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
     /*
@@ -140,7 +116,18 @@ public class TLRPC {
 
         public long getChannelID()
         {
-            return FieldUtils.getFieldLongOfClass(this.instance, "channel_id");
+            try
+            {
+                if (ClientChecker.isYukigram())
+                    return FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteChannelMessages", "channel_id", AutomationResolver.ResolverType.Field), long.class).getLong(this.instance);
+                else
+                    return FieldUtils.getFieldLongOfClass(this.instance, "channel_id");
+            }
+            catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+            }
+            return Long.MIN_VALUE;
         }
 
         public ArrayList<Integer> getMessages()

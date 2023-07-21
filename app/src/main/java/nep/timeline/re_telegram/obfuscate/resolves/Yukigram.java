@@ -20,8 +20,7 @@ public class Yukigram {
         classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "Mw0"));
         classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "Zs1"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Message", "Ng1"));
-        classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages", "Ja1"));
-        classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages", "Ia1"));
+        classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Peer", "dh1"));
         classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.m"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "Wk1"));
         classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.T2"));
@@ -34,6 +33,9 @@ public class Yukigram {
         fieldList.add(new FieldInfo("TLRPC$Message", "id", "a"));
         fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteMessages", "messages", "a"));
         fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteChannelMessages", "messages", "a"));
+        fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteChannelMessages", "channel_id", "a"));
+        fieldList.add(new FieldInfo("TLRPC$Message", "peer_id", "b"));
+        fieldList.add(new FieldInfo("TLRPC$Peer", "channel_id", "c"));
 
         methodList.add(new MethodInfo("ApplicationLoader", "onCreate", "n"));
         methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "p1"));

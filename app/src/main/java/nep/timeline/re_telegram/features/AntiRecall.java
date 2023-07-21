@@ -34,10 +34,10 @@ public class AntiRecall {
         return deletedMessagesIds;
     }
 
-    public static boolean messageIsDeleted(int messageId) {
+    public static boolean messageIsDeleted(long channelID, int messageId) {
         boolean deleted = false;
         for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
-            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getMessageIds().contains(messageId))
+            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID && deletedMessagesId.getMessageIds().contains(messageId))
             {
                 deleted = true;
                 break;
@@ -46,10 +46,10 @@ public class AntiRecall {
         return deleted; // deletedMessagesIds.contains(messageId);
     }
 
-    public static boolean findInNeedProcess(int messageId) {
+    public static boolean findInNeedProcess(long channelID, int messageId) {
         boolean deleted = false;
         for (DeletedMessageInfo deletedMessagesId : needProcessing) {
-            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getMessageIds().contains(messageId))
+            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID && deletedMessagesId.getMessageIds().contains(messageId))
             {
                 deleted = true;
                 break;
@@ -58,11 +58,11 @@ public class AntiRecall {
         return deleted; // deletedMessagesIds.contains(messageId);
     }
 
-    public static void insertDeletedMessage(ArrayList<Integer> messageIds) {
+    public static void insertDeletedMessage(long channelID, ArrayList<Integer> messageIds) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
         for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
-            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount())
+            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
             {
                 info = deletedMessagesId;
                 needInit = false;
@@ -70,7 +70,7 @@ public class AntiRecall {
             }
         }
         if (needInit)
-            deletedMessagesIds.add(new DeletedMessageInfo(UserConfig.getSelectedAccount(), messageIds));
+            deletedMessagesIds.add(new DeletedMessageInfo(UserConfig.getSelectedAccount(), channelID, messageIds));
         else
         {
             for (Integer messageId : messageIds)
@@ -80,11 +80,11 @@ public class AntiRecall {
         Utils.saveDeletedMessages();
     }
 
-    public static void insertDeletedMessage(DeletedMessageInfo messageInfo) {
+    public static void insertDeletedMessage(long channelID, DeletedMessageInfo messageInfo) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
         for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
-            if (deletedMessagesId.getSelectedAccount() == messageInfo.getSelectedAccount())
+            if (deletedMessagesId.getSelectedAccount() == messageInfo.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
             {
                 info = deletedMessagesId;
                 needInit = false;
@@ -92,7 +92,7 @@ public class AntiRecall {
             }
         }
         if (needInit)
-            deletedMessagesIds.add(new DeletedMessageInfo(messageInfo.getSelectedAccount(), messageInfo.getMessageIds()));
+            deletedMessagesIds.add(new DeletedMessageInfo(messageInfo.getSelectedAccount(), channelID, messageInfo.getMessageIds()));
         else
         {
             for (Integer messageId : messageInfo.getMessageIds())
@@ -102,11 +102,11 @@ public class AntiRecall {
         Utils.saveDeletedMessages();
     }
 
-    public static void insertNeedProcessDeletedMessage(ArrayList<Integer> messageIds) {
+    public static void insertNeedProcessDeletedMessage(long channelID, ArrayList<Integer> messageIds) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
         for (DeletedMessageInfo deletedMessagesId : needProcessing) {
-            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount())
+            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
             {
                 info = deletedMessagesId;
                 needInit = false;
@@ -114,7 +114,7 @@ public class AntiRecall {
             }
         }
         if (needInit)
-            needProcessing.add(new DeletedMessageInfo(UserConfig.getSelectedAccount(), messageIds));
+            needProcessing.add(new DeletedMessageInfo(UserConfig.getSelectedAccount(), channelID, messageIds));
         else
         {
             for (Integer messageId : messageIds)
@@ -123,11 +123,11 @@ public class AntiRecall {
         }
     }
 
-    public static void insertDeletedMessageFromSaveFile(int selectedAccount, ArrayList<Integer> messageIds) {
+    public static void insertDeletedMessageFromSaveFile(int selectedAccount, long channelID, ArrayList<Integer> messageIds) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
         for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
-            if (deletedMessagesId.getSelectedAccount() == selectedAccount)
+            if (deletedMessagesId.getSelectedAccount() == selectedAccount && deletedMessagesId.getChannelID() == channelID)
             {
                 info = deletedMessagesId;
                 needInit = false;
@@ -135,7 +135,7 @@ public class AntiRecall {
             }
         }
         if (needInit)
-            deletedMessagesIds.add(new DeletedMessageInfo(selectedAccount, messageIds));
+            deletedMessagesIds.add(new DeletedMessageInfo(selectedAccount, channelID, messageIds));
         else
         {
             for (Integer messageId : messageIds)
@@ -166,7 +166,8 @@ public class AntiRecall {
                         MessageObject messageObject = new MessageObject(param.args[0]);
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
-                        if (AntiRecall.messageIsDeleted(id))
+                        long channel_id = -owner.getPeerID().getChannelID();
+                        if (AntiRecall.messageIsDeleted(channel_id, id))
                         {
                             if (ClientChecker.isNekogram() || ClientChecker.isYukigram())
                             {
@@ -256,10 +257,13 @@ public class AntiRecall {
                                     //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteScheduledMessages(item).getMessages());
 
                                     if (item.getClass().equals(TL_updateDeleteChannelMessages))
-                                        AntiRecall.insertNeedProcessDeletedMessage(new TLRPC.TL_updateDeleteChannelMessages(item).getMessages());
+                                    {
+                                        TLRPC.TL_updateDeleteChannelMessages channelMessages = new TLRPC.TL_updateDeleteChannelMessages(item);
+                                        AntiRecall.insertNeedProcessDeletedMessage(-channelMessages.getChannelID(), channelMessages.getMessages());
+                                    }
 
                                     if (item.getClass().equals(TL_updateDeleteMessages))
-                                        AntiRecall.insertNeedProcessDeletedMessage(new TLRPC.TL_updateDeleteMessages(item).getMessages());
+                                        AntiRecall.insertNeedProcessDeletedMessage(DeletedMessageInfo.NOT_CHANNEL, new TLRPC.TL_updateDeleteMessages(item).getMessages());
 
                                     if (HookInit.DEBUG_MODE && (item.getClass().equals(TL_updateDeleteMessages) || item.getClass().equals(TL_updateDeleteChannelMessages)))
                                         Utils.log("Protected message! event: " + item.getClass());
@@ -302,10 +306,11 @@ public class AntiRecall {
                     if (Configs.isAntiRecall() && param.args[1] instanceof ArrayList)
                     {
                         ArrayList<Integer> list = Utils.castList(param.args[1], Integer.class);
-                        list.removeIf(AntiRecall::findInNeedProcess);
+                        long channel_id = (long) param.args[0];
+                        list.removeIf(i -> AntiRecall.findInNeedProcess(channel_id, i));
                         param.args[1] = list;
-                        insertDeletedMessage(list);
-                        needProcessing.forEach(AntiRecall::insertDeletedMessage);
+                        insertDeletedMessage(channel_id, list);
+                        needProcessing.forEach(i -> AntiRecall.insertDeletedMessage(channel_id, i));
                         needProcessing.clear();
                     }
                 }
@@ -348,11 +353,11 @@ public class AntiRecall {
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 if (Configs.isAntiRecall() && ((int) param.args[0]) == messagesDeletedValue) {
                     Object[] args = (Object[]) param.args[1];
-                    //long dialogID = (long) args[1];
+                    long dialogID = (long) args[1];
                     param.setResult(null);
                     if (args[0] instanceof ArrayList<?>)
                     {
-                        insertDeletedMessage(Utils.castList(args[0], Integer.class));
+                        insertDeletedMessage(dialogID, Utils.castList(args[0], Integer.class));
                     }
                 }
             }

@@ -19,7 +19,7 @@ public class Nekogram {
         classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "bc0"));
         classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "sm1"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Message", "YL0"));
-        //classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Peer", "oM0"));
+        classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Peer", "oM0"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages", "Ja1"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages", "Ia1"));
         //classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages", "Ka1"));

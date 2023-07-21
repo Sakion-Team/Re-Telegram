@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -61,10 +62,13 @@ public class Utils {
                 JsonObject jsonObject = (JsonObject) valueJsonElement;
 
                 jsonObject.entrySet().forEach(entry -> {
-                    JsonArray jsonModule = entry.getValue().getAsJsonArray();
-                    ArrayList<Integer> list = new ArrayList<>();
-                    jsonModule.forEach(id -> list.add(id.getAsInt()));
-                    AntiRecall.insertDeletedMessageFromSaveFile(Integer.parseInt(entry.getKey().trim()), list);
+                    JsonObject jsonObject2 = entry.getValue().getAsJsonObject();
+                    jsonObject2.entrySet().forEach(entry2 -> {
+                        JsonArray jsonModule = entry2.getValue().getAsJsonArray();
+                        ArrayList<Integer> list = new ArrayList<>();
+                        jsonModule.forEach(id -> list.add(id.getAsInt()));
+                        AntiRecall.insertDeletedMessageFromSaveFile(Integer.parseInt(entry.getKey().trim()), Long.parseLong(entry2.getKey().trim()), list);
+                    });
                 });
             }
         }
@@ -81,11 +85,30 @@ public class Utils {
 
         JsonObject valueJsonObject = new JsonObject();
 
+        List<Integer> accounts = new ArrayList<>();
+
         for (DeletedMessageInfo deletedMessageInfo : AntiRecall.getDeletedMessagesIds())
         {
-            JsonArray jsonModule = new JsonArray();
-            deletedMessageInfo.getMessageIds().forEach(jsonModule::add);
-            valueJsonObject.add(String.valueOf(deletedMessageInfo.getSelectedAccount()), jsonModule);
+            if (!accounts.contains(deletedMessageInfo.getSelectedAccount()))
+                accounts.add(deletedMessageInfo.getSelectedAccount());
+        }
+
+        if (!accounts.isEmpty())
+        {
+            for (int account : accounts) {
+                JsonObject valueJsonObject2 = new JsonObject();
+
+                for (DeletedMessageInfo deletedMessageInfo : AntiRecall.getDeletedMessagesIds()) {
+                    if (deletedMessageInfo.getSelectedAccount() == account)
+                    {
+                        JsonArray jsonModule = new JsonArray();
+                        deletedMessageInfo.getMessageIds().forEach(jsonModule::add);
+                        valueJsonObject2.add(String.valueOf(deletedMessageInfo.getChannelID()), jsonModule);
+                    }
+                }
+
+                valueJsonObject.add(String.valueOf(account), valueJsonObject2);
+            }
         }
 
         FileUtils.save(deletedMessagesSavePath, BUILDER_GSON.toJson(valueJsonObject), false);
