@@ -265,7 +265,7 @@ public class AntiRecall {
 
                                 for (Object item : updates) {
                                     //if (!item.getClass().equals(TL_updateDeleteChannelMessages) && !item.getClass().equals(TL_updateDeleteMessages))// && !item.getClass().equals(TL_updateDeleteScheduledMessages))
-                                        //newUpdates.add(item);
+                                    //newUpdates.add(item);
 
                                     //if (item.getClass().equals(TL_updateDeleteScheduledMessages))
                                     //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteScheduledMessages(item).getMessages());

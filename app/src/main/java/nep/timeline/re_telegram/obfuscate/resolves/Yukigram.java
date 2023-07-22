@@ -25,6 +25,8 @@ public class Yukigram {
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "Wk1"));
         classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.T2"));
         classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.G2"));
+        classList.add(new ClassInfo("org.telegram.ui.DialogsActivity$6", "org.telegram.ui.j3"));
+        classList.add(new ClassInfo("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback", "VS"));
 
         fieldList.add(new FieldInfo("MessageObject", "messageOwner", "a"));
         fieldList.add(new FieldInfo("UserConfig", "selectedAccount", "o"));
@@ -50,12 +52,15 @@ public class Yukigram {
         methodList.add(new MethodInfo("MessagesController", "getInstance", "I0"));
         methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "Z4"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "g"));
+        methodList.add(new MethodInfo("UserConfig", "isPremium", "o"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "D"));
         methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "Kf"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "getNextUnreadDialog", "g"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "drawBottomPanel", "f"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "showBottomPanel", "l"));
+        methodList.add(new MethodInfo("DialogsActivity$6", "onDefaultTabMoved", "C0"));
+        methodList.add(new MethodInfo("FilterTabsView$TouchHelperCallback", "lambda$new$0", "run"));
     }
 
     public static class ClassResolver

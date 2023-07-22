@@ -12,8 +12,10 @@ import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import nep.timeline.re_telegram.application.ApplicationLoaderHook;
+import nep.timeline.re_telegram.features.AllowMoveAllChatFolder;
 import nep.timeline.re_telegram.features.AntiAntiForward;
 import nep.timeline.re_telegram.features.AntiRecall;
+import nep.timeline.re_telegram.features.FakePremium;
 import nep.timeline.re_telegram.features.NoSponsoredMessages;
 import nep.timeline.re_telegram.features.ProhibitChannelSwitching;
 
@@ -73,6 +75,10 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
             AntiRecall.init(lpparam);
 
+            // FakePremium.init(lpparam);
+
+            AllowMoveAllChatFolder.init(lpparam);
+
             if (!onlyNeedAR(lpparam))
             {
                 //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
@@ -85,9 +91,6 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
                 AntiAntiForward.init(lpparam);
             }
-
-            // Fake Premium
-            // XposedHelpers.findAndHookMethod("org.telegram.messenger.UserConfig", lpparam.classLoader, "isPremium", XC_MethodReplacement.returnConstant(true));
         }
     }
 }

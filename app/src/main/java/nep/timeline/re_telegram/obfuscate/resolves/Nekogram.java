@@ -26,6 +26,8 @@ public class Nekogram {
         classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.r"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "gh1"));
         classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.b3"));
+        classList.add(new ClassInfo("org.telegram.ui.DialogsActivity$6", "org.telegram.ui.Q3"));
+        classList.add(new ClassInfo("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback", "org.telegram.ui.l1"));
 
         fieldList.add(new FieldInfo("MessageObject", "messageOwner", "a"));
         fieldList.add(new FieldInfo("UserConfig", "selectedAccount", "o"));
@@ -45,12 +47,15 @@ public class Nekogram {
         methodList.add(new MethodInfo("MessagesController", "getInstance", "I0"));
         methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "W4"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "g"));
+        methodList.add(new MethodInfo("UserConfig", "isPremium", "o"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "D"));
         methodList.add(new MethodInfo("NotificationsController", "loadRoundAvatar", "w"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "getNextUnreadDialog", "g"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "drawBottomPanel", "f"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "showBottomPanel", "l"));
+        methodList.add(new MethodInfo("DialogsActivity$6", "onDefaultTabMoved", "B0"));
+        methodList.add(new MethodInfo("FilterTabsView$TouchHelperCallback", "lambda$new$0", "o"));
     }
 
     public static class ClassResolver

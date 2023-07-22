@@ -5,6 +5,7 @@ public class Configs {
     private static boolean antiRecall = true;
     private static boolean noSponsoredMessages = true;
     private static boolean prohibitChannelSwitching = true;
+    private static boolean allowMoveAllChatFolder = true;
 
     public static boolean isAntiAntiForward() {
         return antiAntiForward;
@@ -20,6 +21,10 @@ public class Configs {
 
     public static boolean isProhibitChannelSwitching() {
         return prohibitChannelSwitching;
+    }
+
+    public static boolean isAllowMoveAllChatFolder() {
+        return allowMoveAllChatFolder;
     }
 
     public static void setAntiAntiForward(boolean value) {
@@ -39,6 +44,11 @@ public class Configs {
 
     public static void setProhibitChannelSwitching(boolean value) {
         prohibitChannelSwitching = value;
+        ConfigManager.save();
+    }
+
+    public static void setAllowMoveAllChatFolder(boolean value) {
+        allowMoveAllChatFolder = value;
         ConfigManager.save();
     }
 }
