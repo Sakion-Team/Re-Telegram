@@ -23,7 +23,7 @@ body:
   - type: textarea
     attributes:
       label: Telegram client
-      placeholder: What telegram client are you using?
+      placeholder: What telegram client are you using? Application file or Source link
     validations:
       required: true
   - type: input
