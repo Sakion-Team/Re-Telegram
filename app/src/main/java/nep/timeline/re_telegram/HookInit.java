@@ -18,6 +18,7 @@ import nep.timeline.re_telegram.features.AntiRecall;
 import nep.timeline.re_telegram.features.FakePremium;
 import nep.timeline.re_telegram.features.NoSponsoredMessages;
 import nep.timeline.re_telegram.features.ProhibitChannelSwitching;
+import nep.timeline.re_telegram.features.UseSystemTypeface;
 
 public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitPackageResources {
     private static final List<String> hookPackages = Arrays.asList("org.telegram.messenger", "org.telegram.messenger.web", "org.telegram.messenger.beta", "org.telegram.plus", "org.telegram.mdgram",
@@ -84,6 +85,8 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                 //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
                 //    if (ClientChecker.isNekogram())
                 //        NekogramRoundAvatar.init(); // Bug!
+
+                UseSystemTypeface.init(lpparam);
 
                 ProhibitChannelSwitching.init(lpparam);
 

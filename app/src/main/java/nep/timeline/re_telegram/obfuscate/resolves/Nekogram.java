@@ -28,11 +28,13 @@ public class Nekogram {
         classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.b3"));
         classList.add(new ClassInfo("org.telegram.ui.DialogsActivity$6", "org.telegram.ui.Q3"));
         classList.add(new ClassInfo("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback", "org.telegram.ui.l1"));
+        classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "X4"));
 
         fieldList.add(new FieldInfo("MessageObject", "messageOwner", "a"));
         fieldList.add(new FieldInfo("UserConfig", "selectedAccount", "o"));
         fieldList.add(new FieldInfo("Theme", "chat_timePaint", "J"));
         fieldList.add(new FieldInfo("NotificationCenter", "messagesDeleted", "i"));
+        fieldList.add(new FieldInfo("AndroidUtilities", "typefaceCache", "a"));
 
         methodList.add(new MethodInfo("ApplicationLoader", "onCreate", "n"));
         methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "E"));
@@ -56,6 +58,7 @@ public class Nekogram {
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "showBottomPanel", "l"));
         methodList.add(new MethodInfo("DialogsActivity$6", "onDefaultTabMoved", "B0"));
         methodList.add(new MethodInfo("FilterTabsView$TouchHelperCallback", "lambda$new$0", "o"));
+        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "F0"));
     }
 
     public static class ClassResolver

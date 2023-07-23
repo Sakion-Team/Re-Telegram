@@ -37,6 +37,10 @@ public class ConfigManager {
                         Configs.setNoSponsoredMessages(jsonModule.get("NoSponsoredMessages").getAsBoolean());
                     if (jsonModule.get("ProhibitChannelSwitching") != null)
                         Configs.setProhibitChannelSwitching(jsonModule.get("ProhibitChannelSwitching").getAsBoolean());
+                    if (jsonModule.get("AllowMoveAllChatFolder") != null)
+                        Configs.setAllowMoveAllChatFolder(jsonModule.get("AllowMoveAllChatFolder").getAsBoolean());
+                    if (jsonModule.get("UseSystemTypeface") != null)
+                        Configs.setUseSystemTypeface(jsonModule.get("UseSystemTypeface").getAsBoolean());
                 });
             }
         }
@@ -58,6 +62,8 @@ public class ConfigManager {
         jsonModule.add("AntiRecall", new JsonPrimitive(Configs.isAntiRecall()));
         jsonModule.add("NoSponsoredMessages", new JsonPrimitive(Configs.isNoSponsoredMessages()));
         jsonModule.add("ProhibitChannelSwitching", new JsonPrimitive(Configs.isProhibitChannelSwitching()));
+        jsonModule.add("AllowMoveAllChatFolder", new JsonPrimitive(Configs.isAllowMoveAllChatFolder()));
+        jsonModule.add("UseSystemTypeface", new JsonPrimitive(Configs.isUseSystemTypeface()));
         FileUtils.save(cfgPath, Utils.getBuilderGson().toJson(valueJsonObject), false);
     }
 }

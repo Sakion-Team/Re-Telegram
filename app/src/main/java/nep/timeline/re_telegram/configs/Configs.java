@@ -6,6 +6,7 @@ public class Configs {
     private static boolean noSponsoredMessages = true;
     private static boolean prohibitChannelSwitching = true;
     private static boolean allowMoveAllChatFolder = true;
+    private static boolean useSystemTypeface = true;
 
     public static boolean isAntiAntiForward() {
         return antiAntiForward;
@@ -25,6 +26,10 @@ public class Configs {
 
     public static boolean isAllowMoveAllChatFolder() {
         return allowMoveAllChatFolder;
+    }
+
+    public static boolean isUseSystemTypeface() {
+        return useSystemTypeface;
     }
 
     public static void setAntiAntiForward(boolean value) {
@@ -49,6 +54,11 @@ public class Configs {
 
     public static void setAllowMoveAllChatFolder(boolean value) {
         allowMoveAllChatFolder = value;
+        ConfigManager.save();
+    }
+
+    public static void setUseSystemTypeface(boolean value) {
+        useSystemTypeface = value;
         ConfigManager.save();
     }
 }
