@@ -86,7 +86,8 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                 //    if (ClientChecker.isNekogram())
                 //        NekogramRoundAvatar.init(); // Bug!
 
-                UseSystemTypeface.init(lpparam);
+                if (!ClientChecker.check(ClientChecker.ClientType.MDgram))
+                    UseSystemTypeface.init(lpparam);
 
                 ProhibitChannelSwitching.init(lpparam);
 

@@ -60,7 +60,7 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.isYukigram())
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram))
                     return FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Message", "id", AutomationResolver.ResolverType.Field), int.class).getInt(this.instance);
                 else
                     return FieldUtils.getFieldIntOfClass(this.instance, this.clazz, "id");
@@ -77,7 +77,7 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.isYukigram())
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram))
                     return new Peer(FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Message", "peer_id", AutomationResolver.ResolverType.Field), AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Peer")).get(this.instance));
                 else
                     return new Peer(FieldUtils.getFieldClassOfClass(this.instance, this.clazz, "peer_id"));
@@ -118,7 +118,7 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.isYukigram())
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram))
                     return FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteChannelMessages", "channel_id", AutomationResolver.ResolverType.Field), long.class).getLong(this.instance);
                 else
                     return FieldUtils.getFieldLongOfClass(this.instance, "channel_id");
@@ -134,7 +134,7 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.isYukigram())
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram))
                     return Utils.castList(FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteChannelMessages", "id", AutomationResolver.ResolverType.Field), ArrayList.class).get(this.instance), Integer.class);
                 else
                     return Utils.castList(FieldUtils.getFieldClassOfClass(this.instance, "messages"), Integer.class);
@@ -159,7 +159,7 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.isYukigram())
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram))
                     return Utils.castList(FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteMessages", "id", AutomationResolver.ResolverType.Field), ArrayList.class).get(this.instance), Integer.class);
                 else
                     return Utils.castList(FieldUtils.getFieldClassOfClass(this.instance, "messages"), Integer.class);

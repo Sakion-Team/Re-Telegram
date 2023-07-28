@@ -39,7 +39,7 @@ public class ProhibitChannelSwitching {
                 });
             }
 
-            if (!ClientChecker.isNekogram() && method.getName().equals(AutomationResolver.resolve("ChatPullingDownDrawable", "needDrawBottomPanel", AutomationResolver.ResolverType.Method)))
+            if (!ClientChecker.check(ClientChecker.ClientType.Nekogram) && method.getName().equals(AutomationResolver.resolve("ChatPullingDownDrawable", "needDrawBottomPanel", AutomationResolver.ResolverType.Method)))
             {
                 XposedBridge.hookMethod(method, new XC_MethodHook() {
                     @Override

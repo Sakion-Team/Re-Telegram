@@ -8,12 +8,12 @@ import nep.timeline.re_telegram.obfuscate.resolves.*;
 public class AutomationResolver {
     public static String resolve(String className, final XC_LoadPackage.LoadPackageParam lpparam)
     {
-        if (ClientChecker.isNekogram(lpparam))
+        if (ClientChecker.check(ClientChecker.ClientType.Nekogram, lpparam))
         {
             if (Nekogram.ClassResolver.has(className))
                 return Nekogram.ClassResolver.resolve(className);
         }
-        else if (ClientChecker.isYukigram(lpparam))
+        else if (ClientChecker.check(ClientChecker.ClientType.Yukigram, lpparam))
         {
             if (Yukigram.ClassResolver.has(className))
                 return Yukigram.ClassResolver.resolve(className);
@@ -24,7 +24,7 @@ public class AutomationResolver {
 
     public static String resolve(String className, String name, ResolverType type, final XC_LoadPackage.LoadPackageParam lpparam)
     {
-        if (ClientChecker.isNekogram(lpparam))
+        if (ClientChecker.check(ClientChecker.ClientType.Nekogram, lpparam))
         {
             if (type == ResolverType.Field)
             {
@@ -37,7 +37,7 @@ public class AutomationResolver {
                     return Nekogram.MethodResolver.resolve(className, name);
             }
         }
-        else if (ClientChecker.isYukigram(lpparam))
+        else if (ClientChecker.check(ClientChecker.ClientType.Yukigram, lpparam))
         {
             if (type == ResolverType.Field)
             {

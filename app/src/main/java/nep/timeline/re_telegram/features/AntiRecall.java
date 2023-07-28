@@ -177,8 +177,10 @@ public class AntiRecall {
                         switch (HostApplicationInfo.getApplication().getResources().getConfiguration().locale.getDisplayLanguage())
                         {
                             case "\u65e5\u672c\u8a9e":
+                                text = "\u524a\u9664\u3055\u308c\u307e\u3057\u305f";
+                                break;
                             case "\u4e2d\u6587":
-                                text = "\u5df2\u64a4\u56de";
+                                text = "\u5df2\u5220\u9664";
                                 break;
                         }
 
@@ -188,7 +190,7 @@ public class AntiRecall {
                         long channel_id = -owner.getPeerID().getChannelID();
                         if (messageIsDeleted(channel_id, id))
                         {
-                            if (ClientChecker.isNekogram() || ClientChecker.isYukigram())
+                            if (ClientChecker.check(ClientChecker.ClientType.Nekogram) || ClientChecker.check(ClientChecker.ClientType.Yukigram))
                             {
                                 NekoChatMessageCell cell = new NekoChatMessageCell(param.thisObject);
                                 SpannableStringBuilder time = cell.getCurrentTimeString();
@@ -320,7 +322,11 @@ public class AntiRecall {
                     if (Configs.isAntiRecall() && param.args[1] instanceof ArrayList)
                     {
                         ArrayList<Integer> list = Utils.castList(param.args[1], Integer.class);
+                        if (list.isEmpty())
+                            return;
                         long channel_id = (long) param.args[0];
+                        if (channel_id > 0)
+                            channel_id = 0;
                         //list.clear();
                         ArrayList<Integer> deletedMessages = new ArrayList<>();
                         for (Integer integer : list) {
@@ -363,7 +369,10 @@ public class AntiRecall {
                     //param.setResult(null);
                     if (param.args[2] instanceof ArrayList)
                     {
-                        insertNeedProcessDeletedMessage((long) param.args[1], Utils.castList(param.args[2], Integer.class));
+                        long dialogID = -((long) param.args[1]);
+                        if (dialogID > 0)
+                            dialogID = 0;
+                        insertNeedProcessDeletedMessage(dialogID, Utils.castList(param.args[2], Integer.class));
                     }
                 }
             });
@@ -371,19 +380,25 @@ public class AntiRecall {
 
         int messagesDeletedValue = (int) XposedHelpers.getStaticObjectField(notificationCenter, AutomationResolver.resolve("NotificationCenter", "messagesDeleted", AutomationResolver.ResolverType.Field));
 
-        Method postNotificationName = notificationCenter.getDeclaredMethod(AutomationResolver.resolve("NotificationCenter", "postNotificationName", AutomationResolver.ResolverType.Method), int.class, Object[].class);
-
-        XposedBridge.hookMethod(postNotificationName, new XC_MethodHook() {
+        HookUtils.findAndHookMethod(notificationCenter, AutomationResolver.resolve("NotificationCenter", "postNotificationName", AutomationResolver.ResolverType.Method), new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 if (Configs.isAntiRecall() && ((int) param.args[0]) == messagesDeletedValue) {
-                    Object[] args = (Object[]) param.args[1];
-                    long dialogID = (long) args[1];
                     param.setResult(null);
-                    if (args[0] instanceof ArrayList<?>)
+                    /*
+                    Object[] args = (Object[]) param.args[1];
+                    if (args[0] == null || args[1] == null || args[2] == null)
+                        return;
+                    if (args[0] instanceof ArrayList && args[1].getClass().isPrimitive() && args[2].getClass().isPrimitive())
                     {
+                        param.setResult(null);
+                        long dialogID = -((long) args[1]);
+                        if (dialogID > 0)
+                            dialogID = 0;
                         insertNeedProcessDeletedMessage(dialogID, Utils.castList(args[0], Integer.class));
                     }
+
+                     */
                 }
             }
         });

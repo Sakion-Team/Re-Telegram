@@ -29,7 +29,7 @@ public class AntiAntiForward {
             Utils.log("Not found MessagesController, " + Utils.issue);
         }
 
-        if (!ClientChecker.isYukigram())
+        if (!ClientChecker.check(ClientChecker.ClientType.Yukigram))
         {
             Class<?> messageObject = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessageObject"), lpparam.classLoader);
             if (messageObject != null)

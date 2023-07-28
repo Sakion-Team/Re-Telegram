@@ -3,23 +3,31 @@ package nep.timeline.re_telegram;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class ClientChecker {
-    public static boolean isNekogram(final XC_LoadPackage.LoadPackageParam lpparam)
+    public static boolean check(ClientType client, final XC_LoadPackage.LoadPackageParam lpparam)
     {
-        return lpparam.packageName.equals("tw.nekomimi.nekogram");
+        return lpparam.packageName.equals(client.getPackageName());
     }
 
-    public static boolean isYukigram(final XC_LoadPackage.LoadPackageParam lpparam)
+    public static boolean check(ClientType client)
     {
-        return lpparam.packageName.equals("me.onlyfire.yukigram.beta");
+        return check(client, Utils.globalLoadPackageParam);
     }
 
-    public static boolean isNekogram()
-    {
-        return isNekogram(Utils.globalLoadPackageParam);
-    }
+    public enum ClientType {
+        Nekogram("tw.nekomimi.nekogram"),
+        Yukigram("me.onlyfire.yukigram.beta"),
+        MDgram("org.telegram.mdgram");
 
-    public static boolean isYukigram()
-    {
-        return isYukigram(Utils.globalLoadPackageParam);
+        final String packageName;
+
+        ClientType(String packageName)
+        {
+            this.packageName = packageName;
+        }
+
+        public String getPackageName()
+        {
+            return packageName;
+        }
     }
 }
