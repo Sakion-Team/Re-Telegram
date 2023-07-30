@@ -22,14 +22,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Debug with Gradle
-        run: |
-          echo ${{ secrets.SIGN_KEYSTORE_BASE64 }} | base64 -d > keystore.jks
-          ./gradlew :app:assembleRelease
-        env:
-          KEYSTORE_PATH: "../keystore.jks"
-          KEYSTORE_PASSWORD: ${{ secrets.SIGN_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.SIGN_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.SIGN_KEY_PASSWORD }}
+        run: ./gradlew :app:assembleDebug
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v2
@@ -39,7 +32,14 @@ jobs:
           if-no-files-found: warn
           
       - name: Build Release with Gradle
-        run: ./gradlew :app:assembleRelease
+        run: |
+          echo ${{ secrets.SIGN_KEYSTORE_BASE64 }} | base64 -d > keystore.jks
+          ./gradlew :app:assembleRelease
+        env:
+          KEYSTORE_PATH: "../keystore.jks"
+          KEYSTORE_PASSWORD: ${{ secrets.SIGN_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.SIGN_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.SIGN_KEY_PASSWORD }}
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v2
