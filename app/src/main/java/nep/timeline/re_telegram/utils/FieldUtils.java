@@ -13,7 +13,12 @@ public class FieldUtils {
         List<Field> fields = new ArrayList<>();
         for (Field declaredField : clazz.getDeclaredFields())
             if (declaredField.getName().equals(fieldName))
+            {
+                if (!declaredField.isAccessible())
+                    declaredField.setAccessible(true);
+
                 fields.add(declaredField);
+            }
 
         if (!fields.isEmpty()) {
             Field target = null;

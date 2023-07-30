@@ -3,6 +3,7 @@ package nep.timeline.re_telegram.features;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.HookUtils;
 import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.configs.Configs;
@@ -11,7 +12,10 @@ import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 public class AllowMoveAllChatFolder {
     public static void init(XC_LoadPackage.LoadPackageParam lpparam)
     {
-        Class<?> dialogsActivity$6 = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.DialogsActivity$6"), lpparam.classLoader);
+        String dialogsActivity$6Name = AutomationResolver.resolve("org.telegram.ui.DialogsActivity$6");
+        if (ClientChecker.check(ClientChecker.ClientType.iMoe))
+            dialogsActivity$6Name = "org.telegram.ui.DialogsActivity$11";
+        Class<?> dialogsActivity$6 = XposedHelpers.findClassIfExists(dialogsActivity$6Name, lpparam.classLoader);
         if (dialogsActivity$6 != null)
         {
             String onDefaultTabMoved = AutomationResolver.resolve("DialogsActivity$6", "onDefaultTabMoved", AutomationResolver.ResolverType.Method);
@@ -25,7 +29,7 @@ public class AllowMoveAllChatFolder {
         }
         else
         {
-            Utils.log("Not found DialogsActivity$5, " + Utils.issue);
+            Utils.log("Not found DialogsActivity$6, " + Utils.issue);
         }
 
         Class<?> filtersSetupActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback"), lpparam.classLoader);
