@@ -29,6 +29,23 @@ public class AntiAntiForward {
             Utils.log("Not found MessagesController, " + Utils.issue);
         }
 
+        Class<?> chatActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.ChatActivity"), lpparam.classLoader);
+        if (chatActivity != null)
+        {
+            String hasSelectedNoforwardsMessageMethod = AutomationResolver.resolve("ChatActivity", "hasSelectedNoforwardsMessage", AutomationResolver.ResolverType.Method);
+            HookUtils.findAndHookAllMethod(chatActivity, hasSelectedNoforwardsMessageMethod, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    if (Configs.isAntiAntiForward())
+                        param.setResult(false);
+                }
+            });
+        }
+        else
+        {
+            Utils.log("Not found ChatActivity, " + Utils.issue);
+        }
+
         if (!ClientChecker.check(ClientChecker.ClientType.Yukigram))
         {
             Class<?> messageObject = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessageObject"), lpparam.classLoader);
