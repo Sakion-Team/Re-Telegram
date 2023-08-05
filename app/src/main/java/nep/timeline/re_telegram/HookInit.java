@@ -90,7 +90,8 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                 if (!ClientChecker.check(ClientChecker.ClientType.MDgram))
                     UseSystemTypeface.init(lpparam);
 
-                ProhibitChannelSwitching.init(lpparam);
+                if (!ClientChecker.check(ClientChecker.ClientType.Nekogram))
+                    ProhibitChannelSwitching.init(lpparam);
 
                 NoSponsoredMessages.init(lpparam);
 
