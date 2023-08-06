@@ -57,6 +57,7 @@ public class Yukigram {
         methodList.add(new MethodInfo("UserConfig", "isPremium", "o"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "D"));
         methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "Kf"));
+        methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "Ah"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "getNextUnreadDialog", "g"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "drawBottomPanel", "f"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));

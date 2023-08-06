@@ -26,6 +26,7 @@ public class Nekogram {
         classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.r"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "gh1"));
         classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.b3"));
+        classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.O2"));
         classList.add(new ClassInfo("org.telegram.ui.DialogsActivity$6", "org.telegram.ui.Q3"));
         classList.add(new ClassInfo("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback", "org.telegram.ui.l1"));
         classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "X4"));
@@ -52,6 +53,7 @@ public class Nekogram {
         methodList.add(new MethodInfo("UserConfig", "isPremium", "o"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "D"));
         methodList.add(new MethodInfo("NotificationsController", "loadRoundAvatar", "w"));
+        methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "Bh"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "getNextUnreadDialog", "g"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "drawBottomPanel", "f"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));

@@ -32,14 +32,21 @@ public class AntiAntiForward {
         Class<?> chatActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.ChatActivity"), lpparam.classLoader);
         if (chatActivity != null)
         {
-            String fwdRestrictedTopHintMethod = AutomationResolver.resolve("ChatActivity", "fwdRestrictedTopHint", AutomationResolver.ResolverType.Method);
-            HookUtils.findAndHookAllMethod(chatActivity, fwdRestrictedTopHintMethod, new XC_MethodHook() {
+            String fwdRestrictedTopHintField = AutomationResolver.resolve("ChatActivity", "fwdRestrictedTopHint", AutomationResolver.ResolverType.Field);
+            HookUtils.findAndHookAllMethod(chatActivity, fwdRestrictedTopHintField, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    if (Configs.isAntiAntiForward()) {
-                        Object fwdRestrictedInstance = param.thisObject;
-                        XposedHelpers.setObjectField(fwdRestrictedInstance, "fwdRestrictedTopHint", null);
-                    }
+                    if (Configs.isAntiAntiForward())
+                        XposedHelpers.setObjectField(param.thisObject, fwdRestrictedTopHintField, null);
+                }
+            });
+          
+            String hasSelectedNoforwardsMessageMethod = AutomationResolver.resolve("ChatActivity", "hasSelectedNoforwardsMessage", AutomationResolver.ResolverType.Method);
+            HookUtils.findAndHookAllMethod(chatActivity, hasSelectedNoforwardsMessageMethod, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    if (Configs.isAntiAntiForward())
+                        param.setResult(false);
                 }
             });
         }
