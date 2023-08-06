@@ -5,6 +5,7 @@ import android.text.TextPaint;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -329,16 +330,23 @@ public class AntiRecall {
                             channel_id = 0;
                         //list.clear();
                         ArrayList<Integer> deletedMessages = new ArrayList<>();
-                        for (Integer integer : list) {
-                            if (!messageIsDeleted(channel_id, integer) || AntiRecall.findInNeedProcess(channel_id, integer))
-                            {
-                                list.remove(integer);
-                                deletedMessages.add(integer);
+                        try
+                        {
+                            for (Integer integer : list) {
+                                if (!messageIsDeleted(channel_id, integer) || AntiRecall.findInNeedProcess(channel_id, integer))
+                                {
+                                    list.remove(integer);
+                                    deletedMessages.add(integer);
+                                }
+                                else if (messageIsDeleted(channel_id, integer))
+                                {
+                                    removeDeletedMessage(channel_id, integer);
+                                }
                             }
-                            else if (messageIsDeleted(channel_id, integer))
-                            {
-                                removeDeletedMessage(channel_id, integer);
-                            }
+                        }
+                        catch (ConcurrentModificationException ignored)
+                        {
+
                         }
                         //list.removeIf(i -> (AntiRecall.findInNeedProcess(channel_id, i) || AntiRecall.messageIsDeleted(channel_id, i)));
                         param.args[1] = list;
@@ -366,7 +374,7 @@ public class AntiRecall {
             XposedBridge.hookMethod(updateDialogsWithDeletedMessagesMethod, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    //param.setResult(null);
+                    param.setResult(null);
                     if (param.args[2] instanceof ArrayList)
                     {
                         long dialogID = -((long) param.args[1]);
