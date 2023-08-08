@@ -33,20 +33,15 @@ public class AntiAntiForward {
         if (chatActivity != null)
         {
             String fwdRestrictedTopHintField = AutomationResolver.resolve("ChatActivity", "fwdRestrictedTopHint", AutomationResolver.ResolverType.Field);
-            HookUtils.findAndHookAllMethod(chatActivity, fwdRestrictedTopHintField, new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    if (Configs.isAntiAntiForward())
-                        XposedHelpers.setObjectField(param.thisObject, fwdRestrictedTopHintField, null);
-                }
-            });
-          
             String hasSelectedNoforwardsMessageMethod = AutomationResolver.resolve("ChatActivity", "hasSelectedNoforwardsMessage", AutomationResolver.ResolverType.Method);
             HookUtils.findAndHookAllMethod(chatActivity, hasSelectedNoforwardsMessageMethod, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if (Configs.isAntiAntiForward())
+                    {
+                        XposedHelpers.setObjectField(param.thisObject, fwdRestrictedTopHintField, null);
                         param.setResult(false);
+                    }
                 }
             });
         }
