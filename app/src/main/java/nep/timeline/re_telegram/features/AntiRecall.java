@@ -159,7 +159,7 @@ public class AntiRecall {
         else
         {
             if (!info.getMessageIds().contains(messageId)) // No duplication
-                info.insertMessageId(messageIds);
+                info.insertMessageId(messageId);
         }
     }
 
