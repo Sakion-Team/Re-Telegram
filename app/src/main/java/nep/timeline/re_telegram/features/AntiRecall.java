@@ -143,6 +143,26 @@ public class AntiRecall {
         }
     }
 
+    public static void insertNeedProcessDeletedMessage(long channelID, Integer messageId) {
+        boolean needInit = true;
+        DeletedMessageInfo info = null;
+        for (DeletedMessageInfo deletedMessagesId : needProcessing) {
+            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
+            {
+                info = deletedMessagesId;
+                needInit = false;
+                break;
+            }
+        }
+        if (needInit)
+            needProcessing.add(new DeletedMessageInfo(UserConfig.getSelectedAccount(), channelID, messageId));
+        else
+        {
+            if (!info.getMessageIds().contains(messageId)) // No duplication
+                info.insertMessageIds(messageIds);
+        }
+    }
+
     public static void insertDeletedMessageFromSaveFile(int selectedAccount, long channelID, ArrayList<Integer> messageIds) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
@@ -374,13 +394,17 @@ public class AntiRecall {
             XposedBridge.hookMethod(updateDialogsWithDeletedMessagesMethod, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    param.setResult(null);
+                    // param.setResult(null);
                     if (param.args[2] instanceof ArrayList)
                     {
                         long dialogID = -((long) param.args[1]);
                         if (dialogID > 0)
                             dialogID = 0;
-                        insertNeedProcessDeletedMessage(dialogID, Utils.castList(param.args[2], Integer.class));
+                        for (Integer integer : Utils.castList(param.args[2], Integer.class))
+                            if (!messageIsDeleted(dialogID, integer))
+                                param.setResult(null);
+                            else
+                                insertNeedProcessDeletedMessage(dialogID, integer);
                     }
                 }
             });
