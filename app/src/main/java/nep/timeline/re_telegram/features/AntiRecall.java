@@ -397,14 +397,16 @@ public class AntiRecall {
                     // param.setResult(null);
                     if (param.args[2] instanceof ArrayList)
                     {
+                        ArrayList<Integer> list = Utils.castList(param.args[2], Integer.class);
                         long dialogID = -((long) param.args[1]);
                         if (dialogID > 0)
                             dialogID = 0;
-                        for (Integer integer : Utils.castList(param.args[2], Integer.class))
+                        for (Integer integer : list)
                             if (!messageIsDeleted(dialogID, integer))
-                                param.setResult(null);
+                                list.remove(integer);
                             else
                                 insertNeedProcessDeletedMessage(dialogID, integer);
+                        param.args[2] = list;
                     }
                 }
             });
