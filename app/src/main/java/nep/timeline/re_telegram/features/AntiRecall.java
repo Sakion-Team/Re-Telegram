@@ -407,10 +407,6 @@ public class AntiRecall {
                                 list.remove(integer);
                                 insertNeedProcessDeletedMessage(dialogID, integer);
                             }
-                            else
-                            {
-                                //removeDeletedMessage(dialogID, integer);
-                            }
                                 
                         param.args[2] = list;
                     }
