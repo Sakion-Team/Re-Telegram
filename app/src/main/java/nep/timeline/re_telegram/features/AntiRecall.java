@@ -409,7 +409,7 @@ public class AntiRecall {
                             }
                             else
                             {
-                                removeDeletedMessage(dialogID, integer);
+                                //removeDeletedMessage(dialogID, integer);
                             }
                                 
                         param.args[2] = list;
