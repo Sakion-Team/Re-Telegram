@@ -403,9 +403,15 @@ public class AntiRecall {
                             dialogID = 0;
                         for (Integer integer : list)
                             if (!messageIsDeleted(dialogID, integer))
+                            {
                                 list.remove(integer);
-                            else
                                 insertNeedProcessDeletedMessage(dialogID, integer);
+                            }
+                            else
+                            {
+                                removeDeletedMessage(dialogID, integer);
+                            }
+                                
                         param.args[2] = list;
                     }
                 }
