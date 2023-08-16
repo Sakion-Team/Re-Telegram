@@ -17,7 +17,8 @@ public class ClientChecker {
         Nekogram("tw.nekomimi.nekogram"),
         Yukigram("me.onlyfire.yukigram.beta"),
         MDgram("org.telegram.mdgram"),
-        iMoe("com.iMe.android.web");
+        iMoe("com.iMe.android.web"),
+        AyuGram("com.radolyn.ayugram");
 
         final String packageName;
 
