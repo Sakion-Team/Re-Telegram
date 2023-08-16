@@ -15,6 +15,8 @@ public class AllowMoveAllChatFolder {
         String dialogsActivity$6Name = AutomationResolver.resolve("org.telegram.ui.DialogsActivity$6");
         if (ClientChecker.check(ClientChecker.ClientType.iMoe))
             dialogsActivity$6Name = "org.telegram.ui.DialogsActivity$11";
+        if (ClientChecker.check(ClientChecker.ClientType.AyuGram))
+            dialogsActivity$6Name = "org.telegram.ui.DialogsActivity$5";
         Class<?> dialogsActivity$6 = XposedHelpers.findClassIfExists(dialogsActivity$6Name, lpparam.classLoader);
         if (dialogsActivity$6 != null)
         {
