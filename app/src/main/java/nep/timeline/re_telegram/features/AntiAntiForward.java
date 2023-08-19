@@ -32,13 +32,13 @@ public class AntiAntiForward {
         Class<?> chatActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.ChatActivity"), lpparam.classLoader);
         if (chatActivity != null)
         {
-            String fwdRestrictedTopHintField = AutomationResolver.resolve("ChatActivity", "fwdRestrictedTopHint", AutomationResolver.ResolverType.Field);
             String hasSelectedNoforwardsMessageMethod = AutomationResolver.resolve("ChatActivity", "hasSelectedNoforwardsMessage", AutomationResolver.ResolverType.Method);
             HookUtils.findAndHookAllMethod(chatActivity, hasSelectedNoforwardsMessageMethod, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if (Configs.isAntiAntiForward())
                     {
+                        String fwdRestrictedTopHintField = AutomationResolver.resolve("ChatActivity", "fwdRestrictedTopHint", AutomationResolver.ResolverType.Field);
                         XposedHelpers.setObjectField(param.thisObject, fwdRestrictedTopHintField, null);
                         param.setResult(false);
                     }

@@ -394,20 +394,20 @@ public class AntiRecall {
             XposedBridge.hookMethod(updateDialogsWithDeletedMessagesMethod, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    // param.setResult(null);
+                    //param.setResult(null);
                     if (param.args[2] instanceof ArrayList)
                     {
-                        ArrayList<Integer> list = Utils.castList(param.args[2], Integer.class);
                         long dialogID = -((long) param.args[1]);
                         if (dialogID > 0)
                             dialogID = 0;
+                        ArrayList<Integer> list = Utils.castList(param.args[2], Integer.class);
                         for (Integer integer : list)
                             if (!messageIsDeleted(dialogID, integer))
                             {
                                 list.remove(integer);
                                 insertNeedProcessDeletedMessage(dialogID, integer);
                             }
-                                
+
                         param.args[2] = list;
                     }
                 }

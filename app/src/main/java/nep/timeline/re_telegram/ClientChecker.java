@@ -16,9 +16,7 @@ public class ClientChecker {
     public enum ClientType {
         Nekogram("tw.nekomimi.nekogram"),
         Yukigram("me.onlyfire.yukigram.beta"),
-        MDgram("org.telegram.mdgram"),
-        iMoe("com.iMe.android.web"),
-        AyuGram("com.radolyn.ayugram");
+        MDgram("org.telegram.mdgram");
 
         final String packageName;
 

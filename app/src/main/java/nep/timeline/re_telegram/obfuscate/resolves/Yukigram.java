@@ -25,7 +25,7 @@ public class Yukigram {
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "Wk1"));
         classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.T2"));
         classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.G2"));
-        classList.add(new ClassInfo("org.telegram.ui.DialogsActivity$6", "org.telegram.ui.j3"));
+        classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.j3"));
         classList.add(new ClassInfo("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback", "VS"));
         classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "x5"));
 
@@ -62,7 +62,7 @@ public class Yukigram {
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "drawBottomPanel", "f"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "showBottomPanel", "l"));
-        methodList.add(new MethodInfo("DialogsActivity$6", "onDefaultTabMoved", "C0"));
+        methodList.add(new MethodInfo("DialogsActivity", "onDefaultTabMoved", "C0"));
         methodList.add(new MethodInfo("FilterTabsView$TouchHelperCallback", "lambda$new$0", "run"));
         methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "K0"));
     }
