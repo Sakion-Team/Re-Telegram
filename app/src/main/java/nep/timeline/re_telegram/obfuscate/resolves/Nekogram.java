@@ -29,7 +29,7 @@ public class Nekogram {
         //classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.m3"));
         classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.Y2"));
         classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.X3"));
-        classList.add(new ClassInfo("org.telegram.ui.FiltersSetupActivity", "org.telegram.ui.P4"));
+        classList.add(new ClassInfo("org.telegram.ui.FiltersSetupActivity$TouchHelperCallback", "org.telegram.ui.p1"));
         classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "F5"));
 
         fieldList.add(new FieldInfo("MessageObject", "messageOwner", "j"));
@@ -60,7 +60,7 @@ public class Nekogram {
         //methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));
         //methodList.add(new MethodInfo("ChatPullingDownDrawable", "showBottomPanel", "l"));
         methodList.add(new MethodInfo("DialogsActivity", "onDefaultTabMoved", "B0"));
-        methodList.add(new MethodInfo("FiltersSetupActivity", "onDefaultTabMoved", "A2"));
+        methodList.add(new MethodInfo("FiltersSetupActivity$TouchHelperCallback", "resetDefaultPosition", "o"));
         methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "J0"));
     }
 
