@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace 'nep.timeline.re_telegram'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "nep.timeline.re_telegram"
         minSdk 26
-        targetSdk 33
-        versionCode 37
-        versionName "3.7"
+        targetSdk 34
+        versionCode 38
+        versionName "3.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
