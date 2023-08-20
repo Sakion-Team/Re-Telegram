@@ -11,6 +11,7 @@ import java.util.List;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.HookUtils;
 import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.configs.Configs;
@@ -87,21 +88,36 @@ public class AllowMoveAllChatFolder {
             Utils.log("Not found DialogsActivity, " + Utils.issue);
         }
 
-        Class<?> filtersSetupActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback"), lpparam.classLoader);
-        if (filtersSetupActivity != null)
-        {
-            String onSelectedChanged = AutomationResolver.resolve("FilterTabsView$TouchHelperCallback", "lambda$new$0", AutomationResolver.ResolverType.Method);
-            HookUtils.findAndHookAllMethod(filtersSetupActivity, onSelectedChanged, new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    if (Configs.isAllowMoveAllChatFolder())
-                        param.setResult(null);
-                }
-            });
+        if (!ClientChecker.check(ClientChecker.ClientType.Nekogram)) {
+            Class<?> filtersSetupActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback"), lpparam.classLoader);
+            if (filtersSetupActivity != null) {
+                String run = AutomationResolver.resolve("FilterTabsView$TouchHelperCallback", "lambda$new$0", AutomationResolver.ResolverType.Method);
+                HookUtils.findAndHookAllMethod(filtersSetupActivity, run, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        if (Configs.isAllowMoveAllChatFolder())
+                            param.setResult(null);
+                    }
+                });
+            } else {
+                Utils.log("Not found FiltersSetupActivity, " + Utils.issue);
+            }
         }
         else
         {
-            Utils.log("Not found FiltersSetupActivity, " + Utils.issue);
+            Class<?> filtersSetupActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.FiltersSetupActivity"), lpparam.classLoader);
+            if (filtersSetupActivity != null) {
+                String onSelectedChanged = AutomationResolver.resolve("FiltersSetupActivity", "onDefaultTabMoved", AutomationResolver.ResolverType.Method);
+                HookUtils.findAndHookAllMethod(filtersSetupActivity, onSelectedChanged, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        if (Configs.isAllowMoveAllChatFolder())
+                            param.setResult(null);
+                    }
+                });
+            } else {
+                Utils.log("Not found FiltersSetupActivity, you maybe using an unsupported Nekogram version.");
+            }
         }
     }
 }
