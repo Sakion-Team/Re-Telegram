@@ -56,7 +56,7 @@ public class AllowMoveAllChatFolder {
         Class<?> dialogsActivity = null;
         String dialogsActivityName = AutomationResolver.resolve("org.telegram.ui.DialogsActivity");
         if (dialogsActivityName.equals("org.telegram.ui.DialogsActivity")) {
-            for (int i = 0; i < 13; i++)
+            for (int i = 0; i < 13; ++i)
             {
                 Class<?> dialogsActivity$ = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.DialogsActivity$" + i), lpparam.classLoader);
                 if (dialogsActivity$ != null)
@@ -69,7 +69,9 @@ public class AllowMoveAllChatFolder {
                     }
             }
         }
-        //Class<?> dialogsActivity = XposedHelpers.findClassIfExists(dialogsActivityName, lpparam.classLoader);
+        else
+            dialogsActivity = XposedHelpers.findClassIfExists(dialogsActivityName, lpparam.classLoader);
+
         if (dialogsActivity != null)
         {
             HookUtils.findAndHookAllMethod(dialogsActivity, onDefaultTabMoved, new XC_MethodHook() {
