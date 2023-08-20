@@ -56,7 +56,7 @@ public class AllowMoveAllChatFolder {
         Class<?> dialogsActivity = null;
         String dialogsActivityName = AutomationResolver.resolve("org.telegram.ui.DialogsActivity");
         if (dialogsActivityName.equals("org.telegram.ui.DialogsActivity")) {
-            for (int i = 0; i < 13; ++i)
+            for (int i = 0; i < 13; i++)
             {
                 Class<?> dialogsActivity$ = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.DialogsActivity$" + i), lpparam.classLoader);
                 if (dialogsActivity$ != null)
@@ -90,7 +90,7 @@ public class AllowMoveAllChatFolder {
         Class<?> filtersSetupActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback"), lpparam.classLoader);
         if (filtersSetupActivity != null)
         {
-            String onSelectedChanged = AutomationResolver.resolve("FilterTabsView$TouchHelperCallback", "onSelectedChanged", AutomationResolver.ResolverType.Method);
+            String onSelectedChanged = AutomationResolver.resolve("FilterTabsView$TouchHelperCallback", "lambda$new$0", AutomationResolver.ResolverType.Method);
             HookUtils.findAndHookAllMethod(filtersSetupActivity, onSelectedChanged, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {

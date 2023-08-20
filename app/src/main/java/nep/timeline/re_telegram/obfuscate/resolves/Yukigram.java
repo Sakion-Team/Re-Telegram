@@ -63,7 +63,7 @@ public class Yukigram {
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));
         methodList.add(new MethodInfo("ChatPullingDownDrawable", "showBottomPanel", "l"));
         methodList.add(new MethodInfo("DialogsActivity", "onDefaultTabMoved", "C0"));
-        methodList.add(new MethodInfo("FilterTabsView$TouchHelperCallback", "onSelectedChanged", "run"));
+        methodList.add(new MethodInfo("FilterTabsView$TouchHelperCallback", "lambda$new$0", "run"));
         methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "K0"));
     }
 
