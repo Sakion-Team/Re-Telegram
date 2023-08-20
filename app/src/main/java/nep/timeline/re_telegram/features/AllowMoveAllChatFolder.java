@@ -88,8 +88,8 @@ public class AllowMoveAllChatFolder {
         Class<?> filtersSetupActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback"), lpparam.classLoader);
         if (filtersSetupActivity != null)
         {
-            String run = AutomationResolver.resolve("FilterTabsView$TouchHelperCallback", "lambda$new$0", AutomationResolver.ResolverType.Method);
-            HookUtils.findAndHookAllMethod(filtersSetupActivity, run, new XC_MethodHook() {
+            String onSelectedChanged = AutomationResolver.resolve("FilterTabsView$TouchHelperCallback", "onSelectedChanged", AutomationResolver.ResolverType.Method);
+            HookUtils.findAndHookAllMethod(filtersSetupActivity, onSelectedChanged, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if (Configs.isAllowMoveAllChatFolder())

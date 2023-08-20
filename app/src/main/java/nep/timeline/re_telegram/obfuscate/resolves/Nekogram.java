@@ -13,24 +13,24 @@ public class Nekogram {
     private static final List<MethodInfo> methodList = new ArrayList<>();
 
     static {
-        classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "b7"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "Uq0"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "tp0"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "rm0"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "Ti0"));
-        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "Q61"));
+        classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "c7"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "Ir0"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "eq0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "bn0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "Bj0"));
+        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "y81"));
         //classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Message", "YL0"));
         //classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Peer", "oM0"));
         //classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages", "Ja1"));
         //classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages", "Ia1"));
         //classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages", "Ka1"));
         classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.r"));
-        classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "T01"));
+        classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "y21"));
         //classList.add(new ClassInfo("org.telegram.ui.ChatPullingDownDrawable", "org.telegram.ui.m3"));
-        classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.X2"));
-        classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.X3"));
+        classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.Y2"));
+        classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.n4"));
         classList.add(new ClassInfo("org.telegram.ui.Components.FilterTabsView$TouchHelperCallback", "org.telegram.ui.o1"));
-        classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "E5"));
+        classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "F5"));
 
         fieldList.add(new FieldInfo("MessageObject", "messageOwner", "j"));
         fieldList.add(new FieldInfo("UserConfig", "selectedAccount", "o0"));
@@ -42,11 +42,11 @@ public class Nekogram {
         methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "i"));
         methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "D0"));
         methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "F1"));
-        methodList.add(new MethodInfo("MessageObject", "updateMessageText", "I3"));
+        methodList.add(new MethodInfo("MessageObject", "updateMessageText", "K3"));
         methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "m1"));
         methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "S1"));
         methodList.add(new MethodInfo("MessagesController", "deleteMessages", "Q"));
-        methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "p"));
+        methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "m1"));
         methodList.add(new MethodInfo("MessagesController", "getInstance", "J0"));
         methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "S4"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "g"));
@@ -60,8 +60,8 @@ public class Nekogram {
         //methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));
         //methodList.add(new MethodInfo("ChatPullingDownDrawable", "showBottomPanel", "l"));
         methodList.add(new MethodInfo("DialogsActivity", "onDefaultTabMoved", "B0"));
-        methodList.add(new MethodInfo("FilterTabsView$TouchHelperCallback", "lambda$new$0", "o"));
-        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "I0"));
+        methodList.add(new MethodInfo("FilterTabsView$TouchHelperCallback", "onSelectedChanged", "m"));
+        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "J0"));
     }
 
     public static class ClassResolver
