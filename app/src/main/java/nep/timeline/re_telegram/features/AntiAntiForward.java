@@ -37,11 +37,7 @@ public class AntiAntiForward {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if (Configs.isAntiAntiForward())
-                    {
-                        String fwdRestrictedTopHintField = AutomationResolver.resolve("ChatActivity", "fwdRestrictedTopHint", AutomationResolver.ResolverType.Field);
-                        XposedHelpers.setObjectField(param.thisObject, fwdRestrictedTopHintField, null);
                         param.setResult(false);
-                    }
                 }
             });
         }
@@ -50,24 +46,21 @@ public class AntiAntiForward {
             Utils.log("Not found ChatActivity, " + Utils.issue);
         }
 
-        if (!ClientChecker.check(ClientChecker.ClientType.Yukigram))
+        Class<?> messageObject = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessageObject"), lpparam.classLoader);
+        if (messageObject != null)
         {
-            Class<?> messageObject = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessageObject"), lpparam.classLoader);
-            if (messageObject != null)
-            {
-                String canForwardMessageMethod = AutomationResolver.resolve("MessageObject", "canForwardMessage", AutomationResolver.ResolverType.Method);
-                XposedHelpers.findAndHookMethod(messageObject, canForwardMessageMethod, new XC_MethodHook() {
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        if (Configs.isAntiAntiForward())
-                            param.setResult(false);
-                    }
-                });
-            }
-            else
-            {
-                Utils.log("Not found MessageObject, " + Utils.issue);
-            }
+            String canForwardMessageMethod = AutomationResolver.resolve("MessageObject", "canForwardMessage", AutomationResolver.ResolverType.Method);
+            XposedHelpers.findAndHookMethod(messageObject, canForwardMessageMethod, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    if (Configs.isAntiAntiForward())
+                        param.setResult(true);
+                }
+            });
+        }
+        else
+        {
+            Utils.log("Not found MessageObject, " + Utils.issue);
         }
     }
 }
