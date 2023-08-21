@@ -401,13 +401,20 @@ public class AntiRecall {
                         if (dialogID > 0)
                             dialogID = 0;
                         ArrayList<Integer> list = Utils.castList(param.args[2], Integer.class);
-                        if (!list.isEmpty())
-                            for (Integer integer : list)
-                                if (!messageIsDeleted(dialogID, integer))
-                                {
-                                    list.remove(integer);
-                                    insertNeedProcessDeletedMessage(dialogID, integer);
-                                }
+                        try
+                        {
+                            if (!list.isEmpty())
+                                for (Integer integer : list)
+                                    if (!messageIsDeleted(dialogID, integer))
+                                    {
+                                        list.remove(integer);
+                                        insertNeedProcessDeletedMessage(dialogID, integer);
+                                    }
+                        }
+                        catch (ConcurrentModificationException ignored)
+                        {
+
+                        }
 
                         param.args[2] = list;
                     }
