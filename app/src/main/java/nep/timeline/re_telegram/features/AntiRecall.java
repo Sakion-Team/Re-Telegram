@@ -12,14 +12,15 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
-import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.HookInit;
 import nep.timeline.re_telegram.HookUtils;
 import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.application.HostApplicationInfo;
 import nep.timeline.re_telegram.configs.Configs;
+import nep.timeline.re_telegram.language.Language;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 import nep.timeline.re_telegram.structs.DeletedMessageInfo;
+import nep.timeline.re_telegram.utils.FieldUtils;
 import nep.timeline.re_telegram.virtuals.MessageObject;
 import nep.timeline.re_telegram.virtuals.OfficialChatMessageCell;
 import nep.timeline.re_telegram.virtuals.TLRPC;
@@ -184,6 +185,13 @@ public class AntiRecall {
         }
     }
 
+    private static String getCurrentTimeStringClassName(Object chatMessageCellInstance)
+    {
+        Object currentTimeString = FieldUtils.getFieldClassOfClass(chatMessageCellInstance, "currentTimeString");
+        assert currentTimeString != null;
+        return currentTimeString.getClass().getSimpleName();
+    }
+
     public static void initUI(XC_LoadPackage.LoadPackageParam lpparam)
     {
         Class<?> chatMessageCell = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.Cells.ChatMessageCell"), lpparam.classLoader);
@@ -194,24 +202,14 @@ public class AntiRecall {
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     if (Configs.isAntiRecall())
                     {
-                        String text = "deleted";
-                        switch (HostApplicationInfo.getApplication().getResources().getConfiguration().locale.getDisplayLanguage())
-                        {
-                            case "\u65e5\u672c\u8a9e":
-                                text = "\u524a\u9664\u3055\u308c\u307e\u3057\u305f";
-                                break;
-                            case "\u4e2d\u6587":
-                                text = "\u5df2\u5220\u9664";
-                                break;
-                        }
-
+                        String text = Language.resolve(HostApplicationInfo.getApplication().getResources().getConfiguration().locale, "antirecall.message.deleted");
                         MessageObject messageObject = new MessageObject(param.args[0]);
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
                         long channel_id = -owner.getPeerID().getChannelID();
                         if (messageIsDeleted(channel_id, id))
                         {
-                            if (ClientChecker.check(ClientChecker.ClientType.Nekogram) || ClientChecker.check(ClientChecker.ClientType.Yukigram))
+                            if (getCurrentTimeStringClassName(param.thisObject).equals("SpannableStringBuilder"))
                             {
                                 NekoChatMessageCell cell = new NekoChatMessageCell(param.thisObject);
                                 SpannableStringBuilder time = cell.getCurrentTimeString();
