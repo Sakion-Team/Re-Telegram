@@ -54,7 +54,7 @@ public class Nekogram {
         methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "H"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "G"));
         //methodList.add(new MethodInfo("NotificationsController", "loadRoundAvatar", "w"));
-        methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "Qh"));
+        methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "Sh"));
         //methodList.add(new MethodInfo("ChatPullingDownDrawable", "getNextUnreadDialog", "g"));
         //methodList.add(new MethodInfo("ChatPullingDownDrawable", "drawBottomPanel", "f"));
         //methodList.add(new MethodInfo("ChatPullingDownDrawable", "draw", "e"));
