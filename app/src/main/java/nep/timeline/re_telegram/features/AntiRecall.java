@@ -30,34 +30,41 @@ import nep.timeline.re_telegram.virtuals.nekogram.NekoChatMessageCell;
 
 public class AntiRecall {
     private static final List<DeletedMessageInfo> deletedMessagesIds = new ArrayList<>();
+    private static final List<DeletedMessageInfo> deletedMessages2Ids = new ArrayList<>();
     private static final List<DeletedMessageInfo> needProcessing = new ArrayList<>();
 
     public static List<DeletedMessageInfo> getDeletedMessagesIds() {
         return deletedMessagesIds;
     }
 
-    public static boolean messageIsDeleted(long channelID, int messageId) {
-        boolean deleted = false;
+    public static DeletedMessageInfo messageIsDeleted(long channelID, int messageId) {
         for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
             if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID && deletedMessagesId.getMessageIds().contains(messageId))
             {
-                deleted = true;
-                break;
+                return deletedMessagesId;
             }
         }
-        return deleted; // deletedMessagesIds.contains(messageId);
+        return null; // deletedMessagesIds.contains(messageId);
     }
 
-    public static boolean findInNeedProcess(long channelID, int messageId) {
-        boolean deleted = false;
+    public static DeletedMessageInfo messageIsDeleted2(long channelID, int messageId) {
+        for (DeletedMessageInfo deletedMessagesId : deletedMessages2Ids) {
+            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID && deletedMessagesId.getMessageIds().contains(messageId))
+            {
+                return deletedMessagesId;
+            }
+        }
+        return null; // deletedMessagesIds.contains(messageId);
+    }
+
+    public static DeletedMessageInfo findInNeedProcess(long channelID, int messageId) {
         for (DeletedMessageInfo deletedMessagesId : needProcessing) {
             if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID && deletedMessagesId.getMessageIds().contains(messageId))
             {
-                deleted = true;
-                break;
+                return deletedMessagesId;
             }
         }
-        return deleted;
+        return null;
     }
 
     public static void insertDeletedMessage(long channelID, ArrayList<Integer> messageIds) {
@@ -207,7 +214,7 @@ public class AntiRecall {
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
                         long channel_id = -owner.getPeerID().getChannelID();
-                        if (messageIsDeleted(channel_id, id))
+                        if (messageIsDeleted(channel_id, id) != null)
                         {
                             if (getCurrentTimeStringClassName(param.thisObject).equals("SpannableStringBuilder"))
                             {
@@ -351,12 +358,13 @@ public class AntiRecall {
                         try
                         {
                             for (Integer integer : list) {
-                                if (!messageIsDeleted(channel_id, integer) || AntiRecall.findInNeedProcess(channel_id, integer))
+                                DeletedMessageInfo info = AntiRecall.findInNeedProcess(channel_id, integer);
+                                if (messageIsDeleted(channel_id, integer) == null || info != null)
                                 {
                                     list.remove(integer);
                                     deletedMessages.add(integer);
                                 }
-                                else if (messageIsDeleted(channel_id, integer))
+                                else if (messageIsDeleted(channel_id, integer)  != null)
                                 {
                                     removeDeletedMessage(channel_id, integer);
                                 }
@@ -369,8 +377,8 @@ public class AntiRecall {
                         //list.removeIf(i -> (AntiRecall.findInNeedProcess(channel_id, i) || AntiRecall.messageIsDeleted(channel_id, i)));
                         param.args[1] = list;
                         insertDeletedMessage(channel_id, deletedMessages);
-                        //needProcessing.forEach(i -> AntiRecall.insertDeletedMessage(channel_id, i));
                         needProcessing.clear();
+                        //needProcessing.forEach(i -> AntiRecall.insertDeletedMessage(channel_id, i));
                     }
                 }
             });
@@ -392,9 +400,9 @@ public class AntiRecall {
             XposedBridge.hookMethod(updateDialogsWithDeletedMessagesMethod, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                    //param.setResult(null);
                     if (param.args[2] instanceof ArrayList)
                     {
+                        param.setResult(null);
                         long dialogID = -((long) param.args[1]);
                         if (dialogID > 0)
                             dialogID = 0;
@@ -403,11 +411,27 @@ public class AntiRecall {
                         {
                             if (!list.isEmpty())
                                 for (Integer integer : list)
-                                    if (!messageIsDeleted(dialogID, integer))
+                                {
+                                    DeletedMessageInfo info = messageIsDeleted2(dialogID, integer);
+                                    if (info == null)
                                     {
-                                        list.remove(integer);
-                                        insertNeedProcessDeletedMessage(dialogID, integer);
+                                        DeletedMessageInfo info2 = messageIsDeleted(dialogID, integer);
+                                        if (info2 == null)
+                                        {
+                                            list.remove(integer);
+                                            insertNeedProcessDeletedMessage(dialogID, integer);
+                                        }
+                                        else
+                                        {
+                                            deletedMessagesIds.add(info2);
+                                            insertNeedProcessDeletedMessage(dialogID, integer);
+                                        }
                                     }
+                                    else
+                                    {
+                                        deletedMessages2Ids.remove(info);
+                                    }
+                                }
                         }
                         catch (ConcurrentModificationException ignored)
                         {
