@@ -364,7 +364,7 @@ public class AntiRecall {
                                     list.remove(integer);
                                     deletedMessages.add(integer);
                                 }
-                                else if (messageIsDeleted(channel_id, integer)  != null)
+                                else if (messageIsDeleted(channel_id, integer) != null)
                                 {
                                     removeDeletedMessage(channel_id, integer);
                                 }
@@ -402,7 +402,6 @@ public class AntiRecall {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if (param.args[2] instanceof ArrayList)
                     {
-                        param.setResult(null);
                         long dialogID = -((long) param.args[1]);
                         if (dialogID > 0)
                             dialogID = 0;
@@ -415,6 +414,7 @@ public class AntiRecall {
                                     DeletedMessageInfo info = messageIsDeleted2(dialogID, integer);
                                     if (info == null)
                                     {
+                                        param.setResult(null);
                                         DeletedMessageInfo info2 = messageIsDeleted(dialogID, integer);
                                         if (info2 == null)
                                         {
@@ -423,12 +423,13 @@ public class AntiRecall {
                                         }
                                         else
                                         {
-                                            deletedMessagesIds.add(info2);
+                                            deletedMessages2Ids.add(info2);
                                             insertNeedProcessDeletedMessage(dialogID, integer);
                                         }
                                     }
                                     else
                                     {
+                                        deletedMessagesIds.add(info);
                                         deletedMessages2Ids.remove(info);
                                     }
                                 }
