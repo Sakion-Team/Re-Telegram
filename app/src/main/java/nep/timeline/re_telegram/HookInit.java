@@ -30,7 +30,8 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
             "uz.unnarsx.cherrygram",
             "me.onlyfire.yukigram.beta",
             "com.iMe.android.web",
-            "com.radolyn.ayugram");
+            "com.radolyn.ayugram",
+            "it.octogram.android");
     private static final List<String> hookPackagesCustomization = Arrays.asList("xyz.nextalone.nagram", "xyz.nextalone.nnngram",
             "nekox.messenger");
     private static String MODULE_PATH = null;

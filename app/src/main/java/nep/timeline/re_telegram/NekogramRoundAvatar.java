@@ -37,7 +37,7 @@ public class NekogramRoundAvatar {
                             path.setFillType(Path.FillType.INVERSE_EVEN_ODD);
                             int width = canvas.getWidth();
                             int height = canvas.getHeight();
-                            path.addRoundRect(0, 0, width, height, width / 2, width / 2, Path.Direction.CW);
+                            path.addRoundRect(0, 0, width, height, width / 2f, width / 2f, Path.Direction.CW);
                             Paint paint = new Paint();
                             paint.setAntiAlias(true);
                             paint.setColor(Color.TRANSPARENT);
