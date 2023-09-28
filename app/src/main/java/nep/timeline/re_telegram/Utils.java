@@ -46,7 +46,7 @@ public class Utils {
 
             return result;
         }
-        return null;
+        return result;
     }
 
     public static void readDeletedMessages()
