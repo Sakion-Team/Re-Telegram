@@ -5,7 +5,7 @@ import android.text.TextPaint;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -399,8 +399,6 @@ public class AntiRecall {
                         if (dialogID > 0)
                             dialogID = 0;
                         ArrayList<Integer> list = Utils.castList(param.args[2], Integer.class);
-                        try
-                        {
                             if (!list.isEmpty())
                                 for (Integer integer : list)
                                 {
@@ -426,12 +424,6 @@ public class AntiRecall {
                                         deletedMessages2Ids.remove(info);
                                     }
                                 }
-                        }
-                        catch (ConcurrentModificationException ignored)
-                        {
-
-                        }
-
                         param.args[2] = list;
                     }
                 }
