@@ -29,11 +29,11 @@ import nep.timeline.re_telegram.virtuals.UserConfig;
 import nep.timeline.re_telegram.virtuals.nekogram.NekoChatMessageCell;
 
 public class AntiRecall {
-    private static final List<DeletedMessageInfo> deletedMessagesIds = new ArrayList<>();
-    private static final List<DeletedMessageInfo> deletedMessages2Ids = new ArrayList<>();
-    private static final List<DeletedMessageInfo> needProcessing = new ArrayList<>();
+    private static final CopyOnWriteArrayList<DeletedMessageInfo> deletedMessagesIds = new CopyOnWriteArrayList<>();
+    private static final CopyOnWriteArrayList<DeletedMessageInfo> deletedMessages2Ids = new CopyOnWriteArrayList<>();
+    private static final CopyOnWriteArrayList<DeletedMessageInfo> needProcessing = new CopyOnWriteArrayList<>();
 
-    public static List<DeletedMessageInfo> getDeletedMessagesIds() {
+    public static CopyOnWriteArrayList<DeletedMessageInfo> getDeletedMessagesIds() {
         return deletedMessagesIds;
     }
 
@@ -329,7 +329,7 @@ public class AntiRecall {
         Class<?> notificationCenter = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.messenger.NotificationCenter"));
         Class<?> notificationsController = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.messenger.NotificationsController"));
 
-        ArrayList<Method> markMessagesAsDeletedMethods = new ArrayList<>();
+        List<Method> markMessagesAsDeletedMethods = new ArrayList<>();
         for (Method method : messagesStorage.getDeclaredMethods()) {
             if (method.getName().equals(AutomationResolver.resolve("MessagesStorage", "markMessagesAsDeleted", AutomationResolver.ResolverType.Method))) {
                 markMessagesAsDeletedMethods.add(method);
@@ -355,24 +355,17 @@ public class AntiRecall {
                             channel_id = 0;
                         //list.clear();
                         ArrayList<Integer> deletedMessages = new ArrayList<>();
-                        try
-                        {
-                            for (Integer integer : list) {
-                                DeletedMessageInfo info = AntiRecall.findInNeedProcess(channel_id, integer);
-                                if (messageIsDeleted(channel_id, integer) == null || info != null)
-                                {
-                                    list.remove(integer);
-                                    deletedMessages.add(integer);
-                                }
-                                else if (messageIsDeleted(channel_id, integer) != null)
-                                {
-                                    removeDeletedMessage(channel_id, integer);
-                                }
+                        for (Integer integer : list) {
+                            DeletedMessageInfo info = AntiRecall.findInNeedProcess(channel_id, integer);
+                            if (messageIsDeleted(channel_id, integer) == null || info != null)
+                            {
+                                list.remove(integer);
+                                deletedMessages.add(integer);
                             }
-                        }
-                        catch (ConcurrentModificationException ignored)
-                        {
-
+                            else if (messageIsDeleted(channel_id, integer) != null)
+                            {
+                                removeDeletedMessage(channel_id, integer);
+                            }
                         }
                         //list.removeIf(i -> (AntiRecall.findInNeedProcess(channel_id, i) || AntiRecall.messageIsDeleted(channel_id, i)));
                         param.args[1] = list;
@@ -384,7 +377,7 @@ public class AntiRecall {
             });
         }
 
-        ArrayList<Method> updateDialogsWithDeletedMessagesMethods = new ArrayList<>();
+        List<Method> updateDialogsWithDeletedMessagesMethods = new ArrayList<>();
         for (Method method : messagesStorage.getDeclaredMethods()) {
             if (method.getName().equals(AutomationResolver.resolve("MessagesStorage", "updateDialogsWithDeletedMessages", AutomationResolver.ResolverType.Method))) {
                 updateDialogsWithDeletedMessagesMethods.add(method);
