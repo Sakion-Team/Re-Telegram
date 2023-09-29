@@ -399,31 +399,31 @@ public class AntiRecall {
                         if (dialogID > 0)
                             dialogID = 0;
                         ArrayList<Integer> list = Utils.castList(param.args[2], Integer.class);
-                            if (!list.isEmpty())
-                                for (Integer integer : list)
+                        if (!list.isEmpty())
+                            for (Integer integer : list)
+                            {
+                                DeletedMessageInfo info = messageIsDeleted2(dialogID, integer);
+                                if (info == null)
                                 {
-                                    DeletedMessageInfo info = messageIsDeleted2(dialogID, integer);
-                                    if (info == null)
+                                    param.setResult(null);
+                                    DeletedMessageInfo info2 = messageIsDeleted(dialogID, integer);
+                                    if (info2 == null)
                                     {
-                                        param.setResult(null);
-                                        DeletedMessageInfo info2 = messageIsDeleted(dialogID, integer);
-                                        if (info2 == null)
-                                        {
-                                            list.remove(integer);
-                                            insertNeedProcessDeletedMessage(dialogID, integer);
-                                        }
-                                        else
-                                        {
-                                            deletedMessages2Ids.add(info2);
-                                            insertNeedProcessDeletedMessage(dialogID, integer);
-                                        }
+                                        list.remove(integer);
+                                        insertNeedProcessDeletedMessage(dialogID, integer);
                                     }
                                     else
                                     {
-                                        deletedMessagesIds.add(info);
-                                        deletedMessages2Ids.remove(info);
+                                        deletedMessages2Ids.add(info2);
+                                        insertNeedProcessDeletedMessage(dialogID, integer);
                                     }
                                 }
+                                else
+                                {
+                                    deletedMessagesIds.add(info);
+                                    deletedMessages2Ids.remove(info);
+                                }
+                            }
                         param.args[2] = list;
                     }
                 }
@@ -465,7 +465,7 @@ public class AntiRecall {
         else
             XposedBridge.hookMethod(removeDeletedMessagesFromNotifications, new XC_MethodHook() {
                 @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                protected void beforeHookedMethod(MethodHookParam param) {
                     if (Configs.isAntiRecall())
                         param.setResult(null);
                 }

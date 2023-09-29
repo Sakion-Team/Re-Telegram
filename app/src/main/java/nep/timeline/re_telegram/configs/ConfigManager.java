@@ -24,9 +24,8 @@ public class ConfigManager {
         try
         {
             JsonElement valueJsonElement = JsonParser.parseReader(new BufferedReader(new FileReader(cfgPath)));
-            if (!valueJsonElement.isJsonNull() && valueJsonElement instanceof JsonObject)
+            if (!valueJsonElement.isJsonNull() && valueJsonElement instanceof JsonObject jsonObject)
             {
-                JsonObject jsonObject = (JsonObject) valueJsonElement;
                 jsonObject.entrySet().forEach(entry -> {
                     JsonObject jsonModule = entry.getValue().getAsJsonObject();
                     if (jsonModule.get("AntiAntiForward") != null)
@@ -41,6 +40,8 @@ public class ConfigManager {
                         Configs.setAllowMoveAllChatFolder(jsonModule.get("AllowMoveAllChatFolder").getAsBoolean());
                     if (jsonModule.get("UseSystemTypeface") != null)
                         Configs.setUseSystemTypeface(jsonModule.get("UseSystemTypeface").getAsBoolean());
+                    if (jsonModule.get("HideStories") != null)
+                        Configs.setHideStories(jsonModule.get("HideStories").getAsBoolean());
                 });
             }
         }
@@ -64,6 +65,7 @@ public class ConfigManager {
         jsonModule.add("ProhibitChannelSwitching", new JsonPrimitive(Configs.isProhibitChannelSwitching()));
         jsonModule.add("AllowMoveAllChatFolder", new JsonPrimitive(Configs.isAllowMoveAllChatFolder()));
         jsonModule.add("UseSystemTypeface", new JsonPrimitive(Configs.isUseSystemTypeface()));
+        jsonModule.add("HideStories", new JsonPrimitive(Configs.isHideStories()));
         FileUtils.save(cfgPath, Utils.getBuilderGson().toJson(valueJsonObject), false);
     }
 }

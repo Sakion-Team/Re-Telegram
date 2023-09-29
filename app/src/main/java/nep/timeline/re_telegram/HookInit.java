@@ -16,6 +16,7 @@ import nep.timeline.re_telegram.features.AllowMoveAllChatFolder;
 import nep.timeline.re_telegram.features.AntiAntiForward;
 import nep.timeline.re_telegram.features.AntiRecall;
 import nep.timeline.re_telegram.features.FakePremium;
+import nep.timeline.re_telegram.features.HideStories;
 import nep.timeline.re_telegram.features.NoSponsoredMessages;
 import nep.timeline.re_telegram.features.ProhibitChannelSwitching;
 import nep.timeline.re_telegram.features.UseSystemTypeface;
@@ -32,6 +33,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
             "com.iMe.android.web",
             "com.radolyn.ayugram",
             "it.octogram.android");
+    private static final List<String> notNeedHideStories = Arrays.asList("tw.nekomimi.nekogram", "com.exteragram.messenger", "uz.unnarsx.cherrygram");
     private static final List<String> hookPackagesCustomization = Arrays.asList("xyz.nextalone.nagram", "xyz.nextalone.nnngram",
             "nekox.messenger");
     private static String MODULE_PATH = null;
@@ -40,8 +42,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
     public final List<String> getHookPackages()
     {
         List<String> hookPackagesLocal = new ArrayList<>(hookPackages);
-        List<String> hookPackagesCustomizationLocal = new ArrayList<>(hookPackagesCustomization);
-        hookPackagesLocal.addAll(hookPackagesCustomizationLocal);
+        hookPackagesLocal.addAll(hookPackagesCustomization);
         return hookPackagesLocal;
     }
 
@@ -94,6 +95,9 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
                 if (!ClientChecker.check(ClientChecker.ClientType.Nekogram))
                     ProhibitChannelSwitching.init(lpparam);
+
+                if (!notNeedHideStories.contains(lpparam.packageName))
+                    HideStories.init(lpparam);
 
                 NoSponsoredMessages.init(lpparam);
 
