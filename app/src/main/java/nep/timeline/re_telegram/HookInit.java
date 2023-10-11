@@ -34,7 +34,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
             "com.radolyn.ayugram",
             "it.octogram.android");
     private static final List<String> notNeedHideStories = Arrays.asList("tw.nekomimi.nekogram", "com.exteragram.messenger", "uz.unnarsx.cherrygram");
-    private static final List<String> hookPackagesCustomization = Arrays.asList("xyz.nextalone.nagram", "xyz.nextalone.nnngram",
+    private static final List<String> hookPackagesCustomization = Arrays.asList("xyz.nextalone.nagram",
             "nekox.messenger");
     private static String MODULE_PATH = null;
     public static final boolean DEBUG_MODE = true;
@@ -93,13 +93,15 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                 if (!ClientChecker.check(ClientChecker.ClientType.MDgram))
                     UseSystemTypeface.init(lpparam);
 
-                if (!ClientChecker.check(ClientChecker.ClientType.Nekogram))
-                    ProhibitChannelSwitching.init(lpparam);
+                if (!lpparam.packageName.equals("xyz.nextalone.nnngram")) {
+                    if (!ClientChecker.check(ClientChecker.ClientType.Nekogram))
+                        ProhibitChannelSwitching.init(lpparam);
 
-                if (!notNeedHideStories.contains(lpparam.packageName))
-                    HideStories.init(lpparam);
+                    if (!notNeedHideStories.contains(lpparam.packageName))
+                        HideStories.init(lpparam);
 
-                NoSponsoredMessages.init(lpparam);
+                    NoSponsoredMessages.init(lpparam);
+                }
 
                 AntiAntiForward.init(lpparam);
             }
