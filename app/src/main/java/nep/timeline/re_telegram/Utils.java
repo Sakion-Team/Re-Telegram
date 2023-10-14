@@ -59,7 +59,6 @@ public class Utils {
             JsonElement valueJsonElement = JsonParser.parseReader(new BufferedReader(new FileReader(deletedMessagesSavePath)));
 
             if (!valueJsonElement.isJsonNull() && valueJsonElement instanceof JsonObject jsonObject) {
-
                 jsonObject.entrySet().forEach(entry -> {
                     JsonObject jsonObject2 = entry.getValue().getAsJsonObject();
                     jsonObject2.entrySet().forEach(entry2 -> {
