@@ -15,7 +15,6 @@ import nep.timeline.re_telegram.application.ApplicationLoaderHook;
 import nep.timeline.re_telegram.features.AllowMoveAllChatFolder;
 import nep.timeline.re_telegram.features.AntiAntiForward;
 import nep.timeline.re_telegram.features.AntiRecall;
-import nep.timeline.re_telegram.features.FakePremium;
 import nep.timeline.re_telegram.features.HideStories;
 import nep.timeline.re_telegram.features.NoSponsoredMessages;
 import nep.timeline.re_telegram.features.ProhibitChannelSwitching;
@@ -73,6 +72,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
                 Utils.log("Trying to hook app: " + lpparam.packageName);
 
             Utils.globalLoadPackageParam = lpparam;
+
             ApplicationLoaderHook.init(lpparam.classLoader);
 
             AntiRecall.initUI(lpparam);

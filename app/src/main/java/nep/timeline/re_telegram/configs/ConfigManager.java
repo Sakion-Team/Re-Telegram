@@ -24,8 +24,9 @@ public class ConfigManager {
         try
         {
             JsonElement valueJsonElement = JsonParser.parseReader(new BufferedReader(new FileReader(cfgPath)));
-            if (!valueJsonElement.isJsonNull() && valueJsonElement instanceof JsonObject jsonObject)
+            if (!valueJsonElement.isJsonNull() && valueJsonElement instanceof JsonObject)
             {
+                JsonObject jsonObject = (JsonObject) valueJsonElement;
                 jsonObject.entrySet().forEach(entry -> {
                     JsonObject jsonModule = entry.getValue().getAsJsonObject();
                     if (jsonModule.get("AntiAntiForward") != null)
@@ -58,7 +59,7 @@ public class ConfigManager {
 
         JsonObject valueJsonObject = new JsonObject();
         JsonObject jsonModule = new JsonObject();
-        valueJsonObject.add("Re:Telegram", jsonModule);
+        valueJsonObject.add("Re-Telegram", jsonModule);
         jsonModule.add("AntiAntiForward", new JsonPrimitive(Configs.isAntiAntiForward()));
         jsonModule.add("AntiRecall", new JsonPrimitive(Configs.isAntiRecall()));
         jsonModule.add("NoSponsoredMessages", new JsonPrimitive(Configs.isNoSponsoredMessages()));

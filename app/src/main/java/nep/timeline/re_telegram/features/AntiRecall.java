@@ -395,27 +395,27 @@ public class AntiRecall {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if (param.args[2] instanceof ArrayList)
                     {
-                        long dialogID = -((long) param.args[1]);
-                        if (dialogID > 0)
-                            dialogID = 0;
+                        long channelID = -((long) param.args[1]);
+                        if (channelID > 0)
+                            channelID = 0;
                         ArrayList<Integer> list = Utils.castList(param.args[2], Integer.class);
                         if (!list.isEmpty())
                             for (Integer integer : list)
                             {
-                                DeletedMessageInfo info = messageIsDeleted2(dialogID, integer);
+                                DeletedMessageInfo info = messageIsDeleted2(channelID, integer);
                                 if (info == null)
                                 {
                                     param.setResult(null);
-                                    DeletedMessageInfo info2 = messageIsDeleted(dialogID, integer);
+                                    DeletedMessageInfo info2 = messageIsDeleted(channelID, integer);
                                     if (info2 == null)
                                     {
                                         list.remove(integer);
-                                        insertNeedProcessDeletedMessage(dialogID, integer);
+                                        insertNeedProcessDeletedMessage(channelID, integer);
                                     }
                                     else
                                     {
                                         deletedMessages2Ids.add(info2);
-                                        insertNeedProcessDeletedMessage(dialogID, integer);
+                                        insertNeedProcessDeletedMessage(channelID, integer);
                                     }
                                 }
                                 else

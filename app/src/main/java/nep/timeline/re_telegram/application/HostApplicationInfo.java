@@ -1,6 +1,7 @@
 package nep.timeline.re_telegram.application;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -9,7 +10,7 @@ import java.util.Objects;
 
 public class HostApplicationInfo {
 
-    private static Application sHostApplication = null;
+    private static Context sHostApplication = null;
     private static PackageInfo sHostPackageInfo = null;
     private static String sHostAppPackageName = null;
     private static int sHostVersionCode = 0;
@@ -17,7 +18,7 @@ public class HostApplicationInfo {
     private static String sHostAppVersionName = null;
     private static String sHostAppName = null;
 
-    public static void setApplication(Application app) {
+    public static void setApplication(Context app) {
         Objects.requireNonNull(app, "app");
         sHostApplication = app;
         try {
@@ -37,7 +38,7 @@ public class HostApplicationInfo {
         sHostAppName = sHostPackageInfo.applicationInfo.loadLabel(app.getPackageManager()).toString();
     }
 
-    public static Application getApplication() {
+    public static Context getApplication() {
         return sHostApplication;
     }
 
