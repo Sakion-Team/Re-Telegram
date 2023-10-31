@@ -287,7 +287,8 @@ public class AntiRecall {
                             Class<?> TL_updateDeleteMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages"));
                             Class<?> TL_updateDeleteChannelMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages"));
                             //Class<?> TL_updateDeleteScheduledMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages"));
-                            ArrayList<Object> updates = Utils.castList(param.args[0], Object.class);
+                            ArrayList<Object> updates = (ArrayList<Object>) param.args[0];
+                            //ArrayList<Object> updates = Utils.castList(param.args[0], Object.class);
                             if (updates != null && !updates.isEmpty()) {
                                 //ArrayList<Object> newUpdates = new ArrayList<>();
 
@@ -347,7 +348,8 @@ public class AntiRecall {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if (Configs.isAntiRecall() && param.args[1] instanceof ArrayList)
                     {
-                        ArrayList<Integer> list = Utils.castList(param.args[1], Integer.class);
+                        ArrayList<Integer> list = (ArrayList<Integer>) param.args[1];
+                        //ArrayList<Integer> list = Utils.castList(param.args[1], Integer.class);
                         if (list.isEmpty())
                             return;
                         long channel_id = (long) param.args[0];
@@ -398,7 +400,8 @@ public class AntiRecall {
                         long channelID = -((long) param.args[1]);
                         if (channelID > 0)
                             channelID = 0;
-                        ArrayList<Integer> list = Utils.castList(param.args[2], Integer.class);
+                        ArrayList<Integer> list = (ArrayList<Integer>) param.args[2];
+                        //ArrayList<Integer> list = Utils.castList(param.args[2], Integer.class);
                         if (!list.isEmpty())
                             for (Integer integer : list)
                             {

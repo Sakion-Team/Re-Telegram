@@ -46,7 +46,7 @@ public class ApplicationLoaderHook {
                     return;
                 }
 
-                File dir = new File(app.getFilesDir().getAbsolutePath() + "/RETG");
+                File dir = new File(app.getFilesDir().getAbsolutePath() + "/RE-TG");
                 if (!dir.exists())
                     if (!dir.mkdir())
                     {

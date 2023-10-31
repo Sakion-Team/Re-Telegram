@@ -10,8 +10,8 @@ android {
         applicationId "nep.timeline.re_telegram"
         minSdk 26
         targetSdk 34
-        versionCode 46
-        versionName "4.6"
+        versionCode 48
+        versionName "4.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
