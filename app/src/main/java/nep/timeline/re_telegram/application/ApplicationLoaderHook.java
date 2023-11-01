@@ -37,7 +37,7 @@ public class ApplicationLoaderHook {
 
                 try {
                     app = app.getApplicationContext();
-                } catch (Throwable th) {
+                } catch (Throwable ignored) {
                 }
 
                 if (app == null)
@@ -46,7 +46,7 @@ public class ApplicationLoaderHook {
                     return;
                 }
 
-                File dir = new File(app.getFilesDir().getAbsolutePath() + "/RE-TG");
+                File dir = new File(app.getFilesDir().getAbsolutePath() + "Genshin-Impact----Start----");
                 if (!dir.exists())
                     if (!dir.mkdir())
                     {

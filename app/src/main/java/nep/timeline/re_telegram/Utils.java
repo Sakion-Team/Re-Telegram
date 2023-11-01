@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -63,7 +64,7 @@ public class Utils {
                     JsonObject jsonObject2 = entry.getValue().getAsJsonObject();
                     jsonObject2.entrySet().forEach(entry2 -> {
                         JsonArray jsonModule = entry2.getValue().getAsJsonArray();
-                        ArrayList<Integer> list = new ArrayList<>();
+                        CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>();
                         jsonModule.forEach(id -> list.add(id.getAsInt()));
                         AntiRecall.insertDeletedMessageFromSaveFile(Integer.parseInt(entry.getKey().trim()), Long.parseLong(entry2.getKey().trim()), list);
                     });

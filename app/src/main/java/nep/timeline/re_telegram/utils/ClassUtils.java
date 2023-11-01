@@ -80,42 +80,4 @@ public class ClassUtils {
         Class<?> cls = loadClass(className, false);
         classSet.add(cls);
     }
-
-    public static Set<Class<?>> getClassSet(String packageName) {
-        Set<Class<?>> classSet = new HashSet<>();
-        try {
-            Enumeration<URL> urls = getClassLoader().getResources(packageName.replace(".", "/"));
-            while (urls.hasMoreElements()) {
-                URL url = urls.nextElement();
-                if (url != null) {
-                    String protocol = url.getProtocol();
-                    if (protocol.equals("file")) {
-                        String packagePath = URLDecoder.decode(url.getFile(), StandardCharsets.UTF_8);
-                        addClass(classSet, packagePath, packageName);
-                    } else if (protocol.equals("jar")) {
-                        JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
-                        if (jarURLConnection != null) {
-                            JarFile jarFile = jarURLConnection.getJarFile();
-                            if (jarFile != null) {
-                                Enumeration<JarEntry> jarEntries = jarFile.entries();
-                                while (jarEntries.hasMoreElements()) {
-                                    JarEntry jarEntry = jarEntries.nextElement();
-                                    String jarEntryName = jarEntry.getName();
-                                    if (jarEntryName.endsWith(".class")) {
-                                        String className = jarEntryName.substring(0, jarEntryName.lastIndexOf("."))
-                                                .replaceAll("/", ".");
-                                        doAddClass(classSet, className);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return classSet;
-    }
 }

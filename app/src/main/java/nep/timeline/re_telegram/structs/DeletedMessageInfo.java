@@ -1,15 +1,16 @@
 package nep.timeline.re_telegram.structs;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DeletedMessageInfo {
     public static final long NOT_CHANNEL = 0;
 
     private final int selectedAccount;
     private final long channelID;
-    private final ArrayList<Integer> messageIds;
+    private final CopyOnWriteArrayList<Integer> messageIds;
 
-    public DeletedMessageInfo(int selectedAccount, long channelID, ArrayList<Integer> messageIds)
+    public DeletedMessageInfo(int selectedAccount, long channelID, CopyOnWriteArrayList<Integer> messageIds)
     {
         this.selectedAccount = selectedAccount;
         this.channelID = channelID;
@@ -20,7 +21,7 @@ public class DeletedMessageInfo {
     {
         this.selectedAccount = selectedAccount;
         this.channelID = channelID;
-        this.messageIds = new ArrayList<>();
+        this.messageIds = new CopyOnWriteArrayList<>();
         this.messageIds.add(messageId);
     }
 
@@ -38,11 +39,11 @@ public class DeletedMessageInfo {
         return this.channelID == NOT_CHANNEL;
     }
 
-    public ArrayList<Integer> getMessageIds() {
+    public CopyOnWriteArrayList<Integer> getMessageIds() {
         return this.messageIds;
     }
 
-    public void insertMessageIds(ArrayList<Integer> messageIds) {
+    public void insertMessageIds(CopyOnWriteArrayList<Integer> messageIds) {
         this.messageIds.addAll(messageIds);
     }
 

@@ -10,15 +10,16 @@ android {
         applicationId "nep.timeline.re_telegram"
         minSdk 26
         targetSdk 34
-        versionCode 48
-        versionName "4.8"
+        versionCode 50
+        versionName "5.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

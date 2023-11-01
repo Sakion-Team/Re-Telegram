@@ -67,7 +67,7 @@ public class AntiRecall {
         return null;
     }
 
-    public static void insertDeletedMessage(long channelID, ArrayList<Integer> messageIds) {
+    public static void insertDeletedMessage(long channelID, CopyOnWriteArrayList<Integer> messageIds) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
         for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
@@ -130,7 +130,7 @@ public class AntiRecall {
         }
     }
 
-    public static void insertNeedProcessDeletedMessage(long channelID, ArrayList<Integer> messageIds) {
+    public static void insertNeedProcessDeletedMessage(long channelID, CopyOnWriteArrayList<Integer> messageIds) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
         for (DeletedMessageInfo deletedMessagesId : needProcessing) {
@@ -171,7 +171,7 @@ public class AntiRecall {
         }
     }
 
-    public static void insertDeletedMessageFromSaveFile(int selectedAccount, long channelID, ArrayList<Integer> messageIds) {
+    public static void insertDeletedMessageFromSaveFile(int selectedAccount, long channelID, CopyOnWriteArrayList<Integer> messageIds) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
         for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
@@ -287,8 +287,7 @@ public class AntiRecall {
                             Class<?> TL_updateDeleteMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages"));
                             Class<?> TL_updateDeleteChannelMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages"));
                             //Class<?> TL_updateDeleteScheduledMessages = lpparam.classLoader.loadClass(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages"));
-                            ArrayList<Object> updates = (ArrayList<Object>) param.args[0];
-                            //ArrayList<Object> updates = Utils.castList(param.args[0], Object.class);
+                            CopyOnWriteArrayList<Object> updates = new CopyOnWriteArrayList<>(Utils.castList(param.args[0], Object.class));
                             if (updates != null && !updates.isEmpty()) {
                                 //ArrayList<Object> newUpdates = new ArrayList<>();
 
@@ -302,11 +301,11 @@ public class AntiRecall {
                                     if (item.getClass().equals(TL_updateDeleteChannelMessages))
                                     {
                                         TLRPC.TL_updateDeleteChannelMessages channelMessages = new TLRPC.TL_updateDeleteChannelMessages(item);
-                                        insertNeedProcessDeletedMessage(-channelMessages.getChannelID(), channelMessages.getMessages());
+                                        insertNeedProcessDeletedMessage(-channelMessages.getChannelID(), new CopyOnWriteArrayList<>(channelMessages.getMessages()));
                                     }
 
                                     if (item.getClass().equals(TL_updateDeleteMessages))
-                                        insertNeedProcessDeletedMessage(DeletedMessageInfo.NOT_CHANNEL, new TLRPC.TL_updateDeleteMessages(item).getMessages());
+                                        insertNeedProcessDeletedMessage(DeletedMessageInfo.NOT_CHANNEL, new CopyOnWriteArrayList<>(new TLRPC.TL_updateDeleteMessages(item).getMessages()));
 
                                     if (HookInit.DEBUG_MODE && (item.getClass().equals(TL_updateDeleteMessages) || item.getClass().equals(TL_updateDeleteChannelMessages)))
                                         Utils.log("Protected message! event: " + item.getClass());
@@ -348,15 +347,14 @@ public class AntiRecall {
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     if (Configs.isAntiRecall() && param.args[1] instanceof ArrayList)
                     {
-                        ArrayList<Integer> list = (ArrayList<Integer>) param.args[1];
-                        //ArrayList<Integer> list = Utils.castList(param.args[1], Integer.class);
+                        CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>(Utils.castList(param.args[1], Integer.class));
                         if (list.isEmpty())
                             return;
                         long channel_id = (long) param.args[0];
                         if (channel_id > 0)
                             channel_id = 0;
                         //list.clear();
-                        ArrayList<Integer> deletedMessages = new ArrayList<>();
+                        CopyOnWriteArrayList<Integer> deletedMessages = new CopyOnWriteArrayList<>();
                         for (Integer integer : list) {
                             DeletedMessageInfo info = AntiRecall.findInNeedProcess(channel_id, integer);
                             if (messageIsDeleted(channel_id, integer) == null || info != null)
@@ -370,7 +368,7 @@ public class AntiRecall {
                             }
                         }
                         //list.removeIf(i -> (AntiRecall.findInNeedProcess(channel_id, i) || AntiRecall.messageIsDeleted(channel_id, i)));
-                        param.args[1] = list;
+                        param.args[1] = new ArrayList<>(list);
                         insertDeletedMessage(channel_id, deletedMessages);
                         needProcessing.clear();
                         //needProcessing.forEach(i -> AntiRecall.insertDeletedMessage(channel_id, i));
@@ -400,8 +398,7 @@ public class AntiRecall {
                         long channelID = -((long) param.args[1]);
                         if (channelID > 0)
                             channelID = 0;
-                        ArrayList<Integer> list = (ArrayList<Integer>) param.args[2];
-                        //ArrayList<Integer> list = Utils.castList(param.args[2], Integer.class);
+                        CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>(Utils.castList(param.args[2], Integer.class));
                         if (!list.isEmpty())
                             for (Integer integer : list)
                             {
@@ -427,7 +424,7 @@ public class AntiRecall {
                                     deletedMessages2Ids.remove(info);
                                 }
                             }
-                        param.args[2] = list;
+                        param.args[2] = new ArrayList<>(list);
                     }
                 }
             });

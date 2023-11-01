@@ -14,16 +14,16 @@ public class Nekogram {
 
     static {
         classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "Q8"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "zI0"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "WG0"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "YB0"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "eD0"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "gz0"));
-        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "qA1"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "FI0"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "cH0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "dC0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "jD0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "lz0"));
+        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "yA1"));
         classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.r"));
-        classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "Ts1"));
+        classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "bt1"));
         classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.m3"));
-        classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.m4"));
+        classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.n4"));
         classList.add(new ClassInfo("org.telegram.ui.FiltersSetupActivity$TouchHelperCallback", "org.telegram.ui.s1"));
         classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "x7"));
 
@@ -33,9 +33,10 @@ public class Nekogram {
         fieldList.add(new FieldInfo("NotificationCenter", "messagesDeleted", "w"));
         fieldList.add(new FieldInfo("AndroidUtilities", "typefaceCache", "a"));
 
+        methodList.add(new MethodInfo("ApplicationLoader", "getFilesDirFixed", "e"));
         methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "i"));
-        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "F0"));
-        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "G1"));
+        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "G0"));
+        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "H1"));
         methodList.add(new MethodInfo("MessageObject", "updateMessageText", "a4"));
         methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "r"));
         methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "r1"));
