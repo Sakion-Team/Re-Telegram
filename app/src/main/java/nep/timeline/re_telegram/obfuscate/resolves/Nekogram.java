@@ -14,12 +14,12 @@ public class Nekogram {
 
     static {
         classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "Q8"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "FI0"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "EI0"));
         classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "cH0"));
         classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "dC0"));
         classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "jD0"));
         classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "lz0"));
-        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "yA1"));
+        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "zA1"));
         classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.r"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "bt1"));
         classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.m3"));
@@ -33,7 +33,6 @@ public class Nekogram {
         fieldList.add(new FieldInfo("NotificationCenter", "messagesDeleted", "w"));
         fieldList.add(new FieldInfo("AndroidUtilities", "typefaceCache", "a"));
 
-        methodList.add(new MethodInfo("ApplicationLoader", "getFilesDirFixed", "e"));
         methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "i"));
         methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "G0"));
         methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "H1"));
