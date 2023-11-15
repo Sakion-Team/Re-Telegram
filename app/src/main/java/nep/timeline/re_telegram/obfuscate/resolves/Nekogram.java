@@ -14,14 +14,14 @@ public class Nekogram {
 
     static {
         classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "R8"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "GI0"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "eH0"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "gC0"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "lD0"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "oz0"));
-        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "BA1"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "FI0"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "dH0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "fC0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "kD0"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "nz0"));
+        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "AA1"));
         classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "org.telegram.ui.Cells.r"));
-        classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "dt1"));
+        classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "ct1"));
         classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.m3"));
         classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.n4"));
         classList.add(new ClassInfo("org.telegram.ui.FiltersSetupActivity$TouchHelperCallback", "org.telegram.ui.s1"));
@@ -30,7 +30,7 @@ public class Nekogram {
         fieldList.add(new FieldInfo("MessageObject", "messageOwner", "j"));
         fieldList.add(new FieldInfo("UserConfig", "selectedAccount", "G0"));
         fieldList.add(new FieldInfo("Theme", "chat_timePaint", "H2"));
-        fieldList.add(new FieldInfo("NotificationCenter", "messagesDeleted", "w"));
+        fieldList.add(new FieldInfo("NotificationCenter", "messagesDeleted", "v"));
         fieldList.add(new FieldInfo("AndroidUtilities", "typefaceCache", "a"));
 
         methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "i"));
