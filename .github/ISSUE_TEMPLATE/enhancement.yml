@@ -1,0 +1,12 @@
+name: New feature request
+description: Request add new feature
+title: "[Enhancement] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    attributes:
+      label: What is this feature?
+      description: Describe this feature.
+      placeholder: example i want to add NoSponsoredMessages, can remove the sponsored message in the channel.
+    validations:
+      required: true
