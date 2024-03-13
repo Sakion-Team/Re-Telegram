@@ -14,7 +14,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import nep.timeline.re_telegram.application.ApplicationLoaderHook;
 import nep.timeline.re_telegram.features.AllowMoveAllChatFolder;
 import nep.timeline.re_telegram.features.AntiAntiForward;
-import nep.timeline.re_telegram.features.AntiRecall;
+import nep.timeline.re_telegram.features.AntiRecallWithDatabase;
 import nep.timeline.re_telegram.features.HideStories;
 import nep.timeline.re_telegram.features.NoSponsoredMessages;
 import nep.timeline.re_telegram.features.ProhibitChannelSwitching;
@@ -38,7 +38,7 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
     private static final List<String> hookPackagesCustomization = Arrays.asList("xyz.nextalone.nagram",
             "nekox.messenger");
     private static String MODULE_PATH = null;
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     public final List<String> getHookPackages()
     {
@@ -76,11 +76,11 @@ public class HookInit implements IXposedHookLoadPackage, IXposedHookZygoteInit, 
 
             ApplicationLoaderHook.init(lpparam.classLoader);
 
-            AntiRecall.initUI(lpparam);
+            AntiRecallWithDatabase.initUI(lpparam);
 
-            AntiRecall.initNotification(lpparam);
+            AntiRecallWithDatabase.initProcessing(lpparam);
 
-            AntiRecall.init(lpparam);
+            AntiRecallWithDatabase.init(lpparam);
 
             // FakePremium.init(lpparam);
 

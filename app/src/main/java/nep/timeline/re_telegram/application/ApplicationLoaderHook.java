@@ -54,7 +54,8 @@ public class ApplicationLoaderHook {
                         Utils.log("Cannot create " + dir.getAbsolutePath() + " dir, please create by yourself!");
                         return;
                     }
-                Utils.deletedMessagesSavePath = new File(dir.getAbsolutePath() + "/deletedMessages.list");
+                //Utils.deletedMessagesSavePath = new File(dir.getAbsolutePath() + "/deletedMessages.list");
+                Utils.deletedMessagesDatabasePath = new File(dir.getAbsolutePath() + "/deletedMessages.db");
                 ConfigManager.cfgPath = new File(dir.getAbsolutePath() + "/configs.cfg");
                 try
                 {
@@ -64,7 +65,7 @@ public class ApplicationLoaderHook {
                         ConfigManager.save();
                     }
 
-                    Utils.readDeletedMessages();
+                    //Utils.readDeletedMessages();
                     ConfigManager.read();
                     ConfigManager.save();
                     HostApplicationInfo.setApplication(app);

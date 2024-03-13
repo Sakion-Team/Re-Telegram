@@ -1,11 +1,18 @@
-/*package nep.timeline.re_telegram.features;
+package nep.timeline.re_telegram.features;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteDatabase;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -28,49 +35,123 @@ import nep.timeline.re_telegram.virtuals.Theme;
 import nep.timeline.re_telegram.virtuals.UserConfig;
 import nep.timeline.re_telegram.virtuals.nekogram.NekoChatMessageCell;
 
-public class AntiRecall {
-    private static final CopyOnWriteArrayList<DeletedMessageInfo> deletedMessagesIds = new CopyOnWriteArrayList<>();
-    private static final CopyOnWriteArrayList<DeletedMessageInfo> deletedMessages2Ids = new CopyOnWriteArrayList<>();
-    private static final CopyOnWriteArrayList<DeletedMessageInfo> needProcessing = new CopyOnWriteArrayList<>();
+public class AntiRecallWithDatabase {
+    private static final Map<Integer, SQLiteDatabase> mDatabase = new HashMap<>(1);
+    private static final CopyOnWriteArrayList<DeletedMessageInfo> shouldDeletedMessageInfo = new CopyOnWriteArrayList<>();
+    private static final CopyOnWriteArrayList<DeletedMessageInfo> shouldDeletedMessageInfo2 = new CopyOnWriteArrayList<>();
 
-    public static CopyOnWriteArrayList<DeletedMessageInfo> getDeletedMessagesIds() {
-        return deletedMessagesIds;
-    }
+    private static final Object lock = new Object();
 
-    public static DeletedMessageInfo messageIsDeleted(long channelID, int messageId) {
-        for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
-            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID && deletedMessagesId.getMessageIds().contains(messageId))
-            {
-                return deletedMessagesId;
+    private static SQLiteDatabase ensureDatabase(int slot) {
+        if (!(slot >= 0 && slot < Short.MAX_VALUE)) {
+            throw new IllegalArgumentException("invalid slot: " + slot);
+        }
+        if (mDatabase.containsKey(slot)) {
+            return mDatabase.get(slot);
+        }
+        File databaseFile = Utils.deletedMessagesDatabasePath;
+        boolean createTable = !databaseFile.exists();
+        SQLiteDatabase database = SQLiteDatabase.openDatabase(
+                databaseFile.getAbsolutePath(),
+                null,
+                SQLiteDatabase.OPEN_READWRITE | (createTable ? SQLiteDatabase.CREATE_IF_NECESSARY : 0)
+        );
+        synchronized (lock) {
+            database.beginTransaction();
+            try {
+                database.rawQuery("PRAGMA secure_delete = ON", null).close();
+                database.rawQuery("PRAGMA temp_store = MEMORY", null).close();
+                database.rawQuery("PRAGMA journal_mode = WAL", null).close();
+                database.rawQuery("PRAGMA journal_size_limit = 10485760", null).close();
+                database.rawQuery("PRAGMA busy_timeout = 5000", null).close();
+                database.setTransactionSuccessful();
+            } finally {
+                database.endTransaction();
             }
         }
-        return null; // deletedMessagesIds.contains(messageId);
+        database.execSQL("""
+                CREATE TABLE IF NOT EXISTS t_deleted_messages (
+                  message_id INTEGER NOT NULL,
+                  dialog_id INTEGER NOT NULL
+                );""");
+        database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS idx_messages_combined ON t_deleted_messages (message_id, dialog_id)");
+        mDatabase.put(slot, database);
+        return database;
     }
 
-    public static DeletedMessageInfo messageIsDeleted2(long channelID, int messageId) {
-        for (DeletedMessageInfo deletedMessagesId : deletedMessages2Ids) {
-            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID && deletedMessagesId.getMessageIds().contains(messageId))
-            {
-                return deletedMessagesId;
+    private static boolean messageIsDeleted(int messageId, long dialogId) {
+        int currentSlot = UserConfig.getSelectedAccount();
+        if (currentSlot < 0) {
+            Utils.log("message_is_delete: no active account");
+            return false;
+        }
+        SQLiteDatabase database = ensureDatabase(currentSlot);
+        Cursor cursor = null;
+        boolean result;
+
+        try {
+            String[] columns = {"message_id", "dialog_id"};
+            String selection = "message_id = ? AND dialog_id = ?";
+            String[] selectionArgs = {String.valueOf(messageId), String.valueOf(dialogId)};
+            cursor = database.query("t_deleted_messages", columns, selection, selectionArgs, null, null, null);
+
+            result = (cursor.getCount() > 0);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
         }
-        return null; // deletedMessagesIds.contains(messageId);
+
+        return result;
     }
 
-    public static DeletedMessageInfo findInNeedProcess(long channelID, int messageId) {
-        for (DeletedMessageInfo deletedMessagesId : needProcessing) {
-            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID && deletedMessagesId.getMessageIds().contains(messageId))
-            {
-                return deletedMessagesId;
-            }
+    private static void insertDeletedMessage(ArrayList<Integer> messageIds, long dialogId) {
+        int currentSlot = UserConfig.getSelectedAccount();
+        if (currentSlot < 0) {
+            Utils.log("message_is_delete: no active account");
+            return;
         }
+        SQLiteDatabase database = ensureDatabase(currentSlot);
+        database.beginTransaction();
+        try {
+            for (Integer messageId : messageIds) {
+                if (messageIsDeleted(messageId, dialogId))
+                    continue;
+
+                ContentValues values = new ContentValues();
+                values.put("message_id", messageId);
+                values.put("dialog_id", dialogId);
+
+                database.insert("t_deleted_messages", null, values);
+            }
+            database.setTransactionSuccessful();
+        } catch (Exception e) {
+            if (!(e instanceof SQLiteConstraintException)) {
+                Utils.log("failed to insert deleted message: " + e.getMessage());
+            }
+        } finally {
+            database.endTransaction();
+        }
+    }
+
+    private static DeletedMessageInfo isShouldDeletedMessage(long channelID, int messageId) {
+        for (DeletedMessageInfo deletedMessagesId : shouldDeletedMessageInfo)
+            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID && deletedMessagesId.getMessageIds().contains(messageId))
+                return deletedMessagesId;
         return null;
     }
 
-    public static void insertDeletedMessage(long channelID, CopyOnWriteArrayList<Integer> messageIds) {
+    private static DeletedMessageInfo isShouldDeletedMessage2(long channelID, int messageId) {
+        for (DeletedMessageInfo deletedMessagesId : shouldDeletedMessageInfo2)
+            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID && deletedMessagesId.getMessageIds().contains(messageId))
+                return deletedMessagesId;
+        return null;
+    }
+
+    private static void addShouldDeletedMessage(long channelID, Integer messageId) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
-        for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
+        for (DeletedMessageInfo deletedMessagesId : shouldDeletedMessageInfo) {
             if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
             {
                 info = deletedMessagesId;
@@ -79,91 +160,7 @@ public class AntiRecall {
             }
         }
         if (needInit)
-            deletedMessagesIds.add(new DeletedMessageInfo(UserConfig.getSelectedAccount(), channelID, messageIds));
-        else
-        {
-            for (Integer messageId : messageIds)
-                if (!info.getMessageIds().contains(messageId)) // No duplication
-                    info.insertMessageId(messageId);
-        }
-        Utils.saveDeletedMessages();
-    }
-
-    public static void insertDeletedMessage(long channelID, DeletedMessageInfo messageInfo) {
-        boolean needInit = true;
-        DeletedMessageInfo info = null;
-        for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
-            if (deletedMessagesId.getSelectedAccount() == messageInfo.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
-            {
-                info = deletedMessagesId;
-                needInit = false;
-                break;
-            }
-        }
-        if (needInit)
-            deletedMessagesIds.add(new DeletedMessageInfo(messageInfo.getSelectedAccount(), channelID, messageInfo.getMessageIds()));
-        else
-        {
-            for (Integer messageId : messageInfo.getMessageIds())
-                if (!info.getMessageIds().contains(messageId)) // No duplication
-                    info.insertMessageId(messageId);
-        }
-        Utils.saveDeletedMessages();
-    }
-
-    public static void removeDeletedMessage(long channelID, Integer messageId) {
-        boolean needInit = true;
-        DeletedMessageInfo info = null;
-        for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
-            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
-            {
-                info = deletedMessagesId;
-                needInit = false;
-                break;
-            }
-        }
-        if (!needInit)
-        {
-            if (info.getMessageIds().contains(messageId))
-                info.removeMessageId(messageId);
-            Utils.saveDeletedMessages();
-        }
-    }
-
-    public static void insertNeedProcessDeletedMessage(long channelID, CopyOnWriteArrayList<Integer> messageIds) {
-        boolean needInit = true;
-        DeletedMessageInfo info = null;
-        for (DeletedMessageInfo deletedMessagesId : needProcessing) {
-            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
-            {
-                info = deletedMessagesId;
-                needInit = false;
-                break;
-            }
-        }
-        if (needInit)
-            needProcessing.add(new DeletedMessageInfo(UserConfig.getSelectedAccount(), channelID, messageIds));
-        else
-        {
-            for (Integer messageId : messageIds)
-                if (!info.getMessageIds().contains(messageId)) // No duplication
-                    info.insertMessageIds(messageIds);
-        }
-    }
-
-    public static void insertNeedProcessDeletedMessage(long channelID, Integer messageId) {
-        boolean needInit = true;
-        DeletedMessageInfo info = null;
-        for (DeletedMessageInfo deletedMessagesId : needProcessing) {
-            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
-            {
-                info = deletedMessagesId;
-                needInit = false;
-                break;
-            }
-        }
-        if (needInit)
-            needProcessing.add(new DeletedMessageInfo(UserConfig.getSelectedAccount(), channelID, messageId));
+            shouldDeletedMessageInfo.add(new DeletedMessageInfo(UserConfig.getSelectedAccount(), channelID, messageId));
         else
         {
             if (!info.getMessageIds().contains(messageId)) // No duplication
@@ -171,11 +168,11 @@ public class AntiRecall {
         }
     }
 
-    public static void insertDeletedMessageFromSaveFile(int selectedAccount, long channelID, CopyOnWriteArrayList<Integer> messageIds) {
+    private static void addShouldDeletedMessage2(long channelID, Integer messageId) {
         boolean needInit = true;
         DeletedMessageInfo info = null;
-        for (DeletedMessageInfo deletedMessagesId : deletedMessagesIds) {
-            if (deletedMessagesId.getSelectedAccount() == selectedAccount && deletedMessagesId.getChannelID() == channelID)
+        for (DeletedMessageInfo deletedMessagesId : shouldDeletedMessageInfo2) {
+            if (deletedMessagesId.getSelectedAccount() == UserConfig.getSelectedAccount() && deletedMessagesId.getChannelID() == channelID)
             {
                 info = deletedMessagesId;
                 needInit = false;
@@ -183,12 +180,11 @@ public class AntiRecall {
             }
         }
         if (needInit)
-            deletedMessagesIds.add(new DeletedMessageInfo(selectedAccount, channelID, messageIds));
+            shouldDeletedMessageInfo2.add(new DeletedMessageInfo(UserConfig.getSelectedAccount(), channelID, messageId));
         else
         {
-            for (Integer messageId : messageIds)
-                if (!info.getMessageIds().contains(messageId))
-                    info.insertMessageIds(messageIds);
+            if (!info.getMessageIds().contains(messageId)) // No duplication
+                info.insertMessageId(messageId);
         }
     }
 
@@ -206,7 +202,7 @@ public class AntiRecall {
         if (chatMessageCell != null) {
             HookUtils.findAndHookMethod(chatMessageCell, AutomationResolver.resolve("ChatMessageCell", "measureTime", AutomationResolver.ResolverType.Method), new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                protected void afterHookedMethod(MethodHookParam param) {
                     if (Configs.isAntiRecall())
                     {
                         String text = Language.resolve(HostApplicationInfo.getApplication().getResources().getConfiguration().locale, "antirecall.message.deleted");
@@ -214,7 +210,7 @@ public class AntiRecall {
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
                         long channel_id = -owner.getPeerID().getChannelID();
-                        if (messageIsDeleted(channel_id, id) != null)
+                        if (messageIsDeleted(id, channel_id))
                         {
                             if (getCurrentTimeStringClassName(param.thisObject).equals("SpannableStringBuilder"))
                             {
@@ -297,11 +293,11 @@ public class AntiRecall {
                                     if (item.getClass().equals(TL_updateDeleteChannelMessages))
                                     {
                                         TLRPC.TL_updateDeleteChannelMessages channelMessages = new TLRPC.TL_updateDeleteChannelMessages(item);
-                                        insertNeedProcessDeletedMessage(-channelMessages.getChannelID(), new CopyOnWriteArrayList<>(channelMessages.getMessages()));
+                                        insertDeletedMessage(channelMessages.getMessages(), -channelMessages.getChannelID());
                                     }
 
                                     if (item.getClass().equals(TL_updateDeleteMessages))
-                                        insertNeedProcessDeletedMessage(DeletedMessageInfo.NOT_CHANNEL, new CopyOnWriteArrayList<>(new TLRPC.TL_updateDeleteMessages(item).getMessages()));
+                                        insertDeletedMessage(new TLRPC.TL_updateDeleteMessages(item).getMessages(), DeletedMessageInfo.NOT_CHANNEL);
 
                                     if (HookInit.DEBUG_MODE && (item.getClass().equals(TL_updateDeleteMessages) || item.getClass().equals(TL_updateDeleteChannelMessages)))
                                         Utils.log("Protected message! event: " + item.getClass());
@@ -340,34 +336,31 @@ public class AntiRecall {
         for (Method markMessagesAsDeletedMethod : markMessagesAsDeletedMethods) {
             XposedBridge.hookMethod(markMessagesAsDeletedMethod, new XC_MethodHook() {
                 @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                protected void beforeHookedMethod(MethodHookParam param) {
                     if (Configs.isAntiRecall() && param.args[1] instanceof ArrayList)
                     {
+                        ArrayList<Integer> deletedMessages = new ArrayList<>();
+
                         CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>(Utils.castList(param.args[1], Integer.class));
                         if (list.isEmpty())
                             return;
                         long channel_id = (long) param.args[0];
                         if (channel_id > 0)
                             channel_id = 0;
-                        //list.clear();
-                        CopyOnWriteArrayList<Integer> deletedMessages = new CopyOnWriteArrayList<>();
-                        for (Integer integer : list) {
-                            DeletedMessageInfo info = findInNeedProcess(channel_id, integer);
-                            if (messageIsDeleted(channel_id, integer) == null || info != null)
-                            {
-                                list.remove(integer);
-                                deletedMessages.add(integer);
-                            }
-                            else if (messageIsDeleted(channel_id, integer) != null)
-                            {
-                                removeDeletedMessage(channel_id, integer);
+
+                        for (Integer msgId : list) {
+                            DeletedMessageInfo shouldDeletedMessage = isShouldDeletedMessage(channel_id, msgId);
+                            DeletedMessageInfo shouldDeletedMessage2 = isShouldDeletedMessage2(channel_id, msgId);
+                            if (shouldDeletedMessage2 != null || !messageIsDeleted(msgId, channel_id)) {
+                                deletedMessages.add(msgId);
+                                if (shouldDeletedMessage != null)
+                                    shouldDeletedMessageInfo.remove(shouldDeletedMessage);
+                                if (shouldDeletedMessage2 != null)
+                                    shouldDeletedMessageInfo2.remove(shouldDeletedMessage2);
                             }
                         }
-                        //list.removeIf(i -> (AntiRecall.findInNeedProcess(channel_id, i) || AntiRecall.messageIsDeleted(channel_id, i)));
-                        param.args[1] = new ArrayList<>(list);
-                        insertDeletedMessage(channel_id, deletedMessages);
-                        needProcessing.clear();
-                        //needProcessing.forEach(i -> AntiRecall.insertDeletedMessage(channel_id, i));
+
+                        param.args[1] = deletedMessages;
                     }
                 }
             });
@@ -388,39 +381,34 @@ public class AntiRecall {
         for (Method updateDialogsWithDeletedMessagesMethod : updateDialogsWithDeletedMessagesMethods) {
             XposedBridge.hookMethod(updateDialogsWithDeletedMessagesMethod, new XC_MethodHook() {
                 @Override
-                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                protected void beforeHookedMethod(MethodHookParam param) {
                     if (param.args[2] instanceof ArrayList)
                     {
                         long channelID = -((long) param.args[1]);
                         if (channelID > 0)
                             channelID = 0;
+
+                        ArrayList<Integer> deletedMessages = new ArrayList<>();
+
                         CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>(Utils.castList(param.args[2], Integer.class));
                         if (!list.isEmpty())
-                            for (Integer integer : list)
-                            {
-                                DeletedMessageInfo info = messageIsDeleted2(channelID, integer);
-                                if (info == null)
-                                {
-                                    param.setResult(null);
-                                    DeletedMessageInfo info2 = messageIsDeleted(channelID, integer);
-                                    if (info2 == null)
-                                    {
-                                        list.remove(integer);
-                                        insertNeedProcessDeletedMessage(channelID, integer);
-                                    }
+                            for (Integer msgId : list) {
+                                if (isShouldDeletedMessage(channelID, msgId) == null)
+                                    if (messageIsDeleted(msgId, channelID))
+                                        addShouldDeletedMessage(channelID, msgId);
                                     else
-                                    {
-                                        deletedMessages2Ids.add(info2);
-                                        insertNeedProcessDeletedMessage(channelID, integer);
-                                    }
-                                }
+                                        deletedMessages.remove(msgId);
+                                else if (isShouldDeletedMessage2(channelID, msgId) == null)
+                                    if (messageIsDeleted(msgId, channelID))
+                                        addShouldDeletedMessage2(channelID, msgId);
+                                    else
+                                        deletedMessages.remove(msgId);
                                 else
-                                {
-                                    deletedMessagesIds.add(info);
-                                    deletedMessages2Ids.remove(info);
-                                }
+                                    deletedMessages.add(msgId);
                             }
-                        param.args[2] = new ArrayList<>(list);
+
+                        param.args[2] = deletedMessages;
+                        //param.setResult(null);
                     }
                 }
             });
@@ -430,22 +418,14 @@ public class AntiRecall {
 
         HookUtils.findAndHookMethod(notificationCenter, AutomationResolver.resolve("NotificationCenter", "postNotificationName", AutomationResolver.ResolverType.Method), new XC_MethodHook() {
             @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+            protected void beforeHookedMethod(MethodHookParam param) {
                 int id = (int) param.args[0];
                 if (Configs.isAntiRecall() && id == messagesDeletedValue) {
-                    param.setResult(null);
-
                     Object[] args = (Object[]) param.args[1];
-                    if (args[0] == null || args[1] == null || args[2] == null)
-                        return;
-                    if (args[0] instanceof ArrayList && args[1].getClass().isPrimitive() && args[2].getClass().isPrimitive())
-                    {
-                        param.setResult(null);
-                        long dialogID = -((long) args[1]);
-                        if (dialogID > 0)
-                            dialogID = 0;
-                        insertNeedProcessDeletedMessage(dialogID, Utils.castList(args[0], Integer.class));
-                    }
+                    long dialogID = (long) args[1];
+                    ArrayList<Integer> arrayList = Utils.castList(args[0], Integer.class);
+                    param.setResult(null);
+                    insertDeletedMessage(arrayList, dialogID);
                 }
             }
         });
@@ -467,4 +447,3 @@ public class AntiRecall {
             });
     }
 }
-*/

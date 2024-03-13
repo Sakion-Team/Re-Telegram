@@ -2,30 +2,19 @@ package nep.timeline.re_telegram;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
-import nep.timeline.re_telegram.features.AntiRecall;
-import nep.timeline.re_telegram.structs.DeletedMessageInfo;
-import nep.timeline.re_telegram.utils.FileUtils;
 
 public class Utils {
     public static XC_LoadPackage.LoadPackageParam globalLoadPackageParam = null;
     public static final String issue = "Your telegram may have been modified! You can submit issue to let developer to try support to the telegram client you are using.";
     private static final Gson BUILDER_GSON = new GsonBuilder().setPrettyPrinting().create();
-    public static File deletedMessagesSavePath = null;
+    //public static File deletedMessagesSavePath = null;
+    public static File deletedMessagesDatabasePath = null;
 
     public static void log(String text)
     {
@@ -49,7 +38,7 @@ public class Utils {
         }
         return result;
     }
-
+/*
     public static void readDeletedMessages()
     {
         if (deletedMessagesSavePath == null)
@@ -112,7 +101,7 @@ public class Utils {
 
         FileUtils.save(deletedMessagesSavePath, BUILDER_GSON.toJson(valueJsonObject), false);
     }
-
+*/
     public static Gson getBuilderGson() {
         return BUILDER_GSON;
     }
