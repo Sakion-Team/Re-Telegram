@@ -203,17 +203,14 @@ public class AntiRecallWithDatabase {
             HookUtils.findAndHookMethod(chatMessageCell, AutomationResolver.resolve("ChatMessageCell", "measureTime", AutomationResolver.ResolverType.Method), new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
-                    if (Configs.isAntiRecall())
-                    {
+                    if (Configs.isAntiRecall()) {
                         String text = Language.resolve(HostApplicationInfo.getApplication().getResources().getConfiguration().locale, "antirecall.message.deleted");
                         MessageObject messageObject = new MessageObject(param.args[0]);
                         TLRPC.Message owner = messageObject.getMessageOwner();
                         int id = owner.getID();
                         long channel_id = -owner.getPeerID().getChannelID();
-                        if (messageIsDeleted(id, channel_id))
-                        {
-                            if (getCurrentTimeStringClassName(param.thisObject).equals("SpannableStringBuilder"))
-                            {
+                        if (messageIsDeleted(id, channel_id)) {
+                            if (getCurrentTimeStringClassName(param.thisObject).equals("SpannableStringBuilder")) {
                                 NekoChatMessageCell cell = new NekoChatMessageCell(param.thisObject);
                                 SpannableStringBuilder time = cell.getCurrentTimeString();
                                 String delta = "(" + text + ") ";
@@ -228,9 +225,7 @@ public class AntiRecallWithDatabase {
                                     cell.setTimeTextWidth(deltaWidth + cell.getTimeTextWidth());
                                     cell.setTimeWidth(deltaWidth + cell.getTimeWidth());
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 OfficialChatMessageCell cell = new OfficialChatMessageCell(param.thisObject);
                                 String time = (String) cell.getCurrentTimeString();
                                 String delta = "(" + text + ") ";
@@ -248,9 +243,7 @@ public class AntiRecallWithDatabase {
                     }
                 }
             });
-        }
-        else
-        {
+        } else {
             Utils.log("Not found ChatMessageCell, " + Utils.issue);
         }
     }
@@ -337,8 +330,7 @@ public class AntiRecallWithDatabase {
             XposedBridge.hookMethod(markMessagesAsDeletedMethod, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) {
-                    if (Configs.isAntiRecall() && param.args[1] instanceof ArrayList)
-                    {
+                    if (Configs.isAntiRecall() && param.args[1] instanceof ArrayList) {
                         ArrayList<Integer> deletedMessages = new ArrayList<>();
 
                         CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>(Utils.castList(param.args[1], Integer.class));
@@ -360,7 +352,8 @@ public class AntiRecallWithDatabase {
                             }
                         }
 
-                        param.args[1] = deletedMessages;
+                        ((ArrayList<Integer>) param.args[1]).clear();
+                        ((ArrayList<Integer>) param.args[1]).addAll(deletedMessages);
                     }
                 }
             });

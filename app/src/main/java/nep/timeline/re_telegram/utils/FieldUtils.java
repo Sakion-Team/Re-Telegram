@@ -23,10 +23,12 @@ public class FieldUtils {
         if (!fields.isEmpty()) {
             Field target = null;
             for (Field field : fields) {
-                if (field.getType().equals(Type))
-                {
-                    target = field;
+                if (Type instanceof String) {
+                    if (field.getType().getName().equals(Type))
+                        target = field;
                 }
+                else if (field.getType().equals(Type))
+                        target = field;
             }
             if (target != null)
                 return target;
@@ -252,7 +254,7 @@ public class FieldUtils {
         field.set(instance, newValue);
     }
 
-    public static void setField(Field field, Object instance, Object newValue) throws NoSuchFieldException, IllegalAccessException
+    public static void setField(Field field, Object instance, Object newValue) throws IllegalAccessException
     {
         if (!field.isAccessible())
             field.setAccessible(true);

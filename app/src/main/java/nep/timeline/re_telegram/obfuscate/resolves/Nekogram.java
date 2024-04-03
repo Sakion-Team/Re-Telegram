@@ -20,38 +20,44 @@ public class Nekogram {
         classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "org.telegram.messenger.G"));
         classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "org.telegram.messenger.D"));
         classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "org.telegram.messenger.V"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "uV"));
+        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "OY"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "org.telegram.ui.ActionBar.o"));
-        classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.n"));
-        classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.F$i")); // LimitReachedReorderFolder
-        classList.add(new ClassInfo("org.telegram.ui.FiltersSetupActivity$TouchHelperCallback", "org.telegram.ui.Components.j0$l"));
+        classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.o"));
+        classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.G$i")); // LimitReachedReorderFolder
+        classList.add(new ClassInfo("org.telegram.ui.FiltersSetupActivity$TouchHelperCallback", "org.telegram.ui.Components.d0$l"));
         classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "org.telegram.messenger.a"));
 
         //fieldList.add(new FieldInfo("MessageObject", "messageOwner", "j"));
         fieldList.add(new FieldInfo("UserConfig", "selectedAccount", "a0"));
-        fieldList.add(new FieldInfo("Theme", "chat_timePaint", "I2"));
+        fieldList.add(new FieldInfo("TLRPC$Peer", "channel_id", "c"));
+        fieldList.add(new FieldInfo("TLRPC$Message", "id", "a"));
+        fieldList.add(new FieldInfo("TLRPC$Message", "peer_id", "d"));
+        fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteMessages", "messages", "a"));
+        fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteChannelMessages", "channel_id", "a"));
+        fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteChannelMessages", "messages", "b"));
+        fieldList.add(new FieldInfo("Theme", "chat_timePaint", "K2"));
         fieldList.add(new FieldInfo("NotificationCenter", "messagesDeleted", "v"));
         fieldList.add(new FieldInfo("AndroidUtilities", "typefaceCache", "a"));
 
-        methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "E"));
-        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "Sa"));
-        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted2", "Ta"));
-        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "Dc"));
-        methodList.add(new MethodInfo("MessageObject", "updateMessageText", "V5"));
+        methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "F"));
+        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "Ya"));
+        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted2", "Xa"));
+        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "Ic"));
+        methodList.add(new MethodInfo("MessageObject", "updateMessageText", "W5"));
         methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "G"));
-        methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "La"));
-        methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "ck"));
-        methodList.add(new MethodInfo("MessagesController", "deleteMessages", "w8"));
-        methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "v6"));
+        methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "Ra"));
+        methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "mk"));
+        methodList.add(new MethodInfo("MessagesController", "deleteMessages", "B8"));
+        methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "B6"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "r"));
-        methodList.add(new MethodInfo("UserConfig", "isPremium", "B"));
+        //methodList.add(new MethodInfo("UserConfig", "isPremium", "B"));
         methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "U1"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "T1"));
-        methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "Gm"));
-        methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "vp"));
+        methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "mn"));
+        methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "dq"));
         methodList.add(new MethodInfo("DialogsActivity", "onDefaultTabMoved", "D"));
         methodList.add(new MethodInfo("FiltersSetupActivity$TouchHelperCallback", "resetDefaultPosition", "D"));
-        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "K1"));
+        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "L1"));
     }
 
     public static class ClassResolver

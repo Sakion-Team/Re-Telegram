@@ -54,7 +54,7 @@ public class Yukigram {
         methodList.add(new MethodInfo("MessagesController", "getInstance", "I0"));
         methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "Z4"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "g"));
-        methodList.add(new MethodInfo("UserConfig", "isPremium", "o"));
+        //methodList.add(new MethodInfo("UserConfig", "isPremium", "o"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "D"));
         methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "Kf"));
         methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "Ah"));
