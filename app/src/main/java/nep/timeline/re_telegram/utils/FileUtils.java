@@ -20,7 +20,6 @@ public class FileUtils {
             return stringBuffer.toString();
         } catch (IOException e) {
             Utils.log(e);
-            e.printStackTrace();
         }
 
         return "";
@@ -42,7 +41,6 @@ public class FileUtils {
             return true;
         } catch (IOException e) {
             Utils.log(e);
-            e.printStackTrace();
         }
 
         return false;

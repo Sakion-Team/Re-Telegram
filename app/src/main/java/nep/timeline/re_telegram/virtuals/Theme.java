@@ -46,7 +46,7 @@ public class Theme {
             }
             catch (IllegalAccessException e)
             {
-                e.printStackTrace();
+                Utils.log(e);
             }
         }
         else

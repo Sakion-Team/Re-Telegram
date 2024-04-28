@@ -48,7 +48,7 @@ public class ConfigManager {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            Utils.log(e);
         }
     }
 

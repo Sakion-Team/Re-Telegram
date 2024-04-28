@@ -2,14 +2,16 @@ package nep.timeline.re_telegram.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import nep.timeline.re_telegram.Utils;
 
 public class ClassUtils {
     public static ClassLoader getClassLoader() {
@@ -70,7 +72,7 @@ public class ClassUtils {
         try {
             cls = Class.forName(className, isInitialized, getClassLoader());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            Utils.log(e);
             throw new RuntimeException(e);
         }
         return cls;

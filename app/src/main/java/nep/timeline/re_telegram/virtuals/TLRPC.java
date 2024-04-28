@@ -1,5 +1,6 @@
 package nep.timeline.re_telegram.virtuals;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import nep.timeline.re_telegram.ClientChecker;
@@ -18,7 +19,7 @@ public class TLRPC {
             if (!instance.getClass().getName().equals(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Peer")))
             {
                 Class<?> clazz = instance.getClass().getSuperclass();
-                if (!clazz.getName().equals(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Peer")))
+                if (clazz != null && !clazz.getName().equals(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Peer")))
                     this.clazz = clazz.getSuperclass();
                 else
                     this.clazz = clazz;
@@ -33,15 +34,17 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram))
-                    return FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Peer", "channel_id", AutomationResolver.ResolverType.Field), long.class).getLong(this.instance);
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram)) {
+                    Field field = FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Peer", "channel_id", AutomationResolver.ResolverType.Field), long.class);
+                    if (field != null)
+                        return field.getLong(this.instance);
+                }
                 else
                     return FieldUtils.getFieldLongOfClass(this.instance, this.clazz, AutomationResolver.resolve("TLRPC$Peer", "channel_id", AutomationResolver.ResolverType.Field));
             }
             catch (IllegalAccessException e)
             {
                 Utils.log(e);
-                e.printStackTrace();
             }
             return Long.MIN_VALUE;
         }
@@ -57,7 +60,7 @@ public class TLRPC {
             if (!instance.getClass().getName().equals(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Message")))
             {
                 Class<?> clazz = instance.getClass().getSuperclass();
-                if (!clazz.getName().equals(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Message")))
+                if (clazz != null && !clazz.getName().equals(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Message")))
                     this.clazz = clazz.getSuperclass();
                 else
                     this.clazz = clazz;
@@ -72,15 +75,17 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram))
-                    return FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Message", "id", AutomationResolver.ResolverType.Field), int.class).getInt(this.instance);
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram)) {
+                    Field field = FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Message", "id", AutomationResolver.ResolverType.Field), int.class);
+                    if (field != null)
+                        return field.getInt(this.instance);
+                }
                 else
                     return FieldUtils.getFieldIntOfClass(this.instance, this.clazz, "id");
             }
             catch (IllegalAccessException e)
             {
                 Utils.log(e);
-                e.printStackTrace();
             }
             return Integer.MIN_VALUE;
         }
@@ -89,15 +94,23 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram))
-                    return new Peer(FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Message", "peer_id", AutomationResolver.ResolverType.Field), AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Peer")).get(this.instance));
-                else
-                    return new Peer(FieldUtils.getFieldClassOfClass(this.instance, this.clazz, "peer_id"));
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram)) {
+                    Field field = FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Message", "peer_id", AutomationResolver.ResolverType.Field), AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Peer"));
+                    if (field != null) {
+                        Object peer = field.get(this.instance);
+                        if (peer != null)
+                            return new Peer(peer);
+                    }
+                }
+                else {
+                    Object peer = FieldUtils.getFieldClassOfClass(this.instance, this.clazz, "peer_id");
+                    if (peer != null)
+                        return new Peer(peer);
+                }
             }
             catch (IllegalAccessException e)
             {
                 Utils.log(e);
-                e.printStackTrace();
             }
             return null;
         }
@@ -130,14 +143,17 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram))
-                    return FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteChannelMessages", "channel_id", AutomationResolver.ResolverType.Field), long.class).getLong(this.instance);
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram)) {
+                    Field field = FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteChannelMessages", "channel_id", AutomationResolver.ResolverType.Field), long.class);
+                    if (field != null)
+                        return field.getLong(this.instance);
+                }
                 else
                     return FieldUtils.getFieldLongOfClass(this.instance, "channel_id");
             }
             catch (IllegalAccessException e)
             {
-                e.printStackTrace();
+                Utils.log(e);
             }
             return Long.MIN_VALUE;
         }
@@ -146,14 +162,20 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram))
-                    return Utils.castList(FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteChannelMessages", "messages", AutomationResolver.ResolverType.Field), ArrayList.class).get(this.instance), Integer.class);
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram)) {
+                    Field field = FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteChannelMessages", "messages", AutomationResolver.ResolverType.Field), ArrayList.class);
+                    if (field != null) {
+                        Object messages = field.get(this.instance);
+                        if (messages != null)
+                            return Utils.castList(messages, Integer.class);
+                    }
+                }
                 else
                     return Utils.castList(FieldUtils.getFieldClassOfClass(this.instance, "messages"), Integer.class);
             }
             catch (IllegalAccessException e)
             {
-                e.printStackTrace();
+                Utils.log(e);
             }
             return null;
         }
@@ -171,14 +193,20 @@ public class TLRPC {
         {
             try
             {
-                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram))
-                    return Utils.castList(FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteMessages", "messages", AutomationResolver.ResolverType.Field), ArrayList.class).get(this.instance), Integer.class);
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram)) {
+                    Field field = FieldUtils.getFieldFromMultiName(this.instance.getClass(), AutomationResolver.resolve("TLRPC$TL_updateDeleteMessages", "messages", AutomationResolver.ResolverType.Field), ArrayList.class);
+                    if (field != null) {
+                        Object messages = field.get(this.instance);
+                        if (messages != null)
+                            return Utils.castList(messages, Integer.class);
+                    }
+                }
                 else
                     return Utils.castList(FieldUtils.getFieldClassOfClass(this.instance, "messages"), Integer.class);
             }
             catch (IllegalAccessException e)
             {
-                e.printStackTrace();
+                Utils.log(e);
             }
             return null;
         }

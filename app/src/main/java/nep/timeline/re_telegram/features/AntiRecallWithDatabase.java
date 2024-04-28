@@ -205,8 +205,15 @@ public class AntiRecallWithDatabase {
                 protected void afterHookedMethod(MethodHookParam param) {
                     if (Configs.isAntiRecall()) {
                         String text = Language.resolve(HostApplicationInfo.getApplication().getResources().getConfiguration().locale, "antirecall.message.deleted");
-                        MessageObject messageObject = new MessageObject(param.args[0]);
+                        Object msgObj = param.args[0];
+                        if (msgObj == null)
+                            return;
+                        MessageObject messageObject = new MessageObject(msgObj);
+                        if (messageObject == null)
+                            return;
                         TLRPC.Message owner = messageObject.getMessageOwner();
+                        if (owner == null)
+                            return;
                         int id = owner.getID();
                         long channel_id = -owner.getPeerID().getChannelID();
                         if (messageIsDeleted(id, channel_id)) {

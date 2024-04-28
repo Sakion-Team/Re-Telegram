@@ -2,6 +2,7 @@ package nep.timeline.re_telegram.virtuals;
 
 import java.lang.reflect.Field;
 
+import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.utils.FieldUtils;
 
 public class ChatMessageCellDefault {
@@ -34,7 +35,7 @@ public class ChatMessageCellDefault {
         }
         catch (IllegalAccessException e)
         {
-            e.printStackTrace();
+            Utils.log(e);
         }
     }
 
@@ -50,7 +51,7 @@ public class ChatMessageCellDefault {
         }
         catch (IllegalAccessException e)
         {
-            e.printStackTrace();
+            Utils.log(e);
         }
     }
 }

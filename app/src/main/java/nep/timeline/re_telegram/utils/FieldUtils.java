@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.robv.android.xposed.XposedHelpers;
 import nep.timeline.re_telegram.Utils;
 
 public class FieldUtils {
@@ -54,7 +55,6 @@ public class FieldUtils {
         catch (NoSuchFieldException e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return null;
         }
     }
@@ -72,7 +72,6 @@ public class FieldUtils {
         catch (Exception e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return Double.MIN_VALUE;
         }
     }
@@ -90,7 +89,6 @@ public class FieldUtils {
         catch (Exception e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return Double.MIN_VALUE;
         }
     }
@@ -98,17 +96,17 @@ public class FieldUtils {
     public static float getFieldFloatOfClass(Object clazz, String fieldName) {
         try
         {
-            Field field = clazz.getClass().getDeclaredField(fieldName);
+            return XposedHelpers.getFloatField(clazz, fieldName);
+            /*Field field = clazz.getClass().getDeclaredField(fieldName);
 
             if (!field.isAccessible())
                 field.setAccessible(true);
 
-            return field.getFloat(clazz);
+            return field.getFloat(clazz);*/
         }
         catch (Exception e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return Float.MIN_VALUE;
         }
     }
@@ -116,17 +114,17 @@ public class FieldUtils {
     public static float getFieldFloatOfClass(Object instance, Class<?> clazz, String fieldName) {
         try
         {
-            Field field = clazz.getDeclaredField(fieldName);
+            return XposedHelpers.getFloatField(instance, fieldName);
+            /*Field field = clazz.getDeclaredField(fieldName);
 
             if (!field.isAccessible())
                 field.setAccessible(true);
 
-            return field.getFloat(instance);
+            return field.getFloat(instance);*/
         }
         catch (Exception e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return Float.MIN_VALUE;
         }
     }
@@ -134,17 +132,17 @@ public class FieldUtils {
     public static int getFieldIntOfClass(Object clazz, String fieldName) {
         try
         {
-            Field field = clazz.getClass().getDeclaredField(fieldName);
+            return XposedHelpers.getIntField(clazz, fieldName);
+            /*Field field = clazz.getClass().getDeclaredField(fieldName);
 
             if (!field.isAccessible())
                 field.setAccessible(true);
 
-            return field.getInt(clazz);
+            return field.getInt(clazz);*/
         }
         catch (Exception e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return Integer.MIN_VALUE;
         }
     }
@@ -152,17 +150,17 @@ public class FieldUtils {
     public static int getFieldIntOfClass(Object instance, Class<?> clazz, String fieldName) {
         try
         {
-            Field field = clazz.getDeclaredField(fieldName);
+            return XposedHelpers.getIntField(instance, fieldName);
+            /*Field field = clazz.getDeclaredField(fieldName);
 
             if (!field.isAccessible())
                 field.setAccessible(true);
 
-            return field.getInt(instance);
+            return field.getInt(instance);*/
         }
         catch (Exception e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return Integer.MIN_VALUE;
         }
     }
@@ -170,17 +168,17 @@ public class FieldUtils {
     public static long getFieldLongOfClass(Object clazz, String fieldName) {
         try
         {
-            Field field = clazz.getClass().getDeclaredField(fieldName);
+            return XposedHelpers.getLongField(clazz, fieldName);
+            /*Field field = clazz.getClass().getDeclaredField(fieldName);
 
             if (!field.isAccessible())
                 field.setAccessible(true);
 
-            return field.getLong(clazz);
+            return field.getLong(clazz);*/
         }
         catch (Exception e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return Long.MIN_VALUE;
         }
     }
@@ -188,17 +186,17 @@ public class FieldUtils {
     public static long getFieldLongOfClass(Object instance, Class<?> clazz, String fieldName) {
         try
         {
-            Field field = clazz.getDeclaredField(fieldName);
+            return XposedHelpers.getLongField(instance, fieldName);
+            /*Field field = clazz.getDeclaredField(fieldName);
 
             if (!field.isAccessible())
                 field.setAccessible(true);
 
-            return field.getLong(instance);
+            return field.getLong(instance);*/
         }
         catch (Exception e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return Long.MIN_VALUE;
         }
     }
@@ -206,17 +204,17 @@ public class FieldUtils {
     public static Object getFieldClassOfClass(Object clazz, String fieldName) {
         try
         {
-            Field field = clazz.getClass().getDeclaredField(fieldName);
+            return XposedHelpers.getObjectField(clazz, fieldName);
+            /*Field field = clazz.getClass().getDeclaredField(fieldName);
 
             if (!field.isAccessible())
                 field.setAccessible(true);
 
-            return field.get(clazz);
+            return field.get(clazz);*/
         }
         catch (Exception e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return null;
         }
     }
@@ -224,17 +222,17 @@ public class FieldUtils {
     public static Object getFieldClassOfClass(Object instance, Class<?> clazz, String fieldName) {
         try
         {
-            Field field = clazz.getDeclaredField(fieldName);
+            return XposedHelpers.getObjectField(instance, fieldName);
+            /*Field field = clazz.getDeclaredField(fieldName);
 
             if (!field.isAccessible())
                 field.setAccessible(true);
 
-            return field.get(instance);
+            return field.get(instance);*/
         }
         catch (Exception e)
         {
             Utils.log(e);
-            e.printStackTrace();
             return null;
         }
     }

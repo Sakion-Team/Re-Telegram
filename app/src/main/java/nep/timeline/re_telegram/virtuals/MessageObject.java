@@ -32,14 +32,18 @@ public class MessageObject {
                         messageOwnerField = field;
                     }
                 }
-                if (messageOwnerField != null)
-                    return new TLRPC.Message(messageOwnerField.get(this.instance));
+                if (messageOwnerField != null) {
+                    Object messageOwner = messageOwnerField.get(this.instance);
+                    if (messageOwner == null)
+                        return null;
+                    return new TLRPC.Message(messageOwner);
+                }
                 else
                     Utils.log("Not found messageOwner field in MessageObject's fields, " + Utils.issue);
             }
-            catch (IllegalAccessException  e)
+            catch (IllegalAccessException e)
             {
-                e.printStackTrace();
+                Utils.log(e);
             }
         }
         else

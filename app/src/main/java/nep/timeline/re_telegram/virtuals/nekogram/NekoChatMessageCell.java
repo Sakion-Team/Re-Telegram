@@ -4,6 +4,7 @@ import android.text.SpannableStringBuilder;
 
 import java.lang.reflect.Field;
 
+import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.utils.FieldUtils;
 import nep.timeline.re_telegram.virtuals.ChatMessageCellDefault;
 
@@ -29,7 +30,7 @@ public class NekoChatMessageCell extends ChatMessageCellDefault {
         }
         catch (IllegalAccessException e)
         {
-            e.printStackTrace();
+            Utils.log(e);
         }
     }
 }

@@ -2,25 +2,29 @@ package nep.timeline.re_telegram.utils;
 
 import java.lang.reflect.Method;
 
+import de.robv.android.xposed.XposedHelpers;
+import nep.timeline.re_telegram.Utils;
+
 public class MethodUtils {
     public static Object invokeMethodOfClass(Object clazz, String methodName, Object... args) {
         try
         {
-            Method method = clazz.getClass().getDeclaredMethod(methodName);
+            return XposedHelpers.callMethod(clazz, methodName, args);
+            /*Method method = clazz.getClass().getDeclaredMethod(methodName);
 
             if (!method.isAccessible())
                 method.setAccessible(true);
 
-            return method.invoke(clazz, args);
+            return method.invoke(clazz, args);*/
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Utils.log(e);
             return null;
         }
     }
 
-    public static Object invokeMethodOfClass(Object instance, Class<?> clazz, String methodName, Object... args) {
+    /*public static Object invokeMethodOfClass(Object instance, Class<?> clazz, String methodName, Object... args) {
         try
         {
             Method method = clazz.getDeclaredMethod(methodName);
@@ -32,7 +36,7 @@ public class MethodUtils {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Utils.log(e);
             return null;
         }
     }
@@ -47,23 +51,8 @@ public class MethodUtils {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Utils.log(e);
             return null;
         }
-    }
-
-    public static Object invokeMethodOfClass(Object instance, Class<?> clazz, Method method, Object... args) {
-        try
-        {
-            if (!method.isAccessible())
-                method.setAccessible(true);
-
-            return method.invoke(instance, args);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    }*/
 }
