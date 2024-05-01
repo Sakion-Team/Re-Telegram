@@ -14,7 +14,7 @@ Re:Telegram has more features than Telegram Anti-Recall
 Currently, Re:Telegram has the following features: AntiAntiForward, AntiRecall, NoSponsoredMessages, ProhibitChannelSwitching, AllowMoveAllChatFolder, UseSystemTypeface, HideStories
 
 ### Which telegram client are supported?
-Official, Plus Messenger, Nagram, Nnngram, NekoX, Nekogram (No Test Apk and Google Store Version), NekoLite, Exteragram, Forkgram, Cherrygram, MDgram, Yukigram, iMoe, OctoGram
+Official, Plus Messenger, Nagram, Nnngram, NekoX, Nekogram (No Test Apk and Google Store Version), NekoLite, exteraGram, Forkgram, Cherrygram, MDgram, Yukigram, iMoe, OctoGram
 
 ### Which telegram client will not be supported?
 Nullgram (You can use Nnngram), Telegram X
