@@ -20,11 +20,11 @@ public class Nekogram {
         classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "org.telegram.messenger.G"));
         classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "org.telegram.messenger.D"));
         classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "org.telegram.messenger.V"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "OY"));
+        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "sZ"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "org.telegram.ui.ActionBar.o"));
         classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.o"));
         classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.G$i")); // LimitReachedReorderFolder
-        classList.add(new ClassInfo("org.telegram.ui.FiltersSetupActivity$TouchHelperCallback", "org.telegram.ui.Components.d0$l"));
+        classList.add(new ClassInfo("org.telegram.ui.FiltersSetupActivity$TouchHelperCallback", "org.telegram.ui.Components.e0$l"));
         classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "org.telegram.messenger.a"));
 
         //fieldList.add(new FieldInfo("MessageObject", "messageOwner", "j"));
@@ -40,24 +40,24 @@ public class Nekogram {
         fieldList.add(new FieldInfo("AndroidUtilities", "typefaceCache", "a"));
 
         methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "F"));
-        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "Ya"));
-        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted2", "Xa"));
-        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "Ic"));
-        methodList.add(new MethodInfo("MessageObject", "updateMessageText", "W5"));
+        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "bb"));
+        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted2", "ab"));
+        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "Lc"));
+        methodList.add(new MethodInfo("MessageObject", "updateMessageText", "X5"));
         methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "G"));
-        methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "Ra"));
-        methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "mk"));
-        methodList.add(new MethodInfo("MessagesController", "deleteMessages", "B8"));
-        methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "B6"));
+        methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "ab"));
+        methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "Bk"));
+        methodList.add(new MethodInfo("MessagesController", "deleteMessages", "G8"));
+        methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "A6"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "r"));
         //methodList.add(new MethodInfo("UserConfig", "isPremium", "B"));
-        methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "U1"));
-        methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "T1"));
-        methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "mn"));
-        methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "dq"));
+        methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "c2"));
+        methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "b2"));
+        methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "tn"));
+        methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "kq"));
         methodList.add(new MethodInfo("DialogsActivity", "onDefaultTabMoved", "D"));
         methodList.add(new MethodInfo("FiltersSetupActivity$TouchHelperCallback", "resetDefaultPosition", "D"));
-        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "L1"));
+        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "N1"));
     }
 
     public static class ClassResolver
