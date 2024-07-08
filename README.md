@@ -17,7 +17,7 @@ Currently, Re:Telegram has the following features: AntiAntiForward, AntiRecall, 
 Official, Plus Messenger, Nagram, Nnngram, NekoX, Nekogram (No Test Apk and Google Store Version), NekoLite, exteraGram, Forkgram, Cherrygram, MDgram (Old version), Yukigram, iMoe, OctoGram
 
 ### Which telegram client will not be supported?
-Nullgram (You can use Nnngram), Telegram X
+Nullgram (You can use Nnngram), Telegram X, Forkgram F-Droid Build
 
 ### What if the client i am using is not supported?
 Submit the issue and include the client download link in the content, i will try to support your client.
