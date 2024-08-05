@@ -1,19 +1,19 @@
 package nep.timeline.re_telegram.obfuscate;
 
-import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.Utils;
-import nep.timeline.re_telegram.obfuscate.resolves.*;
+import nep.timeline.re_telegram.obfuscate.resolves.Nekogram;
+import nep.timeline.re_telegram.obfuscate.resolves.Yukigram;
 
 public class AutomationResolver {
-    public static String resolve(String className, final XC_LoadPackage.LoadPackageParam lpparam)
+    public static String resolve(String className, String pkgName)
     {
-        if (ClientChecker.check(ClientChecker.ClientType.Nekogram, lpparam))
+        if (ClientChecker.check(ClientChecker.ClientType.Nekogram, pkgName))
         {
             if (Nekogram.ClassResolver.has(className))
                 return Nekogram.ClassResolver.resolve(className);
         }
-        else if (ClientChecker.check(ClientChecker.ClientType.Yukigram, lpparam))
+        else if (ClientChecker.check(ClientChecker.ClientType.Yukigram, pkgName))
         {
             if (Yukigram.ClassResolver.has(className))
                 return Yukigram.ClassResolver.resolve(className);
@@ -22,9 +22,9 @@ public class AutomationResolver {
         return className;
     }
 
-    public static String resolve(String className, String name, ResolverType type, final XC_LoadPackage.LoadPackageParam lpparam)
+    public static String resolve(String className, String name, ResolverType type, String pkgName)
     {
-        if (ClientChecker.check(ClientChecker.ClientType.Nekogram, lpparam))
+        if (ClientChecker.check(ClientChecker.ClientType.Nekogram, pkgName))
         {
             if (type == ResolverType.Field)
             {
@@ -37,7 +37,7 @@ public class AutomationResolver {
                     return Nekogram.MethodResolver.resolve(className, name);
             }
         }
-        else if (ClientChecker.check(ClientChecker.ClientType.Yukigram, lpparam))
+        else if (ClientChecker.check(ClientChecker.ClientType.Yukigram, pkgName))
         {
             if (type == ResolverType.Field)
             {
@@ -56,12 +56,12 @@ public class AutomationResolver {
 
     public static String resolve(String className)
     {
-        return resolve(className, Utils.globalLoadPackageParam);
+        return resolve(className, Utils.pkgName);
     }
 
     public static String resolve(String className, String name, ResolverType type)
     {
-        return resolve(className, name, type, Utils.globalLoadPackageParam);
+        return resolve(className, name, type, Utils.pkgName);
     }
 
     public enum ResolverType

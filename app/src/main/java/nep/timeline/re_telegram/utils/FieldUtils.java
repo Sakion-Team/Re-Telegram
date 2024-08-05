@@ -1,7 +1,6 @@
 package nep.timeline.re_telegram.utils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class FieldUtils {
         return null;
     }
 
-    public static Field getFieldOfClass(Object clazz, String fieldName) {
+    /*public static Field getFieldOfClass(Object clazz, String fieldName) {
         try
         {
             Field field = clazz.getClass().getDeclaredField(fieldName);
@@ -57,7 +56,7 @@ public class FieldUtils {
             Utils.log(e);
             return null;
         }
-    }
+    }*/
 
     public static double getFieldDoubleOfClass(Object clazz, String fieldName) {
         try
@@ -235,21 +234,6 @@ public class FieldUtils {
             Utils.log(e);
             return null;
         }
-    }
-
-    public static void setFinalField(Field field, Object instance, Object newValue) throws NoSuchFieldException, IllegalAccessException
-    {
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-
-        if (!modifiersField.isAccessible())
-            modifiersField.setAccessible(true);
-
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-        if (!field.isAccessible())
-            field.setAccessible(true);
-
-        field.set(instance, newValue);
     }
 
     public static void setField(Field field, Object instance, Object newValue) throws IllegalAccessException

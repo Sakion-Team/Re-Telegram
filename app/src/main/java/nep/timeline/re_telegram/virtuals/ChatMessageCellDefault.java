@@ -1,7 +1,6 @@
 package nep.timeline.re_telegram.virtuals;
 
-import java.lang.reflect.Field;
-
+import de.robv.android.xposed.XposedHelpers;
 import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.utils.FieldUtils;
 
@@ -27,13 +26,14 @@ public class ChatMessageCellDefault {
     {
         try
         {
-            Field timeTextWidthField = FieldUtils.getFieldOfClass(this.instance, "timeTextWidth");
-            if (timeTextWidthField != null)
-                timeTextWidthField.setInt(this.instance, width);
-            else
-                throw new NullPointerException("Not found timeTextWidth in " + this.instance.getClass().getName());
+            XposedHelpers.setIntField(this.instance, "timeTextWidth", width);
+            //Field timeTextWidthField = FieldUtils.getFieldOfClass(this.instance, "timeTextWidth");
+            //if (timeTextWidthField != null)
+            //    timeTextWidthField.setInt(this.instance, width);
+            //else
+            //    throw new NullPointerException("Not found timeTextWidth in " + this.instance.getClass().getName());
         }
-        catch (IllegalAccessException e)
+        catch (Throwable e)
         {
             Utils.log(e);
         }
@@ -43,13 +43,14 @@ public class ChatMessageCellDefault {
     {
         try
         {
-            Field timeWidthField = FieldUtils.getFieldOfClass(this.instance, "timeWidth");
+            XposedHelpers.setIntField(this.instance, "timeWidth", width);
+            /*Field timeWidthField = FieldUtils.getFieldOfClass(this.instance, "timeWidth");
             if (timeWidthField != null)
                 timeWidthField.setInt(this.instance, width);
             else
-                throw new NullPointerException("Not found timeWidth in " + this.instance.getClass().getName());
+                throw new NullPointerException("Not found timeWidth in " + this.instance.getClass().getName());*/
         }
-        catch (IllegalAccessException e)
+        catch (Throwable e)
         {
             Utils.log(e);
         }

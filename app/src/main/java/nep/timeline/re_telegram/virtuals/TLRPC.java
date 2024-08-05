@@ -3,6 +3,7 @@ package nep.timeline.re_telegram.virtuals;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import de.robv.android.xposed.XposedHelpers;
 import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
@@ -113,6 +114,38 @@ public class TLRPC {
                 Utils.log(e);
             }
             return null;
+        }
+
+        public int getFlags()
+        {
+            try
+            {
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram)) {
+                    Field field = FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Message", "flags", AutomationResolver.ResolverType.Field), int.class);
+                    if (field != null)
+                        return field.getInt(this.instance);
+                }
+                else
+                    return XposedHelpers.getIntField(this.instance, "flags");
+            }
+            catch (IllegalAccessException e)
+            {
+                Utils.log(e);
+            }
+            return Integer.MIN_VALUE;
+        }
+
+        public void setFlags(int flags) {
+            try {
+                if (ClientChecker.check(ClientChecker.ClientType.Yukigram) || ClientChecker.check(ClientChecker.ClientType.Nekogram)) {
+                    Field field = FieldUtils.getFieldFromMultiName(this.clazz, AutomationResolver.resolve("TLRPC$Message", "flags", AutomationResolver.ResolverType.Field), int.class);
+                    if (field != null)
+                        field.setInt(this.instance, flags);
+                } else XposedHelpers.setIntField(this.instance, "flags", flags);
+            } catch (IllegalAccessException e)
+            {
+                Utils.log(e);
+            }
         }
     }
 

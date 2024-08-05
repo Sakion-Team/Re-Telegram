@@ -7,10 +7,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class Utils {
-    public static XC_LoadPackage.LoadPackageParam globalLoadPackageParam = null;
+    public static String pkgName = null;
     public static final String issue = "Your telegram may have been modified! You can submit issue to let developer to try support to the telegram client you are using.";
     private static final Gson BUILDER_GSON = new GsonBuilder().setPrettyPrinting().create();
     //public static File deletedMessagesSavePath = null;

@@ -1,7 +1,6 @@
 package nep.timeline.re_telegram.virtuals;
 
-import java.lang.reflect.Field;
-
+import de.robv.android.xposed.XposedHelpers;
 import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.utils.FieldUtils;
 
@@ -19,13 +18,14 @@ public class OfficialChatMessageCell extends ChatMessageCellDefault {
     {
         try
         {
-            Field currentTimeStringField = FieldUtils.getFieldOfClass(this.instance, "currentTimeString");
+            XposedHelpers.setObjectField(this.instance, "currentTimeString", currentTimeString);
+            /*Field currentTimeStringField = FieldUtils.getFieldOfClass(this.instance, "currentTimeString");
             if (currentTimeStringField != null)
                 currentTimeStringField.set(this.instance, currentTimeString);
             else
-                throw new NullPointerException("Not found currentTimeString in " + this.instance.getClass().getName());
+                throw new NullPointerException("Not found currentTimeString in " + this.instance.getClass().getName());*/
         }
-        catch (IllegalAccessException e)
+        catch (Throwable e)
         {
             Utils.log(e);
         }

@@ -20,7 +20,7 @@ public class Nekogram {
         classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "org.telegram.messenger.I"));
         classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "org.telegram.messenger.F"));
         classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "org.telegram.messenger.X"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "k40"));
+        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "n40"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "org.telegram.ui.ActionBar.q"));
         classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.o"));
         classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.G$i")); // LimitReachedReorderFolder
@@ -32,32 +32,50 @@ public class Nekogram {
         fieldList.add(new FieldInfo("TLRPC$Peer", "channel_id", "c"));
         fieldList.add(new FieldInfo("TLRPC$Message", "id", "a"));
         fieldList.add(new FieldInfo("TLRPC$Message", "flags", "k"));
-        //fieldList.add(new FieldInfo("TLRPC$Message", "peer_id", "d"));
+        fieldList.add(new FieldInfo("TLRPC$Message", "peer_id", "d"));
         fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteMessages", "messages", "a"));
         fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteChannelMessages", "channel_id", "a"));
         fieldList.add(new FieldInfo("TLRPC$TL_updateDeleteChannelMessages", "messages", "b"));
         fieldList.add(new FieldInfo("Theme", "chat_timePaint", "K2"));
+        fieldList.add(new FieldInfo("MessagesController", "dialogMessagesByIds", "G"));
+        fieldList.add(new FieldInfo("MessagesController", "dialogMessage", "D"));
         fieldList.add(new FieldInfo("NotificationCenter", "messagesDeleted", "v"));
         fieldList.add(new FieldInfo("AndroidUtilities", "typefaceCache", "b"));
 
         methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "L"));
-        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeleted", "db"));
-        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessages", "Nc"));
+        methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeletedInternal", "gb"));
+        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessagesInternal", "Oc"));
+        methodList.add(new MethodInfo("MessagesStorage", "getDatabase", "a5"));
         methodList.add(new MethodInfo("MessageObject", "updateMessageText", "p6"));
         methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "H"));
         methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "kb"));
         methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "Pk"));
         methodList.add(new MethodInfo("MessagesController", "deleteMessages", "M8"));
+        methodList.add(new MethodInfo("MessagesController", "getSponsoredMessages", "Fa"));
         methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "Y6"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "r"));
         //methodList.add(new MethodInfo("UserConfig", "isPremium", "B"));
         methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "c2"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "b2"));
-        methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "sp"));
+        methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "tp"));
         methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "qs"));
         methodList.add(new MethodInfo("DialogsActivity", "onDefaultTabMoved", "D"));
         methodList.add(new MethodInfo("FiltersSetupActivity$TouchHelperCallback", "resetDefaultPosition", "D"));
         methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "U1"));
+        methodList.add(new MethodInfo("SQLiteDatabase", "queryFinalized", "h"));
+        methodList.add(new MethodInfo("SQLiteDatabase", "executeFast", "e"));
+        methodList.add(new MethodInfo("SQLiteCursor", "next", "j"));
+        methodList.add(new MethodInfo("SQLiteCursor", "byteBufferValue", "b"));
+        methodList.add(new MethodInfo("SQLiteCursor", "intValue", "g"));
+        methodList.add(new MethodInfo("SQLiteCursor", "longValue", "i"));
+        methodList.add(new MethodInfo("SQLiteCursor", "dispose", "d"));
+        methodList.add(new MethodInfo("SQLitePreparedStatement", "dispose", "h"));
+        methodList.add(new MethodInfo("SQLitePreparedStatement", "requery", "l"));
+        methodList.add(new MethodInfo("SQLitePreparedStatement", "bindByteBuffer", "a"));
+        methodList.add(new MethodInfo("SQLitePreparedStatement", "bindLong", "d"));
+        methodList.add(new MethodInfo("SQLitePreparedStatement", "bindInteger", "c"));
+        methodList.add(new MethodInfo("SQLitePreparedStatement", "step", "m"));
+        methodList.add(new MethodInfo("LongSparseArray", "get", "h"));
     }
 
     public static class ClassResolver

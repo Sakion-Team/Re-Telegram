@@ -1,10 +1,6 @@
 package nep.timeline.re_telegram.virtuals;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
-import nep.timeline.re_telegram.Utils;
+import de.robv.android.xposed.XposedHelpers;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 
 public class MessageObject {
@@ -17,7 +13,8 @@ public class MessageObject {
 
     public TLRPC.Message getMessageOwner()
     {
-        List<Field> fields = new ArrayList<>();
+        return new TLRPC.Message(XposedHelpers.getObjectField(this.instance, AutomationResolver.resolve("MessageObject", "messageOwner", AutomationResolver.ResolverType.Field)));
+        /*List<Field> fields = new ArrayList<>();
         for (Field declaredField : this.instance.getClass().getDeclaredFields())
             if (declaredField.getName().equals(AutomationResolver.resolve("MessageObject", "messageOwner", AutomationResolver.ResolverType.Field)))
                 fields.add(declaredField);
@@ -49,6 +46,6 @@ public class MessageObject {
         else
             Utils.log("Not found messageOwner field in MessageObject, " + Utils.issue);
 
-        return null;
+        return null;*/
     }
 }

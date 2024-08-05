@@ -7,13 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.robv.android.xposed.XposedHelpers;
+import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
 
 public class Theme {
-    public static TextPaint getTextPaint()
+    public static TextPaint getTextPaint(ClassLoader classLoader)
     {
-        Class<?> theme = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.ActionBar.Theme"), Utils.globalLoadPackageParam.classLoader);
+        Class<?> theme = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.ActionBar.Theme"), classLoader);
+        if (!ClientChecker.check(ClientChecker.ClientType.Nekogram) && !ClientChecker.check(ClientChecker.ClientType.Yukigram))
+            return (TextPaint) XposedHelpers.getStaticObjectField(theme, AutomationResolver.resolve("Theme", "chat_timePaint", AutomationResolver.ResolverType.Field));
         List<Field> fields = new ArrayList<>();
         for (Field declaredField : theme.getDeclaredFields())
             if (declaredField.getName().equals(AutomationResolver.resolve("Theme", "chat_timePaint", AutomationResolver.ResolverType.Field)))
