@@ -33,6 +33,16 @@ public class ConfigManager {
                         Configs.setAntiAntiForward(jsonModule.get("AntiAntiForward").getAsBoolean());
                     if (jsonModule.get("AntiRecall") != null)
                         Configs.setAntiRecall(jsonModule.get("AntiRecall").getAsBoolean());
+                    if (jsonModule.get("AntiRecallText") != null)
+                        Configs.setAntiRecallText(jsonModule.get("AntiRecallText").getAsString());
+                    if (jsonModule.get("AntiRecallTextColorful") != null)
+                        Configs.setAntiRecallTextColorful(jsonModule.get("AntiRecallTextColorful").getAsBoolean());
+                    if (jsonModule.get("AntiRecallTextRed") != null)
+                        Configs.setAntiRecallTextRed(jsonModule.get("AntiRecallTextRed").getAsInt());
+                    if (jsonModule.get("AntiRecallTextGreen") != null)
+                        Configs.setAntiRecallTextGreen(jsonModule.get("AntiRecallTextGreen").getAsInt());
+                    if (jsonModule.get("AntiRecallTextBlue") != null)
+                        Configs.setAntiRecallTextBlue(jsonModule.get("AntiRecallTextBlue").getAsInt());
                     if (jsonModule.get("NoSponsoredMessages") != null)
                         Configs.setNoSponsoredMessages(jsonModule.get("NoSponsoredMessages").getAsBoolean());
                     if (jsonModule.get("ProhibitChannelSwitching") != null)
@@ -43,6 +53,8 @@ public class ConfigManager {
                         Configs.setUseSystemTypeface(jsonModule.get("UseSystemTypeface").getAsBoolean());
                     if (jsonModule.get("HideStories") != null)
                         Configs.setHideStories(jsonModule.get("HideStories").getAsBoolean());
+                    //if (jsonModule.get("UnlockedNoPremiumAccountsLimit") != null)
+                    //    Configs.setUnlockedNoPremiumAccountsLimit(jsonModule.get("UnlockedNoPremiumAccountsLimit").getAsBoolean());
                 });
             }
         }
@@ -62,11 +74,17 @@ public class ConfigManager {
         valueJsonObject.add("Re-Telegram", jsonModule);
         jsonModule.add("AntiAntiForward", new JsonPrimitive(Configs.isAntiAntiForward()));
         jsonModule.add("AntiRecall", new JsonPrimitive(Configs.isAntiRecall()));
+        jsonModule.add("AntiRecallText", new JsonPrimitive(Configs.getAntiRecallText()));
+        jsonModule.add("AntiRecallTextColorful", new JsonPrimitive(Configs.isAntiRecallTextColorful()));
+        jsonModule.add("AntiRecallTextRed", new JsonPrimitive(Configs.getAntiRecallTextRed()));
+        jsonModule.add("AntiRecallTextGreen", new JsonPrimitive(Configs.getAntiRecallTextGreen()));
+        jsonModule.add("AntiRecallTextBlue", new JsonPrimitive(Configs.getAntiRecallTextBlue()));
         jsonModule.add("NoSponsoredMessages", new JsonPrimitive(Configs.isNoSponsoredMessages()));
         jsonModule.add("ProhibitChannelSwitching", new JsonPrimitive(Configs.isProhibitChannelSwitching()));
         jsonModule.add("AllowMoveAllChatFolder", new JsonPrimitive(Configs.isAllowMoveAllChatFolder()));
         jsonModule.add("UseSystemTypeface", new JsonPrimitive(Configs.isUseSystemTypeface()));
         jsonModule.add("HideStories", new JsonPrimitive(Configs.isHideStories()));
+        //jsonModule.add("UnlockedNoPremiumAccountsLimit", new JsonPrimitive(Configs.isUnlockedNoPremiumAccountsLimit()));
         FileUtils.save(cfgPath, Utils.getBuilderGson().toJson(valueJsonObject), false);
     }
 }

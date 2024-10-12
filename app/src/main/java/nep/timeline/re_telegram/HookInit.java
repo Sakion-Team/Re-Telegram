@@ -74,9 +74,11 @@ public class HookInit implements IXposedHookLoadPackage {
                 NEWAntiRecall.init(classLoader);
             }
 
-            // FakePremium.init(lpparam);
+            // FakePremium.init(classLoader);
 
             AllowMoveAllChatFolder.init(classLoader);
+
+            // UnlockedNoPremiumAccountsLimit.init(classLoader);
 
             if (!onlyNeedAR(lpparam.packageName))
             {

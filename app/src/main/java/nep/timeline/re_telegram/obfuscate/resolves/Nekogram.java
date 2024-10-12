@@ -14,14 +14,14 @@ public class Nekogram {
 
     static {
         classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "org.telegram.messenger.b"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "org.telegram.messenger.K"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "org.telegram.messenger.J"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "org.telegram.messenger.H"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "org.telegram.messenger.I"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "org.telegram.messenger.F"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "org.telegram.messenger.J"));
+        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "org.telegram.messenger.I"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "org.telegram.messenger.G"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "org.telegram.messenger.H"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "org.telegram.messenger.E"));
         classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "org.telegram.messenger.X"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "n40"));
-        classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "org.telegram.ui.ActionBar.q"));
+        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "r50"));
+        classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "org.telegram.ui.ActionBar.r"));
         classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.o"));
         classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.G$i")); // LimitReachedReorderFolder
         classList.add(new ClassInfo("org.telegram.ui.FiltersSetupActivity$TouchHelperCallback", "org.telegram.ui.Components.f0$l"));
@@ -44,24 +44,24 @@ public class Nekogram {
 
         methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "L"));
         methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeletedInternal", "gb"));
-        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessagesInternal", "Oc"));
+        methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessagesInternal", "ca"));
         methodList.add(new MethodInfo("MessagesStorage", "getDatabase", "a5"));
-        methodList.add(new MethodInfo("MessageObject", "updateMessageText", "p6"));
-        methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "H"));
-        methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "kb"));
-        methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "Pk"));
-        methodList.add(new MethodInfo("MessagesController", "deleteMessages", "M8"));
-        methodList.add(new MethodInfo("MessagesController", "getSponsoredMessages", "Fa"));
-        methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "Y6"));
+        methodList.add(new MethodInfo("MessageObject", "updateMessageText", "B6"));
+        methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "K"));
+        methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "xb"));
+        methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "ll"));
+        methodList.add(new MethodInfo("MessagesController", "deleteMessages", "U8"));
+        methodList.add(new MethodInfo("MessagesController", "getSponsoredMessages", "Qa"));
+        methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "Z6"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "r"));
         //methodList.add(new MethodInfo("UserConfig", "isPremium", "B"));
         methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "c2"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "b2"));
-        methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "tp"));
-        methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "qs"));
+        methodList.add(new MethodInfo("ChatActivity", "addSponsoredMessages", "Ap"));
+        methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "As"));
         methodList.add(new MethodInfo("DialogsActivity", "onDefaultTabMoved", "D"));
         methodList.add(new MethodInfo("FiltersSetupActivity$TouchHelperCallback", "resetDefaultPosition", "D"));
-        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "U1"));
+        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "X1"));
         methodList.add(new MethodInfo("SQLiteDatabase", "queryFinalized", "h"));
         methodList.add(new MethodInfo("SQLiteDatabase", "executeFast", "e"));
         methodList.add(new MethodInfo("SQLiteCursor", "next", "j"));
