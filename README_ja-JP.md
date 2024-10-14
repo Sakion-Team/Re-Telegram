@@ -1,5 +1,5 @@
 # Re:Telegram
-An Xposed module to enhance the Telegram
+Telegram を強化する Xposed モジュール
 
 [![Release](https://img.shields.io/github/release/Sakion-Team/Re-Telegram.svg)](https://github.com/Sakion-Team/Re-Telegram/releases/latest)
 [![CI_Build](https://github.com/Sakion-Team/Re-Telegram/actions/workflows/android.yml/badge.svg)](https://github.com/Sakion-Team/Re-Telegram/actions/workflows/android.yml)
@@ -7,17 +7,17 @@ An Xposed module to enhance the Telegram
 
 ## FAQ
 
-### What is the difference between this and Telegram Anti-Recall
-Re:Telegram has more features than Telegram Anti-Recall
+### これと Telegram Anti-Recall の違いは何ですか
+Re:Telegram には Telegram Anti-Recall よりも多くの機能があります。
 
-### What features does Re:Telegram have?
-Currently, Re:Telegram has the following features: AntiAntiForward, AntiRecall, NoSponsoredMessages, ProhibitChannelSwitching, AllowMoveAllChatFolder, UseSystemTypeface, HideStories
+### Re:Telegram にはどのような機能がありますか?
+**現在のRe:Telegram には次の機能があります:** 転送の禁止、再発信の禁止、スポンサーメッセージの禁止、チャンネルの切り替えの禁止、すべてのチャットフォルダの移動許可、システムフォントの使用、ストーリーの非表示
 
-### Which telegram client are supported?
-Official, Plus Messenger, Nagram, Nnngram, NekoX, Nekogram (No Test Apk and Google Store Version), NekoLite, exteraGram, Forkgram, Cherrygram, MDgram (Old version), Yukigram, iMoe, OctoGram, Mercurygram
+### どの Telegram クライアントに対応していますか?
+公式、Plus Messenger、Nagram、Nnngram、NekoX、Nekogram (Google Play 版とテスト版の apk ではありません)、NekoLite、exteraGram、Forkgram、Cherrygram、MDgram (古いバージョン)、Yukigram、iMoe、OctoGram、Mercurygram に対応しています。
 
-### Which telegram client will not be supported?
-Nullgram (You can use Nnngram), Telegram X, Forkgram F-Droid Build
+### どの Telegram クライアントが非対応ですか?
+Nullgram (Nnngram も使用可能)、Telegram X、Forkgram F-Droid ビルド
 
-### What if the client i am using is not supported?
-Submit the issue and include the client download link in the content, i will try to support your client.
+### 使用しているクライアントが非対応の場合はどうすればいいですか?
+Issue を送信してコンテンツにそのクライアントのダウンロードリンクを入れてください。クライアントの対応に努めます。
