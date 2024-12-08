@@ -33,7 +33,7 @@ public class HookInit implements IXposedHookLoadPackage {
             "it.belloworld.mercurygram");
     private static final List<String> notNeedHideStories = Arrays.asList("tw.nekomimi.nekogram", "com.exteragram.messenger", "uz.unnarsx.cherrygram");
     private static final List<String> hookPackagesCustomization = Arrays.asList("xyz.nextalone.nagram",
-            "nekox.messenger", "com.xtaolabs.pagergram");
+            "nekox.messenger", "com.xtaolabs.pagergram", "nekox.messenger.broken");
     public static final boolean DEBUG_MODE = false;
 
     public final List<String> getHookPackages()
