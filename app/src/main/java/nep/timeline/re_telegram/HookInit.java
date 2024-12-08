@@ -76,7 +76,8 @@ public class HookInit implements IXposedHookLoadPackage {
 
             // FakePremium.init(classLoader);
 
-            AllowMoveAllChatFolder.init(classLoader);
+            if (!ClientChecker.check(ClientChecker.ClientType.Nekogram))
+                AllowMoveAllChatFolder.init(classLoader);
 
             // UnlockedNoPremiumAccountsLimit.init(classLoader);
 

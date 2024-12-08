@@ -1,5 +1,17 @@
 plugins {
     id 'com.android.application'
+    id 'stringfog'
+}
+
+import com.github.megatronking.stringfog.plugin.kg.RandomKeyGenerator
+import com.github.megatronking.stringfog.plugin.StringFogMode
+
+stringfog {
+    implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
+    enable true
+    fogPackages = ['nep.timeline.re_telegram']
+    kg new RandomKeyGenerator()
+    mode StringFogMode.bytes
 }
 
 android {
@@ -9,9 +21,9 @@ android {
     defaultConfig {
         applicationId "nep.timeline.re_telegram"
         minSdk 26
-        targetSdk 34
-        versionCode 70
-        versionName "7.0"
+        targetSdk 35
+        versionCode 160
+        versionName "Shiori"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -23,9 +35,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
     sourceSets {
         main {
@@ -37,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.github.megatronking.stringfog:xor:5.0.0'
     compileOnly 'de.robv.android.xposed:api:82'
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.code.gson:gson:2.11.0'
 }

@@ -1,10 +1,7 @@
 package nep.timeline.re_telegram.features;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import nep.timeline.re_telegram.ClientChecker;
 import nep.timeline.re_telegram.HookUtils;
@@ -12,7 +9,6 @@ import nep.timeline.re_telegram.Utils;
 import nep.timeline.re_telegram.base.AbstractMethodHook;
 import nep.timeline.re_telegram.configs.Configs;
 import nep.timeline.re_telegram.obfuscate.AutomationResolver;
-import nep.timeline.re_telegram.utils.MethodUtils;
 
 public class AllowMoveAllChatFolder {
     public static void init(ClassLoader classLoader)
