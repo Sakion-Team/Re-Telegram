@@ -86,12 +86,6 @@ public class NEWAntiRecall {
             }
             XposedHelpers.callMethod(cursor, AutomationResolver.resolve("SQLiteCursor", "dispose", AutomationResolver.ResolverType.Method));
             XposedHelpers.callMethod(state, AutomationResolver.resolve("SQLitePreparedStatement", "dispose", AutomationResolver.ResolverType.Method));
-
-            /*Class<?> messagesStorageClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessagesStorage", classLoader);
-            XposedHelpers.callMethod(XposedHelpers.callStaticMethod(messagesStorageClass, "getInstance", UserConfig.getSelectedAccountX(classLoader)), "updateWidgets", delMsg);
-
-            Class<?> notificationCenterClass = XposedHelpers.findClassIfExists("org.telegram.messenger.NotificationCenter", classLoader);
-            XposedHelpers.callMethod(XposedHelpers.callStaticMethod(notificationCenterClass, "getInstance", UserConfig.getSelectedAccountX(classLoader)), "postNotificationName", new Class<?>[]{ int.class, Object[].class }, 99998, new Object[]{ delMsg, dialogId, false });*/
         });
     }
 
@@ -174,163 +168,10 @@ public class NEWAntiRecall {
             return null;
     }
 
-    /*public static void i(ClassLoader classLoader, Object object0, ArrayList<Integer> messageIds, long v) {
-        int dialogIndex;
-        ArrayList<Integer> deletedMessages = new ArrayList<>();
-
-        // Check if some condition is met (based on y0.d.f)
-        Object currentChat = XposedHelpers.getObjectField(object0, "currentChat");
-        if (currentChat != null && XposedHelpers.getBooleanField(currentChat, "isChannel")) {
-            // If v is 0 and "mergeDialogId" is not 0, set dialogIndex to 1
-            if (v == 0L && (XposedHelpers.getIntField(object0, "mergeDialogId") != 0L)) {
-                dialogIndex = 1;
-            } else if (v != -XposedHelpers.getIntField(object0, "dialog_id")) {
-                // If v is not equal to some negative value (based on b.x(object0)), return early
-                return;
-            } else {
-                dialogIndex = 0;
-            }
-        } else if (v == 0L) {
-            dialogIndex = 0;
-        } else {
-            return;
-        }
-
-        ArrayList<Object> updatedMessages = new ArrayList<>();
-        int dialogId = XposedHelpers.getIntField(object0, "currentAccount");
-        long dialogUniqueId = (long) XposedHelpers.callMethod(XposedHelpers.callStaticMethod(XposedHelpers.findClassIfExists("org.telegram.messenger.UserConfig", classLoader), "getInstance", dialogId), "getClientUserId");
-
-        for (int messageId : messageIds) {
-            // Get message object from messagesDict
-            Object messageObject = ((SparseArray[]) XposedHelpers.getObjectField(object0, "messagesDict"))[dialogIndex].get(messageId);
-            if (messageObject == null) {
-                continue;
-            }
-
-            long messageUniqueId = (long) XposedHelpers.callMethod(messageObject, "getDialogId");
-
-            // Check some condition based on v0.a.q0
-            if (messageUniqueId == dialogUniqueId) {
-                XposedHelpers.setBooleanField(messageObject, "deleted", true);
-                deletedMessages.add(messageId);
-                //g0.a(messageUniqueId, dialogId).remove(messageId);
-                continue;
-            }
-
-            // Check some condition based on v0.a.p0
-            long someValue = (long) XposedHelpers.callMethod(messageObject, "getSenderId");
-            if (someValue >= 0L) {
-                Object someObject = XposedHelpers.callMethod(XposedHelpers.callStaticMethod(XposedHelpers.findClassIfExists("org.telegram.messenger.MessagesController", classLoader), "getInstance", UserConfig.getSelectedAccountX(classLoader)), "getUser", someValue);
-                if (someObject != null && XposedHelpers.getBooleanField(someObject, "bot")) {
-                    XposedHelpers.setBooleanField(messageObject, "deleted", true);
-                    deletedMessages.add(messageId);
-                    //g0.a(messageUniqueId, dialogId).remove(messageId);
-                    continue;
-                }
-            }
-
-            // If the message is already handled, skip further processing
-            //if (g0.g(messageObject)) {
-            //    continue;
-            //}
-
-            // Mark message as read
-            XposedHelpers.callMethod(messageObject, "setIsRead");
-
-            // Add message to a set if it's not already present
-            //HashSet<Integer> messageSet = g0.a(messageUniqueId, dialogId);
-            //if (!messageSet.contains(messageId)) {
-            //    messageSet.add(messageId);
-            //}
-
-            // Perform some operation on the message
-            XposedHelpers.callMethod(messageObject, "resetLayout");
-
-            updatedMessages.add(messageObject);
-        }
-
-        // If there are updated messages, refresh the chat UI
-        if (!updatedMessages.isEmpty()) {
-            Object chatAdapter = XposedHelpers.getObjectField(object0, "chatAdapter");
-            ArrayList<Object> chatList = (ArrayList<Object>) XposedHelpers.getObjectField(object0, "messages");
-            for (Object message : updatedMessages) {
-                XposedHelpers.callMethod(chatAdapter, "invalidateRowWithMessageObject", message);
-                int position = chatList.indexOf(message);
-                if (position >= 0) {
-                    XposedHelpers.callMethod(chatAdapter, "notifyItemChanged", position);
-                }
-            }
-        }
-
-        // If there are deleted messages, notify the system
-        if (!deletedMessages.isEmpty()) {
-            Class<?> notificationCenterClass = XposedHelpers.findClassIfExists("org.telegram.messenger.NotificationCenter", classLoader);
-            Class<?> messagesStorageClass = XposedHelpers.findClassIfExists("org.telegram.messenger.MessagesStorage", classLoader);
-
-            int messagesDeletedValue = (int) XposedHelpers.getStaticObjectField(notificationCenterClass, AutomationResolver.resolve("NotificationCenter", "messagesDeleted", AutomationResolver.ResolverType.Field));
-
-            XposedBridge.log("1");
-
-            XposedHelpers.callMethod(XposedHelpers.callStaticMethod(notificationCenterClass, "getInstance", dialogId), "postNotificationName", new Class<?>[]{ int.class, Object[].class }, messagesDeletedValue, new Object[]{ deletedMessages, v, false });
-
-            XposedBridge.log("2");
-
-            ArrayList arrayList4 = (ArrayList) XposedHelpers.callMethod(XposedHelpers.callStaticMethod(messagesStorageClass, "getInstance", dialogId), "markMessagesAsDeleted", v, deletedMessages, Boolean.FALSE, Boolean.TRUE, 0, 0);
-
-            XposedBridge.log("3");
-
-            XposedHelpers.callMethod(XposedHelpers.callStaticMethod(messagesStorageClass, "getInstance", dialogId), "updateDialogsWithDeletedMessages", -v, v, deletedMessages, arrayList4, Boolean.FALSE);
-
-            //Object notificationObject = s.i0(dialogId);
-            //h.a(new BlockRecallMessage.7(dialogId, v, deletedMessages), notificationObject);
-        }
-    }*/
-
     public static void initUI(ClassLoader classLoader)
     {
         Class<?> chatMessageCell = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.Cells.ChatMessageCell"), classLoader);
         if (chatMessageCell != null) {
-            /*Class<?> chatActivity = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.ChatActivity"), classLoader);
-            if (chatActivity != null) {
-                Class<?> notificationCenter = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.NotificationCenter"), classLoader);
-                if (notificationCenter != null) {
-                    XposedHelpers.findAndHookMethod(chatActivity, AutomationResolver.resolve("ChatActivity", "onFragmentCreate", AutomationResolver.ResolverType.Method), new AbstractMethodHook() {
-                        @Override
-                        protected void afterMethod(MethodHookParam param) {
-                            if ((boolean) param.getResult())
-                                XposedHelpers.callMethod(XposedHelpers.callStaticMethod(notificationCenter, "getInstance", UserConfig.getSelectedAccountX(classLoader)), "addObserver", param.thisObject, 99998);
-                        }
-                    });
-
-                    XposedHelpers.findAndHookMethod(chatActivity, AutomationResolver.resolve("ChatActivity", "onFragmentDestroy", AutomationResolver.ResolverType.Method), new AbstractMethodHook() {
-                        @Override
-                        protected void afterMethod(MethodHookParam param) {
-                            XposedHelpers.callMethod(XposedHelpers.callStaticMethod(notificationCenter, "getInstance", UserConfig.getSelectedAccountX(classLoader)), "removeObserver", param.thisObject, 99998);
-                        }
-                    });
-
-                    XposedHelpers.findAndHookMethod(chatActivity, AutomationResolver.resolve("ChatActivity", "didReceivedNotification", AutomationResolver.ResolverType.Method), int.class, int.class, Object[].class, new AbstractMethodHook() {
-                        @Override
-                        protected void beforeMethod(MethodHookParam param) {
-                            int id = (int) param.args[0];
-                            if (id == 99998) {
-                                param.setResult(null);
-                                Object[] args = (Object[]) param.args[2];
-                                if (((boolean) args[2]) != (XposedHelpers.getIntField(param.thisObject, "chatMode") == 1)) {
-                                    return;
-                                }
-
-                                ArrayList<Integer> messages = (ArrayList<Integer>) args[0];
-                                long channelId = (long) args[1];
-
-                                XposedBridge.log("Hello! Deleted message: " + channelId);
-                                i(classLoader, param.thisObject, messages, channelId);
-                            }
-                        }
-                    });
-                }
-            }*/
-
             XposedHelpers.findAndHookMethod(chatMessageCell, AutomationResolver.resolve("ChatMessageCell", "measureTime", AutomationResolver.ResolverType.Method), AutomationResolver.resolve("org.telegram.messenger.MessageObject"), new AbstractMethodHook() {
                 @Override
                 protected void afterMethod(MethodHookParam param) {
@@ -420,17 +261,12 @@ public class NEWAntiRecall {
                             {
                                 Class<?> TL_updateDeleteMessages = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages"), classLoader);
                                 Class<?> TL_updateDeleteChannelMessages = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages"), classLoader);
-                                //Class<?> TL_updateDeleteScheduledMessages = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.tgnet.TLRPC$TL_updateDeleteScheduledMessages"), classLoader);
                                 CopyOnWriteArrayList<Object> updates = new CopyOnWriteArrayList<>(Utils.castList(param.args[0], Object.class));
                                 if (updates != null && !updates.isEmpty()) {
                                     ArrayList<Object> newUpdates = new ArrayList<>();
 
                                     for (Object item : updates) {
-                                        if (!item.getClass().equals(TL_updateDeleteChannelMessages) && !item.getClass().equals(TL_updateDeleteMessages))// && !item.getClass().equals(TL_updateDeleteScheduledMessages))
-                                            newUpdates.add(item);
-
-                                        //if (item.getClass().equals(TL_updateDeleteScheduledMessages))
-                                        //    AntiRecall.insertDeletedMessage(new TLRPC.TL_updateDeleteScheduledMessages(item).getMessages());
+                                        if (!item.getClass().equals(TL_updateDeleteChannelMessages) && !item.getClass().equals(TL_updateDeleteMessages))
 
                                         if (item.getClass().equals(TL_updateDeleteChannelMessages)) {
                                             TLRPC.TL_updateDeleteChannelMessages channelMessages = new TLRPC.TL_updateDeleteChannelMessages(item);
@@ -483,42 +319,36 @@ public class NEWAntiRecall {
         }
     }
 
+    public static long getCurrentUserId(ClassLoader classLoader) {
+    long currentUserId = 0;
+    try {
+        Object currentUser = XposedHelpers.callStaticMethod(
+            XposedHelpers.findClass(
+                AutomationResolver.resolve("org.telegram.messenger.UserConfig"), 
+                classLoader
+            ), 
+            AutomationResolver.resolve("UserConfig", "getCurrentUser", AutomationResolver.ResolverType.Method)
+        );
+        
+        if (currentUser != null) {
+            currentUserId = (long) XposedHelpers.callMethod(currentUser, "getId");
+        }
+    } catch (Exception e) {
+        Utils.log("Error getting current user ID: " + e);
+    }
+    return currentUserId;
+}
     public static void initProcessing(ClassLoader classLoader) {
         Class<?> messagesStorage = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.MessagesStorage"), classLoader);
-        //Class<?> notificationCenter = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.NotificationCenter"), classLoader);
         Class<?> notificationsController = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.NotificationsController"), classLoader);
 
         XposedHelpers.findAndHookMethod(messagesStorage, AutomationResolver.resolve("MessagesStorage", "markMessagesAsDeletedInternal", AutomationResolver.ResolverType.Method), long.class, ArrayList.class, boolean.class, int.class, int.class, new AbstractMethodHook() {
             @Override
             protected void beforeMethod(MethodHookParam param) {
-                /*if (Configs.isAntiRecall()) {
-                    ArrayList<Integer> deletedMessages = new ArrayList<>();
-
-                    ArrayList<Integer> original = Utils.castList(param.args[1], Integer.class);
-
-                    if (original.isEmpty())
-                        return;
-
-                    long channel_id = (long) param.args[0];
-                    if (channel_id > 0)
-                        channel_id = 0;
-                    long channelID = -((long) param.args[1]);
-                    if (channelID > 0)
-                        channelID = 0;
-
-                    Object msgIds = param.args[2];
-                    if (msgIds == null)
-                        return;
-
-                    for (Integer msgId : original) {
-                        if (isDeletedMessage(channelID, msgId) != null)
-                            original.remove(msgId);
-                    }
-
-                    // markMessagesDeleted(param.thisObject, channelID, original);
-                    ((ArrayList<Integer>) param.args[2]).clear();
-                    ((ArrayList<Integer>) param.args[2]).addAll(original);
-                }*/
+            
+                long currentUserId = getCurrentUserId(classLoader);
+                long deletingUserId = (long) param.args[3];
+                boolean isCurrentUserDeleting = (deletingUserId == currentUserId);
                 if (Configs.isAntiRecall()) {
                     ArrayList<Integer> deletedMessages = new ArrayList<>();
 
@@ -532,6 +362,7 @@ public class NEWAntiRecall {
                         channel_id = 0;
 
                     for (Integer msgId : original) {
+                    if (isCurrentUserDeleting) { deletedMessages.add(msgId); } else {
                         DeletedMessageInfo shouldDeletedMessage = isShouldDeletedMessage(channel_id, msgId);
                         DeletedMessageInfo shouldDeletedMessage2 = isShouldDeletedMessage2(channel_id, msgId);
                         if (shouldDeletedMessage2 != null || isDeletedMessage(channel_id, msgId) == null) {
@@ -542,6 +373,7 @@ public class NEWAntiRecall {
                                 shouldDeletedMessageInfo2.remove(shouldDeletedMessage2);
                         }
                     }
+                }
 
                     ArrayList<Integer> fork = new ArrayList<>(original);
                     fork.removeAll(deletedMessages);
@@ -561,6 +393,10 @@ public class NEWAntiRecall {
         XposedHelpers.findAndHookMethod(messagesStorage, AutomationResolver.resolve("MessagesStorage", "updateDialogsWithDeletedMessagesInternal", AutomationResolver.ResolverType.Method), long.class, long.class, ArrayList.class, ArrayList.class, new AbstractMethodHook() {
             @Override
             protected void beforeMethod(MethodHookParam param) {
+                long currentUserId = getCurrentUserId(classLoader);
+                long deletingUserId = (long) param.args[3];
+                boolean isCurrentUserDeleting = (deletingUserId == currentUserId);
+            
                 if (Configs.isAntiRecall()) {
                     long channelID = -((long) param.args[1]);
                     if (channelID > 0)
@@ -578,6 +414,7 @@ public class NEWAntiRecall {
                         return;
 
                     for (Integer msgId : original) {
+                    if (isCurrentUserDeleting) { deletedMessages.add(msgId); } else {
                         if (isShouldDeletedMessage(channelID, msgId) == null)
                             if (isDeletedMessage(channelID, msgId) != null)
                                 addShouldDeletedMessage(channelID, msgId);
@@ -591,6 +428,7 @@ public class NEWAntiRecall {
                         else
                             deletedMessages.add(msgId);
                     }
+                }
 
                     ArrayList<Integer> fork = new ArrayList<>(original);
                     fork.removeAll(deletedMessages);
@@ -667,55 +505,7 @@ public class NEWAntiRecall {
                 }
             }
         });
-
-        /*int messagesDeletedValue = (int) XposedHelpers.getStaticObjectField(notificationCenter, AutomationResolver.resolve("NotificationCenter", "messagesDeleted", AutomationResolver.ResolverType.Field));
-
-        XposedHelpers.findAndHookMethod(notificationCenter, AutomationResolver.resolve("NotificationCenter", "postNotificationName", AutomationResolver.ResolverType.Method), int.class, Object[].class, new AbstractMethodHook() {
-            @Override
-            protected void beforeMethod(MethodHookParam param) {
-                int id = (int) param.args[0];
-                if (Configs.isAntiRecall() && id == messagesDeletedValue) {
-                    Object[] args = (Object[]) param.args[1];
-                    long channelID = -((long) args[1]);
-                    if (channelID > 0)
-                        channelID = 0;
-
-                    ArrayList<Integer> deletedMessages = new ArrayList<>();
-
-                    Object msgIds = args[0];
-                    if (msgIds == null)
-                        return;
-
-                    ArrayList<Integer> original = Utils.castList(msgIds, Integer.class);
-
-                    if (original.isEmpty())
-                        return;
-
-                    for (Integer msgId : original) {
-                        if (isShouldDeletedMessage(channelID, msgId) == null)
-                            if (isDeletedMessage(channelID, msgId) != null)
-                                addShouldDeletedMessage(channelID, msgId);
-                            else
-                                deletedMessages.remove(msgId);
-                        else if (isShouldDeletedMessage2(channelID, msgId) == null)
-                            if (isDeletedMessage(channelID, msgId) != null)
-                                addShouldDeletedMessage2(channelID, msgId);
-                            else
-                                deletedMessages.remove(msgId);
-                        else
-                            deletedMessages.add(msgId);
-                    }
-
-                    if (deletedMessages.isEmpty())
-                        param.setResult(null);
-                    else {
-                        ((ArrayList<Integer>) args[0]).clear();
-                        ((ArrayList<Integer>) args[0]).addAll(deletedMessages);
-                    }
-                }
-            }
-        });*/
-
+        
         Method removeDeletedMessagesFromNotifications = null;
         for (Method method : notificationsController.getDeclaredMethods())
             if (method.getName().equals(AutomationResolver.resolve("NotificationsController", "removeDeletedMessagesFromNotifications", AutomationResolver.ResolverType.Method)))
