@@ -33,6 +33,7 @@ public class Nekogram {
 
         //fieldList.add(new FieldInfo("MessageObject", "messageOwner", "j"));
         fieldList.add(new FieldInfo("UserConfig", "selectedAccount", "b0"));
+        fieldList.add(new FieldInfo("TLRPC$User", "id", "a"));
         fieldList.add(new FieldInfo("TLRPC$Peer", "channel_id", "c"));
         fieldList.add(new FieldInfo("TLRPC$Message", "id", "a"));
         fieldList.add(new FieldInfo("TLRPC$Message", "flags", "k"));
@@ -58,6 +59,7 @@ public class Nekogram {
         methodList.add(new MethodInfo("MessagesController", "getSponsoredMessages", "Ta"));
         methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "h7"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "s"));
+        methodList.add(new MethodInfo("UserConfig", "getCurrentUser", "o"));
         //methodList.add(new MethodInfo("UserConfig", "isPremium", "B"));
         methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "c2"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "b2"));

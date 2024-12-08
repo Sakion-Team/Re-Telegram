@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import nep.timeline.re_telegram.application.ApplicationLoaderHook;
 import nep.timeline.re_telegram.features.AllowMoveAllChatFolder;
@@ -33,7 +35,7 @@ public class HookInit implements IXposedHookLoadPackage {
             "it.belloworld.mercurygram");
     private static final List<String> notNeedHideStories = Arrays.asList("tw.nekomimi.nekogram", "com.exteragram.messenger", "uz.unnarsx.cherrygram");
     private static final List<String> hookPackagesCustomization = Arrays.asList("xyz.nextalone.nagram",
-            "nekox.messenger", "com.xtaolabs.pagergram", "nekox.messenger.broken");
+            "nekox.messenger", "com.xtaolabs.pagergram");
     public static final boolean DEBUG_MODE = false;
 
     public final List<String> getHookPackages()
@@ -80,6 +82,12 @@ public class HookInit implements IXposedHookLoadPackage {
                 AllowMoveAllChatFolder.init(classLoader);
 
             // UnlockedNoPremiumAccountsLimit.init(classLoader);
+
+            if (ClientChecker.check(ClientChecker.ClientType.Cherrygram)) {
+                Class<?> checker = XposedHelpers.findClassIfExists("org.telegram.tgnet.ConnectionsManagerImpl", classLoader);
+                XposedHelpers.findAndHookMethod(checker, "nfhpo4yruoi1je3", XC_MethodReplacement.DO_NOTHING);
+                XposedHelpers.findAndHookMethod(checker, "g45ytgt513", XC_MethodReplacement.DO_NOTHING);
+            }
 
             if (!onlyNeedAR(lpparam.packageName))
             {
