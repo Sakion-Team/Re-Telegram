@@ -25,18 +25,18 @@ jobs:
         run: ./gradlew :app:assembleDebug
 
       - name: Upload Debug APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ReTelegram-Debug
-          path: ${{github.workspace}}/app/build/outputs/apk/debug/*.apk
+          path: ${{ github.workspace }}/app/build/outputs/apk/debug/*.apk
           if-no-files-found: warn
           
       - name: Build Release with Gradle
         run: ./gradlew :app:assembleRelease
 
       - name: Upload Release APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ReTelegram-Release
-          path: ${{github.workspace}}/app/build/outputs/apk/release/*.apk
+          path: ${{ github.workspace }}/app/build/outputs/apk/release/*.apk
           if-no-files-found: warn
