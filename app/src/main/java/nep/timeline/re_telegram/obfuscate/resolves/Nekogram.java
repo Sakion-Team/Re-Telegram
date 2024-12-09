@@ -53,13 +53,14 @@ public class Nekogram {
         methodList.add(new MethodInfo("MessagesStorage", "getDatabase", "a5"));
         methodList.add(new MethodInfo("MessageObject", "updateMessageText", "M6"));
         methodList.add(new MethodInfo("MessageObject", "canForwardMessage", "K"));
+        methodList.add(new MethodInfo("MessageObject", "getDialogId", "G0"));
         methodList.add(new MethodInfo("MessagesController", "isChatNoForwards", "Ab"));
         methodList.add(new MethodInfo("MessagesController", "markDialogMessageAsDeleted", "ol"));
         methodList.add(new MethodInfo("MessagesController", "deleteMessages", "W8"));
         methodList.add(new MethodInfo("MessagesController", "getSponsoredMessages", "Ta"));
         methodList.add(new MethodInfo("ChatMessageCell", "measureTime", "h7"));
+        methodList.add(new MethodInfo("ChatMessageCell", "setVisibleOnScreen", "h8"));
         methodList.add(new MethodInfo("UserConfig", "getInstance", "s"));
-        methodList.add(new MethodInfo("UserConfig", "getCurrentUser", "o"));
         //methodList.add(new MethodInfo("UserConfig", "isPremium", "B"));
         methodList.add(new MethodInfo("NotificationsController", "removeNotificationsForDialog", "c2"));
         methodList.add(new MethodInfo("NotificationsController", "removeDeletedMessagesFromNotifications", "b2"));

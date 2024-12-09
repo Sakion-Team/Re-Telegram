@@ -48,4 +48,8 @@ public class MessageObject {
 
         return null;*/
     }
+
+    public long getDialogId() {
+        return (long) XposedHelpers.callMethod(instance, AutomationResolver.resolve("MessageObject", "getDialogId", AutomationResolver.ResolverType.Method));
+    }
 }
