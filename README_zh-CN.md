@@ -14,10 +14,10 @@ Re:Telegram 相比 Telegram Anti-Recall 有更多功能
 目前，Re:Telegram 具有以下功能：AntiAntiForward、AntiRecall、NoSponsoredMessages、ProhibitChannelSwitching、AllowMoveAllChatFolder、UseSystemTypeface、HideStories
 
 ### 支持哪些电报客户端？
-Official, Plus Messenger, Nagram, Nnngram, NekoX, Nekogram ( 测试版本和谷歌商店版本除外 ), NekoLite, exteraGram, Forkgram, Cherrygram, MDgram (Old version), Yukigram, iMoe, OctoGram, Mercurygram
+Official, Plus Messenger, Nagram, Nnngram, NekoX, Nekogram ( 测试版本和谷歌商店版本除外 ), NekoLite, exteraGram, Forkgram, MDgram (Old version), Yukigram, iMoe, OctoGram, Mercurygram
 
 ### 哪些电报客户端不受支持？
-Nullgram（你可以使用 Nnngram）、Telegram X、Forkgram F-Droid Build
+Nullgram（你可以使用 Nnngram）、Telegram X、Forkgram F-Droid Build、Cherrygram（开发者要求）
 
 ### 如果我使用的客户端不被支持怎么办？
 提交问题并在内容中包含客户下载链接，我将尽力支持您的客户端。
