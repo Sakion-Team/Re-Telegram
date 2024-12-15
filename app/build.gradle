@@ -22,7 +22,7 @@ android {
         applicationId "nep.timeline.re_telegram"
         minSdk 26
         targetSdk 35
-        versionCode 170
+        versionCode 180
         versionName "Akiyama"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
