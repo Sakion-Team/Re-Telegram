@@ -527,4 +527,19 @@ public class NEWAntiRecall {
                 }
             });
     }
+
+    public static void initAutoDownload(ClassLoader classLoader) {
+        Class<?> downloadController = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.messenger.DownloadController"), classLoader);
+        if (downloadController == null)
+            return;
+
+        XposedHelpers.findAndHookMethod(downloadController, AutomationResolver.resolve("DownloadController", "canDownloadMedia", AutomationResolver.ResolverType.Method), AutomationResolver.resolve("org.telegram.tgnet.TLRPC$Message"), new AbstractMethodHook() {
+            @Override
+            protected void beforeMethod(MethodHookParam param) {
+                TLRPC.Message message = new TLRPC.Message(param.args[0]);
+                if ((message.getFlags() & FLAG_DELETED) != 0)
+                    param.setResult(0);
+            }
+        });
+    }
 }

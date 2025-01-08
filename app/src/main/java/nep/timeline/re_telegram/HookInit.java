@@ -71,6 +71,8 @@ public class HookInit implements IXposedHookLoadPackage {
                 NEWAntiRecall.initProcessing(classLoader);
 
                 NEWAntiRecall.init(classLoader);
+
+                NEWAntiRecall.initAutoDownload(classLoader);
             }
 
             // FakePremium.init(classLoader);

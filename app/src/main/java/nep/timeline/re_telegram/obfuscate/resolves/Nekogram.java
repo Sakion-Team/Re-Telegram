@@ -16,18 +16,19 @@ public class Nekogram {
         classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "org.telegram.messenger.b"));
         classList.add(new ClassInfo("org.telegram.messenger.NotificationsController", "org.telegram.messenger.J"));
         classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter", "org.telegram.messenger.I"));
+        classList.add(new ClassInfo("org.telegram.messenger.DownloadController", "org.telegram.messenger.m"));
         classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "org.telegram.messenger.G"));
         classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "org.telegram.messenger.H"));
         classList.add(new ClassInfo("org.telegram.messenger.MessageObject", "org.telegram.messenger.E"));
         classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "org.telegram.messenger.W"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "K60"));
+        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell", "X50"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "org.telegram.ui.ActionBar.q"));
         classList.add(new ClassInfo("org.telegram.ui.ChatActivity", "org.telegram.ui.p"));
         //classList.add(new ClassInfo("org.telegram.ui.DialogsActivity", "org.telegram.ui.G$i")); // LimitReachedReorderFolder
         //classList.add(new ClassInfo("org.telegram.ui.FiltersSetupActivity$TouchHelperCallback", "org.telegram.ui.Components.f0$l"));
         classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "org.telegram.messenger.a"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Peer", "BI3"));
-        classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Message", "fI3"));
+        classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$Message", "aA3"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteMessages", "Hj4"));
         classList.add(new ClassInfo("org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages", "Gj4"));
 
@@ -48,6 +49,7 @@ public class Nekogram {
         fieldList.add(new FieldInfo("AndroidUtilities", "typefaceCache", "d"));
 
         methodList.add(new MethodInfo("NotificationCenter", "postNotificationName", "L"));
+        methodList.add(new MethodInfo("DownloadController", "canDownloadMedia", "r"));
         methodList.add(new MethodInfo("MessagesStorage", "markMessagesAsDeletedInternal", "t8"));
         methodList.add(new MethodInfo("MessagesStorage", "updateDialogsWithDeletedMessagesInternal", "Pc"));
         methodList.add(new MethodInfo("MessagesStorage", "getDatabase", "a5"));
@@ -68,7 +70,7 @@ public class Nekogram {
         methodList.add(new MethodInfo("ChatActivity", "hasSelectedNoforwardsMessage", "ot"));
         //methodList.add(new MethodInfo("DialogsActivity", "onDefaultTabMoved", "D"));
         //methodList.add(new MethodInfo("FiltersSetupActivity$TouchHelperCallback", "resetDefaultPosition", "D"));
-        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "Z1"));
+        methodList.add(new MethodInfo("AndroidUtilities", "getTypeface", "a2"));
         methodList.add(new MethodInfo("SQLiteDatabase", "queryFinalized", "h"));
         methodList.add(new MethodInfo("SQLiteDatabase", "executeFast", "e"));
         methodList.add(new MethodInfo("SQLiteCursor", "next", "j"));
