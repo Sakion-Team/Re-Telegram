@@ -2,7 +2,6 @@ package nep.timeline.re_telegram.features;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -44,7 +43,6 @@ public class SpeedBoostHook {
                                         new Object[]{4, title, subtitle}));
                             } catch (Throwable t) {
                                 XposedBridge.log(t);
-                                Utils.showToast(title + "\n" + subtitle, Toast.LENGTH_SHORT);
                             }
                         }
                     } catch (Throwable t) {
@@ -54,7 +52,6 @@ public class SpeedBoostHook {
             });
         } catch (Throwable t) {
             XposedBridge.log(t);
-            Utils.showToast("TeleSpeed: Unsupported Feature", Toast.LENGTH_LONG);
         }
     }
 }
