@@ -14,6 +14,7 @@ import nep.timeline.re_telegram.features.HideStories;
 import nep.timeline.re_telegram.features.NEWAntiRecall;
 import nep.timeline.re_telegram.features.NoSponsoredMessages;
 import nep.timeline.re_telegram.features.ProhibitChannelSwitching;
+import nep.timeline.re_telegram.features.SpeedBoostHook;
 import nep.timeline.re_telegram.features.UseSystemTypeface;
 
 public class HookInit implements IXposedHookLoadPackage {
@@ -98,6 +99,7 @@ public class HookInit implements IXposedHookLoadPackage {
                 }
 
                 AntiAntiForward.init(classLoader);
+                SpeedBoostHook.init(classLoader);
             }
         }
     }
