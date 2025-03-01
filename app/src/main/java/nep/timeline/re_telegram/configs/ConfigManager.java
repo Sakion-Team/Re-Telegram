@@ -53,6 +53,8 @@ public class ConfigManager {
                         Configs.setUseSystemTypeface(jsonModule.get("UseSystemTypeface").getAsBoolean());
                     if (jsonModule.get("HideStories") != null)
                         Configs.setHideStories(jsonModule.get("HideStories").getAsBoolean());
+                    if (jsonModule.get("SpeedBoost") != null)
+                        Configs.setSpeedBoost(jsonModule.get("SpeedBoost").getAsBoolean());
                     //if (jsonModule.get("UnlockedNoPremiumAccountsLimit") != null)
                     //    Configs.setUnlockedNoPremiumAccountsLimit(jsonModule.get("UnlockedNoPremiumAccountsLimit").getAsBoolean());
                 });
@@ -84,6 +86,7 @@ public class ConfigManager {
         jsonModule.add("AllowMoveAllChatFolder", new JsonPrimitive(Configs.isAllowMoveAllChatFolder()));
         jsonModule.add("UseSystemTypeface", new JsonPrimitive(Configs.isUseSystemTypeface()));
         jsonModule.add("HideStories", new JsonPrimitive(Configs.isHideStories()));
+        jsonModule.add("SpeedBoost", new JsonPrimitive(Configs.isSpeedBoost()));
         //jsonModule.add("UnlockedNoPremiumAccountsLimit", new JsonPrimitive(Configs.isUnlockedNoPremiumAccountsLimit()));
         FileUtils.save(cfgPath, Utils.getBuilderGson().toJson(valueJsonObject), false);
     }
