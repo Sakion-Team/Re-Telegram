@@ -99,7 +99,8 @@ public class HookInit implements IXposedHookLoadPackage {
                 }
 
                 AntiAntiForward.init(classLoader);
-                SpeedBoostHook.init(classLoader);
+                if (!ClientChecker.check(ClientChecker.ClientType.Nekogram))
+                    SpeedBoostHook.init(classLoader);
             }
         }
     }
