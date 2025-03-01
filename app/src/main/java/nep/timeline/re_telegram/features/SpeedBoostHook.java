@@ -4,14 +4,19 @@ import android.os.Looper;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import nep.timeline.re_telegram.configs.Configs;
 
 public class SpeedBoostHook {
     private final static long DEFAULT_MAX_FILE_SIZE = 1024L * 1024L * 2000L;
+    
     public static void init(ClassLoader classLoader) {
         try {
             XposedHelpers.findAndHookMethod("org.telegram.messenger.FileLoadOperation", classLoader, "updateParams", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    if (!Configs.isSpeedBoost())
+                        return;
+                    
                     int downloadChunkSizeBig = 1024 * 1024;
                     int maxDownloadRequests = 12;
                     int maxDownloadRequestsBig = 12;
