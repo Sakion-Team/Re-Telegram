@@ -14,6 +14,7 @@ public class Configs {
     private static boolean useSystemTypeface = true;
     private static boolean hideStories = false;
     private static boolean unlockedNoPremiumAccountsLimit = true;
+    private static boolean speedBoost = true;
 
     public static boolean isAntiAntiForward() {
         return antiAntiForward;
@@ -65,6 +66,10 @@ public class Configs {
 
     public static boolean isUnlockedNoPremiumAccountsLimit() {
         return unlockedNoPremiumAccountsLimit;
+    }
+
+    public static boolean isSpeedBoost() {
+        return speedBoost;
     }
 
     public static void setAntiAntiForward(boolean value) {
@@ -125,6 +130,11 @@ public class Configs {
 
     public static void setUnlockedNoPremiumAccountsLimit(boolean value) {
         unlockedNoPremiumAccountsLimit = value;
+        ConfigManager.save();
+    }
+
+    public static void setSpeedBoost(boolean value) {
+        speedBoost = value;
         ConfigManager.save();
     }
 }
