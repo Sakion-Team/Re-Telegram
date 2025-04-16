@@ -23,3 +23,17 @@ Nullgram (You can use Nnngram), Telegram X, Forkgram F-Droid Build, Cherrygram (
 
 ### What if the client i am using is not supported?
 Submit the issue and include the client download link in the content, i will try to support your client.
+
+### How to install
+- Install APK file
+- Enable the module in XPosed / LSposed
+- Reboot
+
+Main (AntiAntiForward, AntiRecall, NoSponsoredMessages, ProhibitChannelSwitching, AllowMoveAllChatFolder, UseSystemTypeface) features are already enabled by default, but to use HideStories you have to
+- Use a text editor either on your device or ADB side loaded.
+Locate a `/data/data/YOUR_TELEGRAM_CLIENT/` folder, likely `/data/data/org.telegram.messenger/`.\
+  Its owner is a system user similar to `u0_a503`, so you will have to elevate your privileges to get into.\
+There should be a `Re-Telegram/configs.cfg` file. Edit it to set `"HideStories": true` in this JSON file.\
+Save and ensure that the owner and rights are the same, otherwise Re:Telegram will not access the file.
+Force-close and reopen Telegram on your device.\
+Stories should have gone.
